@@ -4,9 +4,9 @@
 	<title>New Book</title>
 
 	<!-- LINKED STYLESHEETS AND SCRIPTS-->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<link rel="stylesheet" href="./teststyles.css">
-	<script src="https://use.fontawesome.com/10081d856e.js"></script>
 </head>
 
 
@@ -14,10 +14,130 @@
 
 	<!-- BOOKSHELF HEADER -->
 	<header>
+		<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+		  <div class="carousel-inner">
 
+				<!-- BOOKSHELF -->
+		    <div class="carousel-item active">
+		      <div class="container-fluid">
+			      <div class="row">
+			      	<div class="col-md-2"></div>
+
+			      	<!-- BOOKS -->
+			        <div class="col-md-2 col-sm-6 col-xs-12">
+			          <button type="button" class="btn icon-btn btn-warning">
+									<span class="glyphicon btn-glyphicon glyphicon-minus img-circle text-warning"></span>
+								</button>
+			          <img data-src="holder.js/100px280/thumb" alt="100%x280" style="height: 30vh; width: 90%; display: block;" src="https://cdn.pastemagazine.com/www/system/images/photo_albums/greatgatsbycovers/large/photo_16696_0.jpeg?1384968217" data-holder-rendered="true">
+			        </div>
+			        <div class="col-md-2 col-sm-6 col-xs-12">
+			          <button type="button" class="btn icon-btn btn-warning">
+									<span class="glyphicon btn-glyphicon glyphicon-minus img-circle text-warning"></span>
+								</button>
+			          <img data-src="holder.js/100px280/thumb" alt="100%x280" style="height: 30vh; width: 90%; display: block;" src="https://2982-presscdn-29-70-pagely.netdna-ssl.com/wp-content/uploads/2015/07/To-Kill-a-Mockingbird-Cover-1-186x300.jpg" data-holder-rendered="true">
+			        </div>
+			        <div class="col-md-2 col-sm-6 col-xs-12">
+			          <button type="button" class="btn icon-btn btn-warning">
+									<span class="glyphicon btn-glyphicon glyphicon-minus img-circle text-warning"></span>
+								</button>
+			          <img data-src="holder.js/100px280/thumb" alt="100%x280" style="height: 30vh; width: 90%; display: block;" src="http://d28hgpri8am2if.cloudfront.net/tagged_assets/cvr9781471141638/9781471141638_hr.jpg" data-holder-rendered="true">
+			        </div>
+			        <div class="col-md-2 col-sm-6 col-xs-12">
+			          <button type="button" class="btn icon-btn btn-warning">
+									<span class="glyphicon btn-glyphicon glyphicon-minus img-circle text-warning"></span>
+								</button>
+			          <img data-src="holder.js/100px280/thumb" alt="100%x280" style="height: 30vh; width: 90%; display: block;" src="http://assets.nydailynews.com/polopoly_fs/1.2662811.1465220292!/img/httpImage/image.jpg_gen/derivatives/article_750/lvorwell7n-1-web.jpg" data-holder-rendered="true">
+			        </div>
+			        <div class="col-md-2">
+								<button class="btn btn-primary">a@b.c / Logout</button>
+							</div>	
+						</div>
+					</div>
+			  </div>
+
+			</div>
 		
-
+			<!-- BOOKSHELF CONTROLS -->
+      <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+		    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+		    <span class="sr-only">Previous</span>
+		  </a>
+		  <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+		    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+		    <span class="sr-only">Next</span>
+		  </a>
+		</div>
 	</header>
-	
+
+	<!-- ADD A NEW BOOK FORM -->
+	<div class="container-fluid new-book">
+		<div class="row">
+
+			<!-- NEW BOOK IMAGE -->
+			<div class="col-md-3">
+				<img class="add-book-img" src="http://www.drench-design.com/wp-content/uploads/2015/09/plus_sign_23.png" alt="add-a-new-book"></img>	
+			</div>
+
+			<!-- NEW BOOK FORM -->
+			<div class="col-md-9">
+				<div class="col-md-12">
+					<h4>Add A New Book:</h4>
+				</div>
+				<form class="form-horizontal">
+					<div class="form-group">
+				    	<label class="control-label col-sm-2">Book title</label>
+				    <div class="col-sm-10">
+				      <input type="text" class="form-control" placeholder="Book title">
+				    </div>
+				  </div>
+				  <div class="form-group">
+				    	<label class="control-label col-sm-2">Author</label>
+				    <div class="col-sm-10">
+				      <input type="text" class="form-control" placeholder="Author">
+				    </div>
+				  </div>
+				  <div class="form-group">
+				    	<label class="control-label col-sm-2">Book cover link</label>
+				    <div class="col-sm-10">
+				      <input type="text" class="form-control" placeholder="Book cover link">
+				    </div>
+				  </div>
+				  <div class="form-group">
+				    	<label class="control-label col-sm-2">Sample text</label>
+				    <div class="col-sm-10">
+				      <textarea class="form-control" rows="5" id="comment" placeholder="Sample text"></textarea>
+				    </div>
+				  </div>
+				  <div class="col-md-10">
+				  </div>
+				  <div class="col-md-2 add-a-new-book-button">
+				  	<button class="btn btn-primary" type="submit">Submit form</button>
+				  </div>
+				</form>	
+			</div>
+		</div>
+	</div>
+
+	<!-- LIST OF BOOKS 1/2 DISPLAYING -->
+	<div class="album text-muted partial-book-display">
+
+		<div class="container">
+      <div class="row">
+        <div class="card col-md-3 col-sm-6 col-xs-12">
+          <img data-src="holder.js/100px280/thumb" alt="100%x280" style="height: 50vh; width: 100%; display: block;" src="https://images-na.ssl-images-amazon.com/images/I/51IaTtJ2bfL._SX330_BO1,204,203,200_.jpg" data-holder-rendered="true">
+        </div>
+        <div class="card col-md-3 col-sm-6 col-xs-12">
+          <img data-src="holder.js/100px280/thumb" alt="100%x280" style="height: 50vh; width: 100%; display: block;" src="https://biblioklept.wordpress.com/files/2009/02/as-i-lay-dying.jpg" data-holder-rendered="true">
+        </div>
+        <div class="card col-md-3 col-sm-6 col-xs-12">
+          <img data-src="holder.js/100px280/thumb" alt="100%x280" style="height: 50vh; width: 100%; display: block;" src="http://images.contentful.com/7h71s48744nc/Dw7ih8C2poOigpnsEMQb04/6d8a104a4ba073049c94f94f036c8afc/lord-of-the-flies-cover-image" data-holder-rendered="true">
+        </div>
+        <div class="card col-md-3 col-sm-6 col-xs-12">
+          <img data-src="holder.js/100px280/thumb" alt="100%x280" style="height: 50vh; width: 100%; display: block;" src="https://images-na.ssl-images-amazon.com/images/I/410T4WKQV4L.jpg" data-holder-rendered="true">
+        </div>
+      </div>
+    </div>
+	</div>
+		
 </body>
 </html>

@@ -23,9 +23,11 @@
 
 ## Other useful links:
 
-* Presentation slides: 
+### Presentation slides: 
 
-* Trello board link: 
+### Trello board link: 
+
+### Pinterest link: https://www.pinterest.com/faycourtney/project-2-ideas/
 
 ## Wireframes: 
 ![alt text](wireframes/bookme_wireframes_1.jpg "BookMe Wireframe Home page")
