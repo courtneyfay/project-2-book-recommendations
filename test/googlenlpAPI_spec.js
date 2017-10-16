@@ -63,16 +63,23 @@ describe('Google NLP analyzeSentiment API', function() {
 		expect(apiBody.documentSentiment).to.be.an('object');
 	});
 	it('returns document sentiment magnitude that is 0 or greater', function() {
-		console.log(apiBody.documentSentiment.magnitude); //.magnitude); //.to.equal(2.3);
+		expect(apiBody.documentSentiment.magnitude).to.equal(2.3);
 	});
-	it('returns document sentiment score that is between -1.0 and 1.0');
-	it('returns sentences (array or object?)');
-	it('returns sentence sentiment magnitude that is 0 or greater');
-	it('returns sentence sentiment score that is between -1.0 and 1.0');
-	it('returns sentence text');
+	it('returns document sentiment score that is between -1.0 and 1.0', function() {
+		expect(apiBody.documentSentiment.score).to.equal(0.1);
+	});
+	it('returns sentences as an array', function() {
+		expect(apiBody.sentences).to.be.an('array');
+	});
+	it('returns sentence text', function() {
+		expect(apiBody.sentences[0].text.content).to.not.be.empty;
+	});
+	it('returns sentence sentiment magnitude that is 0 or greater', function() {
+		expect(apiBody.sentences[0].sentiment.magnitude).to.equal(0.5);
+	});
+	it('returns sentence sentiment score that is between -1.0 and 1.0', function() {
+		expect(apiBody.sentences[0].sentiment.score).to.equal(0.5);
+	});
 });
 
-//expect({a: 1}).to.be.an('object');
-	//expect(apiBody.sentence).to.not.be.empty;
-	// if (typeof(apiBody) == 'string') {
  
