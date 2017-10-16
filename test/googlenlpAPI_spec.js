@@ -10,31 +10,38 @@ describe('Google NLP analyzeEntities API', function() {
 	let entitiesRequest = baseUrl + 'analyzeEntities' + '?key=' + apiKey;
 	
 	before(function(done) {
-		request(entitiesRequest, function(err, res, body) {
+		//let testData = {"document":{"type": "PLAIN_TEXT","language":"EN","content":"Lawrence of Arabia is a highly rated film biography about British Lieutenant T. E. Lawrence. Peter OToole plays Lawrence in the film."},"encodingType":"UTF8"};
+		//let jsonTestData = JSON.stringify(testData);
+		request.post({
+			headers: {'content-type' : 'application/json'},
+			url: entitiesRequest, 
+			json: {"document":{"type": "PLAIN_TEXT","language":"EN","content":"Lawrence of Arabia is a highly rated film biography about British Lieutenant T. E. Lawrence. Peter OToole plays Lawrence in the film."},"encodingType":"UTF8"}
+		}, function(err, res, body) {
 			apiError = err;
 			apiResponse = res;
-			if (typeof(apiBody) == 'string') {
-				apiBody = JSON.parse.body;
-			}
+			apiBody = body;
+			console.log(body);
 			done();
 		});
 	});	
-	//send dummy POST data
-	/* EXAMPLE: {"document":{"type":"PLAIN_TEXT","language":"EN","content":"'Lawrence of Arabia' is a highly rated film biography about British Lieutenant T. E. Lawrence. Peter O'Toole plays Lawrence in the film."},"encodingType":"UTF8"}
-		*/
 	
 	it('receives a 200 / OK HTTP status code', function(apiResponse) {
-		console.log(typeof(apiResponse));
-		//console.log(typeof(apiError));
-		//console.log(apiBody);
-		expect(apiResponse.statusCode).to.equal(200);
+		// console.log(apiResponse.IncomingMessage);
+		// console.log(apiResponse);
+		expect(apiResponse).to.equal(200);
+		//statusCode
 	});
-	//request to analyzeEntities URL
 	it('returns entities (array or object?)');
+		//apiBody
+		// if (typeof(apiBody) == 'string') {
 	it('returns entity names');
+		//apiBody
 	it('returns salience values for entities between 0 and 1');
+		//apiBody
 	it('returns type of entity');
+		//apiBody
 	it('returns sentiment values between -1.0 and 1.0');
+		//apiBody 
 });
 
 //before 
