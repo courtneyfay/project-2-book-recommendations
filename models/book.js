@@ -1,17 +1,23 @@
 console.log("cargo.js, checking in!");
 
 // requiring mongoose
-//var mongoose = require("mongoose");
+let mongoose = require("mongoose");
 
-// creating Cargo schema
-//var Schema = mongoose.Schema;
-//var CargoSchema = new Schema({
-//    title: String,
-//    description: String
-//});
+// creating Book schema
+let Schema = mongoose.Schema;
+let BookSchema = new Schema({
+  title: String,
+  author: String,
+  coverUrl: String,
+  sampleText: String,
+  entities: [ String ],
+  sentimentMagnitude: Number,
+  sentimentScore: Number,
+  sentimentCalculate: Number
+});
 
-// activating Cargo model
-//var Cargo = mongoose.model('Cargo', CargoSchema);
+// activating Book model
+let Book = mongoose.model('Book', BookSchema);
 
-// exporting Cargo to index
-//module.exports = Cargo;
+// exporting Book to index
+module.exports = Book;
