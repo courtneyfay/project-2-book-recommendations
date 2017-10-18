@@ -1,8 +1,9 @@
+console.log('googlenlpAPI_spec.js, checking in!');
+
 const expect = require('chai').expect;
 const request = require('request');
-
-let baseUrl = 'https://language.googleapis.com/v1beta2/documents:';	
-const setKey = require('../public/scripts/env.js');
+const baseUrl = 'https://language.googleapis.com/v1beta2/documents:';	
+const setKey = require('../config/env.js');
 let apiKey = setKey();
 
 // TESTS THE ANALYZE ENTITIES API CALL
