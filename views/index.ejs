@@ -1,0 +1,48 @@
+
+
+<ul>
+<% for(let i=0; i < books.length; i++) { %>  
+    <li>
+    	<%= 'Title: ' + books[i].title %>
+    </li>
+    <li>
+    	<%= 'Author: ' + books[i].author %>
+    </li>
+    <li>
+    	<%= 'Url: ' + books[i].coverUrl %>
+    </li>
+    <li>
+    	<%= 'Text: ' + books[i].sampleText %>
+    </li>
+    <li>
+    	<%= 'Entities: ' + books[i].entities %>
+    </li>
+    <li>
+    	<%= 'Magnitude: ' + books[i].sentimentMagnitude %>
+    </li>
+    <li>
+    	<%= 'Score: ' + books[i].sentimentScore %>
+    </li>
+    <li>
+    	<%= 'Calculation: ' + books[i].sentimentCalculation %>
+    </li>
+    <li>
+    	<%= 'Book created by: ' +books[i].createdBy %>
+    </li>
+    </br>
+  <% } %>
+</ul>
+
+<!-- let BookSchema = new Schema({
+  title: String,
+  author: String,
+  coverUrl: String,
+  sampleText: String,
+  entities: [ String ],
+  sentimentMagnitude: Number,
+  sentimentScore: Number,
+  sentimentCalculation: Number,
+  createdBy: String // userID? referenced data
+}); 
+-->
+

@@ -1,10 +1,10 @@
-console.log("cargo.js, checking in!");
+console.log("book.js, checking in!");
 
-// requiring mongoose
-let mongoose = require("mongoose");
+// setting constants to use
+const mongoose 			= require('mongoose');
+const Schema 				= mongoose.Schema;
 
-// creating Book schema
-let Schema = mongoose.Schema;
+// defining BookSchema
 let BookSchema = new Schema({
   title: String,
   author: String,
@@ -13,7 +13,8 @@ let BookSchema = new Schema({
   entities: [ String ],
   sentimentMagnitude: Number,
   sentimentScore: Number,
-  sentimentCalculate: Number
+  sentimentCalculation: Number,
+  createdBy: String // userID? referenced data
 });
 
 // activating Book model

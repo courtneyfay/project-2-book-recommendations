@@ -1,8 +1,9 @@
 console.log("index.js, checking in!");
 
-// set up DB
-//var mongoose = require("mongoose");
-//mongoose.connect("mongodb://localhost/airport");
+// setting constants to use
+const mongoose 			= require('mongoose');
+mongoose.connect("mongodb://localhost/book-me");
 
-// need to require and export Cargo for the rest of the app to be able to access it
-//module.exports.Cargo = require('./cargo.js');
+// requiring and exporting all models
+module.exports.Book = require('./book.js');
+module.exports.User = require('./user.js');

@@ -1,6 +1,6 @@
 console.log('seed.js, checking in!');
 
-let db = require('./models');
+const db = require('./models');
 
 let booksList = [
 	{
@@ -13,57 +13,74 @@ let booksList = [
 	  entities: [ "", "", "" ],
 	  sentimentMagnitude: 0,
 	  sentimentScore: 0,
-	  sentimentCalculate: 0
+	  sentimentCalculation: 0,
+	  createdBy: "seed.js"
 	},
 	{
-		title: "",
-	  author: "",
-	  coverUrl: "",
-	  sampleText: "",
+		title: "The Picture of Dorian Gray",
+	  author: "Oscar Wilde",
+	  coverUrl: "https://images-na.ssl-images-amazon.com/images/I/41DvyInpLaL._SX316_BO1,204,203,200_.jpg",
+	  sampleText: "The studio was filled with the rich odour of roses, and when the light summer wind stirred amidst the trees of the garden, there came through the open door the heavy scent of the lilac, or the more delicate perfume of the pink-flowering thorn." +
+		"From the corner of the divan of Persian saddle-bags on which he was lying, smoking, as was his custom, innumerable cigarettes, Lord Henry Wotton could just catch the gleam of the honey-sweet and honey-coloured blossoms of a laburnum, whose tremulous branches seemed hardly able to bear the burden of a beauty so flamelike as theirs; and now and then the fantastic shadows of birds in flight flitted across the long tussore-silk curtains that were stretched in front of the huge window, producing a kind of momentary Japanese effect, and making him think of those pallid, jade-faced painters of Tokyo who, through the medium of an art that is necessarily immobile, seek to convey the sense of swiftness and motion. The sullen murmur of the bees shouldering their way through the long unmown grass, or circling with monotonous insistence round the dusty gilt horns of the straggling woodbine, seemed to make the stillness more oppressive. The dim roar of London was like the bourdon note of a distant organ." +
+		"In the centre of the room, clamped to an upright easel, stood the full-length portrait of a young man of extraordinary personal beauty, and in front of it, some little distance away, was sitting the artist himself, Basil Hallward, whose sudden disappearance some years ago caused, at the time, such public excitement and gave rise to so many strange conjectures." +
+		"As the painter looked at the gracious and comely form he had so skilfully mirrored in his art, a smile of pleasure passed across his face, and seemed about to linger there. But he suddenly started up, and closing his eyes, placed his fingers upon the lids, as though he sought to imprison within his brain some curious dream from which he feared he might awake." +
+		"“It is your best work, Basil, the best thing you have ever done,” said Lord Henry languidly. “You must certainly send it next year to the Grosvenor. The Academy is too large and too vulgar. Whenever I have gone there, there have been either so many people that I have not been able to see the pictures, which was dreadful, or so many pictures that I have not been able to see the people, which was worse. The Grosvenor is really the only place.”",
 	  entities: [ "", "", "" ],
 	  sentimentMagnitude: 0,
 	  sentimentScore: 0,
-	  sentimentCalculate: 0
+	  sentimentCalculation: 0,
+	  createdBy: "seed.js"
 	},
 	{
-		title: "",
-	  author: "",
-	  coverUrl: "",
-	  sampleText: "",
+		title: "Middlemarch",
+	  author: "George Eliot",
+	  coverUrl: "https://images-na.ssl-images-amazon.com/images/I/51si2zLhkhL._SX311_BO1,204,203,200_.jpg",
+	  sampleText: "Since I can do no good because a woman, Reach constantly at something that is near it. —The Maid’s Tragedy: Beaumont and Fletcher" +
+		"Miss Brooke had that kind of beauty which seems to be thrown into relief by poor dress. Her hand and wrist were so finely formed that she could wear sleeves not less bare of style than those in which the Blessed Virgin appeared to Italian painters; and her profile as well as her stature and bearing seemed to gain the more dignity from her plain garments, which by the side of provincial fashion gave her the impressiveness of a fine quotation from the Bible, — or from one of our elder poets, — in a paragraph of today’s newspaper. She was usually spoken of as being remarkably clever, but with the addition that her sister Celia had more common-sense. Nevertheless, Celia wore scarcely more trimmings; and it was only to close observers that her dress differed from her sister’s, and had a shade of coquetry in its arrangements; for Miss Brooke’s plain dressing was due to mixed conditions, in most of which her sister shared. The pride of being ladies had something to do with it: the Brooke connections, though not exactly aristocratic, were unquestionably ‘good’: if you inquired backward for a generation or two, you would not find any yard-measuring or parcel-tying forefathers — anything lower than an admiral or a clergyman; and there was even an ancestor discernible as a Puritan gentleman who served under Cromwell, but afterwards conformed, and managed to come out of all political troubles as the proprietor of a respectable family estate. " +
+		"Young women of such birth, living in a quiet country-house, and attending a village church hardly larger than a parlor, naturally regarded frippery as the ambition of a huckster’s daughter. Then there was well-bred economy, which in those days made show in dress the first item to be deducted from, when any margin was required for expenses more distinctive of rank.",
 	  entities: [ "", "", "" ],
 	  sentimentMagnitude: 0,
 	  sentimentScore: 0,
-	  sentimentCalculate: 0
+	  sentimentCalculation: 0,
+	  createdBy: "seed.js"
 	},
 	{
-		title: "",
-	  author: "",
-	  coverUrl: "",
-	  sampleText: "",
+		title: "Alice's Adventures in Wonderland",
+	  author: "Lewis Carroll",
+	  coverUrl: "https://images-na.ssl-images-amazon.com/images/I/91uMrXq%2B4RL._AC_UL320_SR230,320_.jpg",
+	  sampleText: "Alice was beginning to get very tired of sitting by her sister on the bank, and of having nothing to do: once or twice she had peeped into the book her sister was reading, but it had no pictures or conversations in it, “and what is the use of a book,” thought Alice, “without pictures or conversations?”"  +
+		"So she was considering, in her own mind (as well as she could, for the hot day made her feel very sleepy and stupid), whether the pleasure of making a daisy-chain would be worth the trouble of getting up and picking the daisies, when suddenly a White Rabbit with pink eyes ran close by her." +
+		"There was nothing so very remarkable in that; nor did Alice think it so very much out of the way to hear the Rabbit say to itself “Oh dear! Oh dear! I shall be too late!” (when she thought it over afterwards, it occurred to her that she ought to have wondered at this, but at the time it all seemed quite natural); but, when the Rabbit actually took a watch out its waistcoat-pocket, and looked at it, and then hurried on, Alice started to her feet, for it flashed across her mind that she had never before seen a rabbit with either a waistcoat-pocket, or a watch to take out of it, and, burning with curiosity, she ran across the field after it, and was just in time to see it pop down a large rabbit-hole under the hedge.",
 	  entities: [ "", "", "" ],
 	  sentimentMagnitude: 0,
 	  sentimentScore: 0,
-	  sentimentCalculate: 0
+	  sentimentCalculation: 0,
+	  createdBy: "seed.js"
 	},
 	{
-		title: "",
-	  author: "",
-	  coverUrl: "",
-	  sampleText: "",
+		title: "The Cask of Amontillado",
+	  author: "Edgar Allan Poe",
+	  coverUrl: "https://images-na.ssl-images-amazon.com/images/I/41dLguPFN0L._SX331_BO1,204,203,200_.jpg",
+	  sampleText: "THE thousand injuries of Fortunato I had borne as I best could, but when he ventured upon insult I vowed revenge. You, who so well know the nature of my soul, will not suppose, however, that gave utterance to a threat. At length I would be avenged; this was a point definitely, settled --but the very definitiveness with which it was resolved precluded the idea of risk. I must not only punish but punish with impunity. A wrong is unredressed when retribution overtakes its redresser. It is equally unredressed when the avenger fails to make himself felt as such to him who has done the wrong." +
+		"It must be understood that neither by word nor deed had I given Fortunato cause to doubt my good will. I continued, as was my in to smile in his face, and he did not perceive that my to smile now was at the thought of his immolation." +
+		"He had a weak point --this Fortunato --although in other regards he was a man to be respected and even feared. He prided himself on his connoisseurship in wine. Few Italians have the true virtuoso spirit. For the most part their enthusiasm is adopted to suit the time and opportunity, to practise imposture upon the British and Austrian millionaires. In painting and gemmary, Fortunato, like his countrymen, was a quack, but in the matter of old wines he was sincere. In this respect I did not differ from him materially; --I was skilful in the Italian vintages myself, and bought largely whenever I could." +
+		"It was about dusk, one evening during the supreme madness of the carnival season, that I encountered my friend. He accosted me with excessive warmth, for he had been drinking much. The man wore motley. He had on a tight-fitting parti-striped dress, and his head was surmounted by the conical cap and bells. I was so pleased to see him that I thought I should never have done wringing his hand.",
 	  entities: [ "", "", "" ],
 	  sentimentMagnitude: 0,
 	  sentimentScore: 0,
-	  sentimentCalculate: 0
+	  sentimentCalculation: 0,
+	  createdBy: "seed.js"
 	}
 ];
 
-/*db.Book.remove({}, function(err, books){
+// removes all books from the db
+db.Book.remove({}, function(err, books){
 
+	// adds all the books from the array to the db
   db.Book.create(booksList, function(err, books){
-    if (err) { return console.log('ERROR', err); }
+    if (err) { return console.log('ERROR: ', err); }
     console.log("created", books.length, "books");
     console.log("all books:", books);
     process.exit();
   });
-
-});*/
+});
