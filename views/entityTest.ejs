@@ -1,0 +1,16 @@
+<h1>testing the Entity API</h1>
+
+<ul>
+<% for(let i=0; i < entityBody.length; i++) { %> 
+    <li>
+    	<%= 'Name: ' + entityBody[i].name %>
+    </li>
+    <li>
+    	<%= 'Type: ' + entityBody[i].type %>
+    </li>
+    <li>
+    	<%= 'Salience: ' + entityBody[i].salience %>
+    </li>
+    </br>
+  <% } %>
+</ul>

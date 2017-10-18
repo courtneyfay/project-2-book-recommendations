@@ -4,21 +4,37 @@ console.log('server.js, checking in!');
 const express 			= require('express');
 const app 					= express();
 const bodyParser 		= require('body-parser');
-const mongoose     	= require('mongoose');
-const passport     	= require('passport');
-const db 						= require('./models');
-const request 			= require('request');
-const setKey 				= require('./config/env.js');
 const routes 				= require(__dirname + '/config/routes.js');
-let apiKey 					= setKey();
+const mongoose     	= require('mongoose');
+const db 						= require('./models');
+const passport     	= require('passport');
+const morgan        = require('morgan');
+const cookieParser  = require('cookie-parser');
+const flash         = require('connect-flash');
 
-// SET UP BODY PARSER
+// SET UP STUFF
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(morgan('dev')); 
+app.use(cookieParser());
+app.use(bodyParser()); 
 
 // SET UP EJS
 app.set('views', __dirname + '/views');
 app.engine('ejs', require('ejs').renderFile);
 app.set('view engine', 'ejs');
+
+// SET UP PASSPORT 
+app.use(session({ secret: 'WDI-GENERAL-ASSEMBLY-EXPRESS' })); 
+app.use(passport.initialize());
+app.use(passport.session()); 
+app.use(flash()); 
+
+// USE PASSPORT MIDDLEWARE TO AUTHENTICATE AND PERSIST THE USER
+require('./config/passport')(passport);
+app.use(function(req, res, next) {
+	res.locals.currentUser = req.user;
+	next();
+});
 
 // SET UP ROUTER
 app.use('/', routes);

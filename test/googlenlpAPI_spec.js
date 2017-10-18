@@ -20,7 +20,7 @@ describe('Google NLP analyzeEntities API', function() {
 				apiResponse = res;
 				apiBody = body;
 				done();
-			});
+		});
 	});	
 	it('receives a 200 / OK HTTP status code', function() {
 		expect(apiResponse.statusCode).to.equal(200);
@@ -55,7 +55,7 @@ describe('Google NLP analyzeSentiment API', function() {
 				apiResponse = res;
 				apiBody = body;
 				done();
-			});
+		});
 	});	
 	it('receives a 200 / OK HTTP status code', function() {
 		expect(apiResponse.statusCode).to.equal(200);
@@ -82,5 +82,3 @@ describe('Google NLP analyzeSentiment API', function() {
 		expect(apiBody.sentences[0].sentiment.score).to.equal(0.5);
 	});
 });
-
- 

@@ -9,15 +9,15 @@ const bcrypt 				= require('bcrypt-nodejs');
 let UserSchema = mongoose.Schema({
 	local: {
 		email			: String,
-		password	: String
+		password	: String,
+		// TODO: bookshelf with reference IDs to books?
+		bookshelf : [ String ],
+		admin			: Boolean
 	}
 	
-	//bookshelf with reference IDs to books?
-
 	// TODO: other functions for passport from express-passport project
 	// User.methods.encrypt
 	// User.methods.validPassword
-
 });
 
 // activating User model

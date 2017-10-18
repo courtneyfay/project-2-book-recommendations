@@ -13,7 +13,7 @@ let BookSchema = new Schema({
   entities: [ String ],
   sentimentMagnitude: Number,
   sentimentScore: Number,
-  sentimentCalculation: Number,
+  sentiment: String,
   createdBy: String // userID? referenced data
 });
 
