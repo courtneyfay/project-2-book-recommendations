@@ -25,75 +25,62 @@ let postNewBook = function(req, res) {
 
 	//TODO how to make it secret so that only admin can use this functionality? (express-passport project)
 
-	// grab data from the form and APIs add it to the new Book object
+	// 1. grab data from the form and APIs add it to the new Book object
 	let newBook = new Book();
 	newBook.title = req.body.title;
 	newBook.author = req.body.author;
 	newBook.coverUrl = req.body.coverUrl;
 	newBook.sampleText = req.body.sampleText;
 
-	// create a new book in the database
-	newBook.save(newBook, function(err, book) {
-		if (err) return(err);
-		console.log(book._id);
-		res.json(newBook);
-	});
-
-	// TODO: add functionality to hit the API calls from here before you create the new book!!
-
-	// 1. DEFINE url and data for API request
+	// 2. DEFINE url and data for API requests
 	let sampleText = req.body.sampleText;
-	let sentimentError, sentimentResponse, sentimentBody;
+	// let sentimentError, sentimentResponse, sentimentBody;
 	let sentimentRequest = baseUrl + 'analyzeSentiment' + '?key=' + apiKey;
+	// let entityError, entityResponse, entityBody;
+	let entitiesRequest = baseUrl + 'analyzeEntities' + '?key=' + apiKey;
 
-	// 2. post request to Google API 
+	// 3. post SENTIMENT request to Google API 
 	request.post({
 			headers: {'content-type' : 'application/json'},
 			url: sentimentRequest, 
 			json: {"document":{"type": "PLAIN_TEXT","language":"EN","content": sampleText },"encodingType":"UTF8"}
 		}, function(err, response, body) {
-		sentimentError = err;
-		sentimentResponse = response;
-		sentimentBody = body.documentSentiment;
+			if (err) console.log(err);
+			
+			// 4. declare SENTIMENT variables in newBook object
+			newBook.sentimentMagnitude = body.documentSentiment.magnitude;
+			newBook.sentimentScore = body.documentSentiment.score;
+			newBook.sentiment = 'not sure';
 
-		// 3. show what was received from entity API back to the page
-		//res.render('sentimentTest.ejs', {sentimentBody: sentimentBody});
+			// 5. post ENTITY request to Google API 
+			request.post({
+					headers: {'content-type' : 'application/json'},
+					url: entitiesRequest, 
+					json: {"document":{"type": "PLAIN_TEXT","language":"EN","content": sampleText },"encodingType":"UTF8"}
+				}, function(err, response, body) {
+					if (err) console.log(err);
+					
+					// 6. declare ENTITY variable in newBook object
+					let entities = body.entities;
+					let entitiesArray = [];
 
-		// 4. SAVE to entities array in db IN ORDER OF SALIENCE values
-		console.log(sentimentBody.magnitude);
-		console.log(sentimentBody.score);
-		// console.log(sentimentBody.sentiment);
-	});
+					for (let i = 0; i < entities.length; i++) {
+						entitiesArray.push(entities[i].name)
+					}
 
+					//console.log(entitiesArray);
+					newBook.entities = entitiesArray;
 
-	// 1. define url and data for API request
-	/*let entityError, entityResponse, entityBody;
-	let entitiesRequest = baseUrl + 'analyzeEntities' + '?key=' + apiKey;
+					// 7. SAVE to entities array in db IN ORDER OF SALIENCE values
+					newBook.save(newBook, function(err, book) {
+						if (err) return(err);
 
-	// 2. POST request to Google API 
-	request.post({
-			headers: {'content-type' : 'application/json'},
-			url: entitiesRequest, 
-			json: {"document":{"type": "PLAIN_TEXT","language":"EN","content": sampleText },"encodingType":"UTF8"}
-	}, function(err, response, body) {
-		entityError = err;
-		entityResponse = response;
-		entityBody = body.entities;
-
-		// 3. RETURN what was received from entity API
-		res.render('entityTest.ejs', {entityBody: entityBody});
-
-		// 4. SAVE to entities array in db IN ORDER OF SALIENCE values
-		// entityBody[i].name
-		// entityBody[i].type
-		// entityBody[i].salience
-	});*/
-
-	/*
-	var myjson;
-	$.getJSON("http://127.0.0.1:8080/horizon-update", function(json){
-	    myjson = json;
-	});*/	
+						// 8. serve up saved book ejs
+						//res.json(newBook);
+						res.render('savedBookAdmin.ejs', {newBook: newBook});
+					});
+			});
+		});
 };
 
 let getBookshelf = function(req, res) {

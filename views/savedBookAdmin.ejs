@@ -1,13 +1,21 @@
 <% include ./partials/header.ejs %>
 
-<% include ./partials/bookshelf.ejs %>
+<!-- TODO add back in bookshelf partial -->
 
-<!-- this is where ONLY THE ADMIN will be able to edit and delete recently saved books -->
+		<!-- this is where ONLY THE ADMIN will be able to edit and delete recently saved books -->
+		<ul>
+			<li><%= newBook._id %></li>
+			<li><%= newBook.title %></li>
+			<li><%= newBook.author %></li>
+			<li><%= newBook.coverUrl %></li>
+			<li><%= newBook.sampleText %></li>
+			<li><%= newBook.entities %></li>
+			<li><%= newBook.sentimentMagnitude %></li>
+			<li><%= newBook.sentimentScore %></li>
+			<li><%= newBook.sentiment %></li>
+			<li><%= newBook.createdBy %></li>
+		</ul>
 
-<!-- make sure each row has different books -->
-<% include ./partials/books.ejs %>
-<% include ./partials/books.ejs %>
-<% include ./partials/books.ejs %>
-<% include ./partials/books.ejs %>
+<!-- TODO add back in books partial -->
 
 <% include ./partials/footer.ejs %>

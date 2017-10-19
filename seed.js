@@ -89,7 +89,7 @@ let booksList = [
 });*/
 
 // REMOVE SPECIFIC BOOKS FROM THE DB AFTER TESTING
-/*db.Book.remove({_id: "59e91a01724135c1fce0ee47"}, (err, book) => {
+/*db.Book.remove({_id: "59e91fa972902ac3ffe20e55"}, (err, book) => {
 	if (err) {
 		console.log(err);
 	} else {
