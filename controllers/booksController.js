@@ -1,4 +1,4 @@
-console.log("bookControllers.js, checking in!");
+console.log("booksController.js, checking in!");
 
 // SETTING UP REQUIREMENTS AND VARIABLES
 const db 									= require('../models');

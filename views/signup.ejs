@@ -1,14 +1,12 @@
-<!-- shows an alert if there's an error with login -->
-
+<!-- show the alert if the signup failed -->
+<!-- then show the signup form -->
 <% if (message.length > 0) { %>
 	<div class="alert alert-danger"><%= message %></div>
 <% } %>
 
+<h2>Signup</h2>
 
-// shows the login form
-<h2>Login</h2>
-
-<form method="post" action="/login">
+<form method="post" action="/signup">
   <div class="form-group">
     <label for="email">Email</label>
     <input class="form-control" type="text" name="email" id="email">

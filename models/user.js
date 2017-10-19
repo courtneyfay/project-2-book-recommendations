@@ -11,14 +11,14 @@ let User = mongoose.Schema({
 		email			: String,
 		password	: String,
 		// TODO: bookshelf with reference IDs to books?
-		bookshelf : [ String ],
-		admin			: Boolean
+		//bookshelf : [ String ],
+		//admin			: Boolean
 	}
 });
 
-// salts the password 20 times
+// salts the password 8 times
 User.methods.encrypt = function(password) {
-	return bcrypt.hashSync(password, bcrypt.genSaltSync(20));
+	return bcrypt.hashSync(password, bcrypt.genSaltSync(8));
 };
 
 // checks to see if the password matches the salted one in the db
