@@ -73,6 +73,18 @@ let booksList = [
 	}
 ];
 
+/*let userList = [
+	{
+		local: {
+			email			: "a@b.c",
+			password	: "123",
+		},
+		// TODO: bookshelf with reference IDs to books?
+		bookshelf : [ String ],
+		admin			: Boolean
+	}, 
+];*/
+
 // removes all books from the db
 db.Book.remove({}, function(err, books){
 

@@ -25,7 +25,7 @@ module.exports = function(passport) {
 		User.findOne({'local.email' : email}, function(err, user) {
 			if (err) return callback(err);
 
-			// if there already IS a user with that email
+			// if there already IS a user with that email, check the password
 			if (user) {
 				return callback(null, false, req.flash('signupMessage', 'This email has already been signed up.'));
 			} else {
@@ -42,8 +42,8 @@ module.exports = function(passport) {
 			}
 		});
 	}));
-	/*
-passport.use('local-login', new LocalStrategy({
+
+	passport.use('local-login', new LocalStrategy({
 		usernameField : 'email',
 		passwordField : 'password',
 		passReqToCallback : true
@@ -62,5 +62,4 @@ passport.use('local-login', new LocalStrategy({
 			return callback(null, user);
 		});
 	}));
-	*/
 };

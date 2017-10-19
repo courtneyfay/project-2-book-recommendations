@@ -11,8 +11,8 @@ let User = mongoose.Schema({
 		email			: String,
 		password	: String,
 		// TODO: bookshelf with reference IDs to books?
-		//bookshelf : [ String ],
-		//admin			: Boolean
+		bookshelf : [ String ],
+		admin			: Boolean
 	}
 });
 
@@ -22,7 +22,9 @@ User.methods.encrypt = function(password) {
 };
 
 // checks to see if the password matches the salted one in the db
-
+User.methods.validPassword = function(password) {
+	return bcrypt.compareSync(password, this.local.password);
+};
 
 // activating and exporting User to index
 module.exports = mongoose.model('User', User);
