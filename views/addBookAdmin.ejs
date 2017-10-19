@@ -2,12 +2,84 @@
 
 <% include ./partials/bookshelf.ejs %>
 
-<!-- this is where ONLY THE ADMIN will be able to add new books -->
+		<div class="container-fluid new-book">
+			<div class="row">
+				
+				<!-- NEW BOOK IMAGE -->
+				<div class="col-md-3">
+					<img class="add-book-img" src="http://www.drench-design.com/wp-content/uploads/2015/09/plus_sign_23.png" alt="Add a new book"></img>	
+				</div>
+
+				<!-- NEW BOOK FORM (ONLY ADMIN CAN ADD BOOKS TO THE DB) -->
+				<div class="col-md-9">
+					<div class="col-md-12">
+						<h4>Add A New Book:</h4>
+					</div>
+
+					<form class="form-horizontal" method="post" action="/new">
+					  <div class="form-group">
+				    	<label class="control-label col-sm-2" for="title">Book title</label>
+					    <div class="col-sm-10">
+					      <input type="text" class="form-control" name="title" id="title" placeholder="Book title">
+					    </div>
+				  	</div>
+
+
+					  <div class="form-group">
+					    <label for="author">Author</label>
+					    <input class="form-control" type="text" name="author" id="author" placeholder="author">
+					  </div>
+
+					  <div class="form-group">
+					    <label for="cover-url">Book Cover Link</label>
+					    <input class="form-control" type="text" name="cover-url" id="cover-url" placeholder="cover-url">
+					  </div>
+
+					  <div class="form-group">
+					    <label for="sample-text">Sample Text</label>
+					    <input class="form-control" type="textarea" name="sample-text" id="sample-text" placeholder="sample-text">
+					  </div>
+
+					  <input class="btn btn-default" type="submit">
+					</form>
+
+				<form class="form-horizontal">
+					<div class="form-group">
+				    	<label class="control-label col-sm-2">Book title</label>
+				    <div class="col-sm-10">
+				      <input type="text" class="form-control" placeholder="Book title">
+				    </div>
+				  </div>
+				  <div class="form-group">
+				    	<label class="control-label col-sm-2">Author</label>
+				    <div class="col-sm-10">
+				      <input type="text" class="form-control" placeholder="Author">
+				    </div>
+				  </div>
+				  <div class="form-group">
+				    	<label class="control-label col-sm-2">Book cover link</label>
+				    <div class="col-sm-10">
+				      <input type="text" class="form-control" placeholder="Book cover link">
+				    </div>
+				  </div>
+				  <div class="form-group">
+				    	<label class="control-label col-sm-2">Sample text</label>
+				    <div class="col-sm-10">
+				      <textarea class="form-control" rows="5" id="comment" placeholder="Sample text"></textarea>
+				    </div>
+				  </div>
+				  <div class="col-md-10">
+				  </div>
+				  <div class="col-md-2 add-a-new-book-button">
+				  	<button class="btn btn-primary" type="submit">Submit form</button>
+				  </div>
+				</form>	
+			</div>
+		</div>
+	</div>
+
 
 <!-- make sure each row has different books -->
-<% include ./partials/books.ejs %>
-<% include ./partials/books.ejs %>
-<% include ./partials/books.ejs %>
 <% include ./partials/books.ejs %>
 
 <% include ./partials/footer.ejs %>

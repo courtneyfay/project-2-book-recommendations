@@ -17,11 +17,15 @@ let booksRecommendation = function(req, res) {
 };
 
 let getNewBookForm = function(req, res) {
-	
+	db.Book.find({}, function(err, books) {
+		res.render('addBookAdmin.ejs', {books: books});
+	});
 };
 
 let postNewBook = function(req, res) {
-
+	//grab data from the form and add it to the database
+	//how to make it secret so that only admin can use this functionality?
+	//express-passport project
 };
 
 let entityAPI = function(req, res) {

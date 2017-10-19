@@ -73,26 +73,27 @@ let booksList = [
 	}
 ];
 
-/*let userList = [
-	{
-		local: {
-			email			: "a@b.c",
-			password	: "123",
-		},
-		// TODO: bookshelf with reference IDs to books?
-		bookshelf : [ String ],
-		admin			: Boolean
-	}, 
-];*/
+// UPDATE USER TO INCLUDE BOOKSHELF ENTRIES FOR DB TESTING
+db.User.findById("59e8c8afcbe139b11cb3f65a", (err, user) => {
+	if (err) {
+		res.send(err);
+	}
+	if (user) {
+		user.bookshelf.push("59e8c94c307f16b1581e74df", "59e8c94c307f16b1581e74de", "59e8c94c307f16b1581e74e1");
+		console.log(user);
+	} else {
+		console.log('else');
+	}
+});
 
 // removes all books from the db
-db.Book.remove({}, function(err, books){
+/*db.Book.remove({}, function(err, books){
 
 	// adds all the books from the array to the db
   db.Book.create(booksList, function(err, books){
     if (err) { return console.log('ERROR: ', err); }
     console.log("created", books.length, "books");
-    console.log("all books:", books);
+    //console.log("all books:", books);
     process.exit();
   });
-});
+});*/

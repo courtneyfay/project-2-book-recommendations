@@ -9,11 +9,11 @@ const bcrypt 				= require('bcrypt-nodejs');
 let User = mongoose.Schema({
 	local: {
 		email			: String,
-		password	: String,
+		password	: String
+	},
 		// TODO: bookshelf with reference IDs to books?
 		bookshelf : [ String ],
 		admin			: Boolean
-	}
 });
 
 // salts the password 8 times
