@@ -32,7 +32,7 @@ router.route('/login')
   .get(usersController.getLogin)
   .post(usersController.postLogin)
 
-// PASSPORT ROUTES FOR LOGOUT
+// PASSPORT ROUTE FOR LOGOUT
 router.route('/logout')
   .get(usersController.getLogout)
 
@@ -42,6 +42,14 @@ router.route('/logout')
 
 // INDEX ROUTE - DISPLAYS ALL BOOKS
 router.get('/', booksController.booksGet);
+
+// TEST RECOMMENDATION ROUTE - DISPLAY RECOMMENDATION PAGE
+router.get('/recommendation', booksController.booksRecommendation);
+
+// CREATE ROUTE - ADMIN CAN ADD NEW BOOKS WITH THE FORM
+router.route('/new')
+  .get(booksController.getNewBookForm)
+  .post(booksController.postNewBook)
 
 // API ROUTE - CALL FOR DATA FROM ENTITY API
 router.get('/entityapi', booksController.entityAPI);

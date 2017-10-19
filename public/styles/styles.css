@@ -1,3 +1,27 @@
 * {
-	font-weight: bold;
+	text-align: center;
+}
+
+.recommended-book-nlp {
+	font-size: 30px;
+}
+
+.origin-book-nlp {
+	font-size: 12px;
+}
+
+.origin-book-nlp-list {
+	list-style: none;
+	text-align: left;
+	padding-left: 0;
+}
+
+.btn-glyphicon {
+  padding: 5px;
+  background: #ffffff;
+}
+
+.icon-btn {
+  padding: 3px;
+  border-radius: 50px;
 }

@@ -1,8 +1,27 @@
 <% include ./partials/header.ejs %>
 
-<!-- this is where the recommendations header will go -->
-<!-- signup/login buttons -->
+<!-- HEADER FOR BOOK RECOMMENDATION PAGE -->
+		<header>
+			<div class="jumbotron jumbotron-fluid">
+		  	<div class="container">
+		  		<div class="row">
+		  			<div class="col-md-10 col-xs-6">
+		  				<h1 class="display-2">BookMe Recommends:</h1>
+		  			</div>
+	  			
+		  			<!-- SIGNUP/LOGIN OR LOGOUT BUTTON -->
+		  			<div class="col-md-2 col-xs-6">
+		  				<% if (currentUser) { %>
+	              <button class="btn btn-primary">Logout</button>
+	            <% } else { %>
+	            	<button class="btn btn-primary">Login / Sign Up</button>
+	            <% } %>
+		  			</div>
+				  </div>
+				</div>
+			</div>
+		</header>
 
-<!-- this is where the comparison of the two books will go -->
+<% include ./partials/recommendation.ejs %>
 
 <% include ./partials/footer.ejs %>

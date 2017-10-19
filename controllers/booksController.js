@@ -12,6 +12,18 @@ let booksGet = function(req, res) {
 	});
 };
 
+let booksRecommendation = function(req, res) {
+	res.render('recommendation.ejs');
+};
+
+let getNewBookForm = function(req, res) {
+	
+};
+
+let postNewBook = function(req, res) {
+
+};
+
 let entityAPI = function(req, res) {
 	
 	// 1. define url and data for API request
@@ -64,6 +76,9 @@ let sentimentAPI = function(req, res) {
 module.exports.booksGet = booksGet;
 module.exports.entityAPI = entityAPI;
 module.exports.sentimentAPI = sentimentAPI;
+module.exports.booksRecommendation = booksRecommendation;
+module.exports.getNewBookForm = getNewBookForm;
+module.exports.postNewBook = postNewBook;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 // FUTURE CONTROLLERS //
