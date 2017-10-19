@@ -4,7 +4,6 @@ console.log("booksController.js, checking in!");
 const db 									= require('../models');
 const request 						= require('request');
 const setKey 							= ( process.env.apiKey || require('../config/env.js') );
-let apiKey 								= setKey();
 let baseUrl 							= 'https://language.googleapis.com/v1beta2/documents:';	
 
 let booksGet = function(req, res) {
