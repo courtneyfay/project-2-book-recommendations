@@ -3,7 +3,7 @@ console.log("booksController.js, checking in!");
 // SETTING UP REQUIREMENTS AND VARIABLES
 const db 									= require('../models');
 const request 						= require('request');
-const setKey 							= require('../config/env.js');
+const setKey 							= ( process.env.apiKey || require('../config/env.js') );
 let apiKey 								= setKey();
 let baseUrl 							= 'https://language.googleapis.com/v1beta2/documents:';	
 
