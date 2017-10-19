@@ -1,1 +1,15 @@
-<!-- this is where the 4 card partials will go -->
+<!-- 4 X 4 CARD PARTIALS OF BOOK COVERS -->
+		<div class="album text-muted">
+	    <div class="container">
+	      <div class="row">
+
+					<% for(var i = 0; i < books.length; i++) { %>
+	      		<div class="card col-md-3 col-sm-6 col-xs-12">
+	      			<img alt="<%=books[i].title%>" style="height: 50vh; width: 100%; display: block;" 
+	      			src="<%=books[i].coverUrl%>" data-holder-rendered="true">
+	      		</div>
+	      	<% } %>
+
+	      </div>
+			</div>
+		</div>
