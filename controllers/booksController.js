@@ -17,15 +17,95 @@ let booksRecommendation = function(req, res) {
 };
 
 let getNewBookForm = function(req, res) {
-	db.Book.find({}, function(err, books) {
-		res.render('addBookAdmin.ejs', {books: books});
-	});
+	res.render('addBookAdmin.ejs');
 };
 
 let postNewBook = function(req, res) {
-	//grab data from the form and add it to the database
-	//how to make it secret so that only admin can use this functionality?
-	//express-passport project
+
+	//TODO how to make it secret so that only admin can use this functionality? (express-passport project)
+	
+	//grab data from the form and add it to the Book collection in the db
+	let newBook = { 
+		title : req.body.title, 
+		author : req.body.author,
+		coverUrl : req.body.coverUrl,
+		sampleText : req.body.sampleText 
+	};
+
+	//add functionality to hit the API calls from here before you create the new book!!
+
+	db.Book.create(newBook, function(err, book) {
+		if (err) return(err);
+		res.json(newBook);
+	});
+
+	/*
+	let VacationSchema = new Schema({
+		activity: String,
+		city: String,
+		country: String,
+		photoUrl: String
+});
+	// CREATE route to add a new dream vacation
+app.post('/api/dream-vacations', function vacations_create(req,res) {
+
+  let newVacation = { 
+    activity: req.body.activity, 
+    city: req.body.city,
+    country: req.body.country,
+    photoUrl: req.body.photoUrl
+  };
+
+  db.Vacation.create(newVacation, function(err, vacation) {
+    res.json(newVacation);
+  });
+  
+});
+	*/
+	/*
+	app.post('/api/todos', function create(req, res) {
+  /* This endpoint will add a todo to our "database"
+   * and respond with the newly created todo.
+   */
+  // take input from form and parse it out
+  /*let newID = 0; 
+  for (let i = 0; i < todos.length; i++) {
+    newID = todos[i]._id;
+  };
+  newID ++;
+  let newTask = req.body.task;
+  let newDescription = req.body.description;
+
+  // push the new todo object into the todos array
+  let newTodo = { "_id" : newID , "task" : newTask, "description" : newDescription };
+  todos.push(newTodo);
+
+  // then display the new todo element
+  res.json(newTodo);
+});
+	*/
+};
+
+let getBookshelf = function(req, res) {
+	//TODO change user ID so that it's not hardcoded and so it's being passed in by current user or whatever
+	//maybe use req?
+	db.User.find({_id: "59e8c8afcbe139b11cb3f65a"}, function(err, user) {
+		if (err) return (err);
+		let bookshelfIds = user[0].bookshelf;
+		let bookshelf = [];
+
+		// look up the book details based on the ID in the user's bookshelf
+		for (let i = 0; i < bookshelfIds.length; i++) {
+			db.Book.find({_id: bookshelfIds[i]}, function(err, book) {
+				if (book) {
+					bookshelf.push(book);
+				} 
+			});
+		}
+
+		// once the user bookshelf is full of details, serve up the book details to the bookshelf partial
+		res.render('./partials/bookshelf.ejs', {bookshelf: bookshelf});
+	});
 };
 
 let entityAPI = function(req, res) {
@@ -83,6 +163,7 @@ module.exports.sentimentAPI = sentimentAPI;
 module.exports.booksRecommendation = booksRecommendation;
 module.exports.getNewBookForm = getNewBookForm;
 module.exports.postNewBook = postNewBook;
+module.exports.getBookshelf = getBookshelf;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 // FUTURE CONTROLLERS //

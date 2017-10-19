@@ -16,6 +16,11 @@
 	padding-left: 0;
 }
 
+.carousel-item {
+	background-image: url('./shelf.jpg');
+	background-size: cover;
+}
+
 .btn-glyphicon {
   padding: 5px;
   background: #ffffff;
@@ -24,4 +29,32 @@
 .icon-btn {
   padding: 3px;
   border-radius: 50px;
+}
+
+.new-book {
+	margin: 1% 0;
+}
+
+.add-book-img {
+	height: 40vh;
+}
+
+.form-control {
+	text-align: left;
+}
+
+.partial-book-display {
+	background-color: grey;
+}
+
+.edit-book-img {
+	height: 40vh;
+}
+
+.left-align {
+	text-align: left;
+}
+
+.edit-book-title {
+	font-weight: bold;
 }

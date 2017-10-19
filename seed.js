@@ -79,21 +79,32 @@ db.User.findById("59e8c8afcbe139b11cb3f65a", (err, user) => {
 		res.send(err);
 	}
 	if (user) {
-		user.bookshelf.push("59e8c94c307f16b1581e74df", "59e8c94c307f16b1581e74de", "59e8c94c307f16b1581e74e1");
+		//user.admin = true;
+		//user.bookshelf.push("59e8c94c307f16b1581e74df", "59e8c94c307f16b1581e74de", "59e8c94c307f16b1581e74e1");
+		//user.save();
 		console.log(user);
 	} else {
 		console.log('else');
 	}
 });
 
-// removes all books from the db
-/*db.Book.remove({}, function(err, books){
+/*
+app.put('/api/todos/:id', function update(req, res) {
+  /* This endpoint will update a single todo with the
+   * id specified in the route parameter (:id) and respond
+   * with the newly updated todo.
+   */
+   /*
+   for (let i = 0; i < todos.length; i++) {
+    if (req.params.id == todos[i]._id) {
 
-	// adds all the books from the array to the db
-  db.Book.create(booksList, function(err, books){
-    if (err) { return console.log('ERROR: ', err); }
-    console.log("created", books.length, "books");
-    //console.log("all books:", books);
-    process.exit();
-  });
-});*/
+      // update the task and description with those from the request
+      todos[i].task = req.body.task;
+      todos[i].description = req.body.description;
+
+      // then display the updated todo
+      res.json(todos[i]);     
+    };
+   };
+});
+*/

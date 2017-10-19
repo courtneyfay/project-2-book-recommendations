@@ -1,6 +1,6 @@
 <% include ./partials/header.ejs %>
 
-<% include ./partials/bookshelf.ejs %>
+<!-- TODO add back in bookshelf partial -->
 
 		<div class="container-fluid new-book">
 			<div class="row">
@@ -20,66 +20,41 @@
 					  <div class="form-group">
 				    	<label class="control-label col-sm-2" for="title">Book title</label>
 					    <div class="col-sm-10">
-					      <input type="text" class="form-control" name="title" id="title" placeholder="Book title">
+					      <input type="text" class="form-control" name="title" id="title" placeholder="Book title" required value="Frankenstein">
 					    </div>
 				  	</div>
 
-
 					  <div class="form-group">
-					    <label for="author">Author</label>
-					    <input class="form-control" type="text" name="author" id="author" placeholder="author">
+					    <label class="control-label col-sm-2" for="author">Author</label>
+					    <div class="col-sm-10">
+					    	<input class="form-control" type="text" name="author" id="author" placeholder="Author" required value="Mary Shelley">
+					  	</div>
 					  </div>
 
 					  <div class="form-group">
-					    <label for="cover-url">Book Cover Link</label>
-					    <input class="form-control" type="text" name="cover-url" id="cover-url" placeholder="cover-url">
+					    <label class="control-label col-sm-2" for="cover-url">Book Cover Link</label>
+					    <div class="col-sm-10">
+					    	<input class="form-control" type="text" name="coverUrl" id="cover-url" placeholder="Book cover link" required value="https://i.pinimg.com/736x/aa/4e/d2/aa4ed28f424e46575dc384d98a09d7cf--frankenstein-book-book-covers.jpg">
+					    </div>
 					  </div>
 
 					  <div class="form-group">
-					    <label for="sample-text">Sample Text</label>
-					    <input class="form-control" type="textarea" name="sample-text" id="sample-text" placeholder="sample-text">
+					    <label class="control-label col-sm-2" for="sample-text">Sample Text</label>
+					    <div class="col-sm-10">
+					    	<textarea class="form-control" rows="5" rows="5" name="sampleText" id="sample-text" placeholder="Sample Text" required>To Mrs. Saville, England. St. Petersburg, Dec 11th, 17—. You will rejoice to hear that no disaster has accompanied the commencement of an enterprise which you have regarded with such evil forebodings. I arrived here yesterday; and my first task is to assure my dear sister of my welfare, and increasing confidence in the success of my undertaking. I am already far north of London; and as I walk in the streets of Petersburg, I feel a cold northern breeze play upon my cheeks, which braces my nerves, and fills me with delight. Do you understand this feeling? This breeze, which has travelled from the regions towards which I am advancing, gives me a foretaste of those icy climes. Inspirited by this wind of promise, my day dreams become more fervent and vivid. I try in vain to be persuaded that the pole is the seat of frost and desolation; it ever presents itself to my imagination as the region of beauty and delight. There, Margaret, the sun is for ever visible; its broad disk just skirting the horizon, and diffusing a perpetual splendor. There—for with your leave, my sister, I will put some trust in preceding navigators — there snow and frost are banished; and, sailing over a calm sea, we may be wafted to a land surpassing in wonders and in beauty every region hitherto discovered on the habitable globe. Its productions and features may be without example, as the phenomena of the heavenly bodies undoubtedly are in those undiscovered solitudes. What may not be expected in a country of eternal light? I may there discover the wondrous power which attracts the needle; and may regulate a thousand celestial observations, that require only this voyage to render their seeming eccentricities consistent for ever.</textarea>
+					    </div>
 					  </div>
 
-					  <input class="btn btn-default" type="submit">
+					  <div class="col-md-10">
+					  </div>
+					  <div class="col-md-2 add-a-new-book-button">
+					  	<button class="btn btn-primary" type="submit">Submit</button>
+					  </div>
 					</form>
-
-				<form class="form-horizontal">
-					<div class="form-group">
-				    	<label class="control-label col-sm-2">Book title</label>
-				    <div class="col-sm-10">
-				      <input type="text" class="form-control" placeholder="Book title">
-				    </div>
-				  </div>
-				  <div class="form-group">
-				    	<label class="control-label col-sm-2">Author</label>
-				    <div class="col-sm-10">
-				      <input type="text" class="form-control" placeholder="Author">
-				    </div>
-				  </div>
-				  <div class="form-group">
-				    	<label class="control-label col-sm-2">Book cover link</label>
-				    <div class="col-sm-10">
-				      <input type="text" class="form-control" placeholder="Book cover link">
-				    </div>
-				  </div>
-				  <div class="form-group">
-				    	<label class="control-label col-sm-2">Sample text</label>
-				    <div class="col-sm-10">
-				      <textarea class="form-control" rows="5" id="comment" placeholder="Sample text"></textarea>
-				    </div>
-				  </div>
-				  <div class="col-md-10">
-				  </div>
-				  <div class="col-md-2 add-a-new-book-button">
-				  	<button class="btn btn-primary" type="submit">Submit form</button>
-				  </div>
-				</form>	
+				</div>
 			</div>
 		</div>
-	</div>
 
-
-<!-- make sure each row has different books -->
-<% include ./partials/books.ejs %>
+<!-- TODO add back in books partial -->
 
 <% include ./partials/footer.ejs %>

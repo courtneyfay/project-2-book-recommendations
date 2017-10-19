@@ -51,6 +51,9 @@ router.route('/new')
   .get(booksController.getNewBookForm)
   .post(booksController.postNewBook)
 
+// BOOKSHELF ROUTE - USER CAN SEE THEIR BOOKSHELF OF BOOKS
+router.get('/bookshelf', booksController.getBookshelf);
+
 // API ROUTE - CALL FOR DATA FROM ENTITY API
 router.get('/entityapi', booksController.entityAPI);
 
