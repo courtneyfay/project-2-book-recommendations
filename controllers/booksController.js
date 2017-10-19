@@ -2,8 +2,9 @@ console.log("booksController.js, checking in!");
 
 // SETTING UP REQUIREMENTS AND VARIABLES
 const db 									= require('../models');
+const Book 								= require('../models/book.js');
 const request 						= require('request');
-const setKey 							= ( process.env.apiKey || require('../config/env.js') );
+const apiKey 							= ( process.env.apiKey || require('../config/env.js') );
 let baseUrl 							= 'https://language.googleapis.com/v1beta2/documents:';	
 
 let booksGet = function(req, res) {
@@ -23,67 +24,76 @@ let getNewBookForm = function(req, res) {
 let postNewBook = function(req, res) {
 
 	//TODO how to make it secret so that only admin can use this functionality? (express-passport project)
-	
-	//grab data from the form and add it to the Book collection in the db
-	let newBook = { 
-		title : req.body.title, 
-		author : req.body.author,
-		coverUrl : req.body.coverUrl,
-		sampleText : req.body.sampleText 
-	};
 
-	//add functionality to hit the API calls from here before you create the new book!!
+	// grab data from the form and APIs add it to the new Book object
+	let newBook = new Book();
+	newBook.title = req.body.title;
+	newBook.author = req.body.author;
+	newBook.coverUrl = req.body.coverUrl;
+	newBook.sampleText = req.body.sampleText;
 
-	db.Book.create(newBook, function(err, book) {
+	// create a new book in the database
+	newBook.save(newBook, function(err, book) {
 		if (err) return(err);
+		console.log(book._id);
 		res.json(newBook);
 	});
 
+	// TODO: add functionality to hit the API calls from here before you create the new book!!
+
+	// 1. DEFINE url and data for API request
+	let sampleText = req.body.sampleText;
+	let sentimentError, sentimentResponse, sentimentBody;
+	let sentimentRequest = baseUrl + 'analyzeSentiment' + '?key=' + apiKey;
+
+	// 2. post request to Google API 
+	request.post({
+			headers: {'content-type' : 'application/json'},
+			url: sentimentRequest, 
+			json: {"document":{"type": "PLAIN_TEXT","language":"EN","content": sampleText },"encodingType":"UTF8"}
+		}, function(err, response, body) {
+		sentimentError = err;
+		sentimentResponse = response;
+		sentimentBody = body.documentSentiment;
+
+		// 3. show what was received from entity API back to the page
+		//res.render('sentimentTest.ejs', {sentimentBody: sentimentBody});
+
+		// 4. SAVE to entities array in db IN ORDER OF SALIENCE values
+		console.log(sentimentBody.magnitude);
+		console.log(sentimentBody.score);
+		// console.log(sentimentBody.sentiment);
+	});
+
+
+	// 1. define url and data for API request
+	/*let entityError, entityResponse, entityBody;
+	let entitiesRequest = baseUrl + 'analyzeEntities' + '?key=' + apiKey;
+
+	// 2. POST request to Google API 
+	request.post({
+			headers: {'content-type' : 'application/json'},
+			url: entitiesRequest, 
+			json: {"document":{"type": "PLAIN_TEXT","language":"EN","content": sampleText },"encodingType":"UTF8"}
+	}, function(err, response, body) {
+		entityError = err;
+		entityResponse = response;
+		entityBody = body.entities;
+
+		// 3. RETURN what was received from entity API
+		res.render('entityTest.ejs', {entityBody: entityBody});
+
+		// 4. SAVE to entities array in db IN ORDER OF SALIENCE values
+		// entityBody[i].name
+		// entityBody[i].type
+		// entityBody[i].salience
+	});*/
+
 	/*
-	let VacationSchema = new Schema({
-		activity: String,
-		city: String,
-		country: String,
-		photoUrl: String
-});
-	// CREATE route to add a new dream vacation
-app.post('/api/dream-vacations', function vacations_create(req,res) {
-
-  let newVacation = { 
-    activity: req.body.activity, 
-    city: req.body.city,
-    country: req.body.country,
-    photoUrl: req.body.photoUrl
-  };
-
-  db.Vacation.create(newVacation, function(err, vacation) {
-    res.json(newVacation);
-  });
-  
-});
-	*/
-	/*
-	app.post('/api/todos', function create(req, res) {
-  /* This endpoint will add a todo to our "database"
-   * and respond with the newly created todo.
-   */
-  // take input from form and parse it out
-  /*let newID = 0; 
-  for (let i = 0; i < todos.length; i++) {
-    newID = todos[i]._id;
-  };
-  newID ++;
-  let newTask = req.body.task;
-  let newDescription = req.body.description;
-
-  // push the new todo object into the todos array
-  let newTodo = { "_id" : newID , "task" : newTask, "description" : newDescription };
-  todos.push(newTodo);
-
-  // then display the new todo element
-  res.json(newTodo);
-});
-	*/
+	var myjson;
+	$.getJSON("http://127.0.0.1:8080/horizon-update", function(json){
+	    myjson = json;
+	});*/	
 };
 
 let getBookshelf = function(req, res) {
@@ -108,27 +118,27 @@ let getBookshelf = function(req, res) {
 	});
 };
 
-let entityAPI = function(req, res) {
+let entityAPI = function(text) {
 	
-	// 1. define url and data for API request
+	// 1. DEFINE url and data for API request
 	let entityError, entityResponse, entityBody;
 	let entitiesRequest = baseUrl + 'analyzeEntities' + '?key=' + apiKey;
-	// TODO: change the sample text to whichever text is submitted through the input form 
-	let sampleText = "Lawrence of Arabia is a highly rated film biography about British Lieutenant T. E. Lawrence. Peter OToole plays Lawrence in the film.";
 
-	// 2. post request to Google API 
+	// 2. POST request to Google API 
 	request.post({
 			headers: {'content-type' : 'application/json'},
 			url: entitiesRequest, 
-			json: {"document":{"type": "PLAIN_TEXT","language":"EN","content": sampleText },"encodingType":"UTF8"}
+			json: {"document":{"type": "PLAIN_TEXT","language":"EN","content": text },"encodingType":"UTF8"}
 		}, function(err, response, body) {
 		entityError = err;
 		entityResponse = response;
 		entityBody = body.entities;
 
-		// 3. show what was received from entity API back to the page
-		// TODO: need to change to save to db
-		res.render('entityTest.ejs', {entityBody: entityBody});
+		// 3. RETURN what was received from entity API
+		//if (entityBody) {
+			// console.log(entityBody);
+		return entityBody;
+		//}
 	});
 };
 

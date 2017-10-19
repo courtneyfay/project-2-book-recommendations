@@ -74,7 +74,7 @@ let booksList = [
 ];
 
 // UPDATE USER TO INCLUDE BOOKSHELF ENTRIES FOR DB TESTING
-db.User.findById("59e8c8afcbe139b11cb3f65a", (err, user) => {
+/*db.User.findById("59e8c8afcbe139b11cb3f65a", (err, user) => {
 	if (err) {
 		res.send(err);
 	}
@@ -86,25 +86,13 @@ db.User.findById("59e8c8afcbe139b11cb3f65a", (err, user) => {
 	} else {
 		console.log('else');
 	}
-});
+});*/
 
-/*
-app.put('/api/todos/:id', function update(req, res) {
-  /* This endpoint will update a single todo with the
-   * id specified in the route parameter (:id) and respond
-   * with the newly updated todo.
-   */
-   /*
-   for (let i = 0; i < todos.length; i++) {
-    if (req.params.id == todos[i]._id) {
-
-      // update the task and description with those from the request
-      todos[i].task = req.body.task;
-      todos[i].description = req.body.description;
-
-      // then display the updated todo
-      res.json(todos[i]);     
-    };
-   };
-});
-*/
+// REMOVE SPECIFIC BOOKS FROM THE DB AFTER TESTING
+/*db.Book.remove({_id: "59e91a01724135c1fce0ee47"}, (err, book) => {
+	if (err) {
+		console.log(err);
+	} else {
+    console.log('successfully removed book');
+  }
+});*/

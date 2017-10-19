@@ -54,11 +54,11 @@ router.route('/new')
 // BOOKSHELF ROUTE - USER CAN SEE THEIR BOOKSHELF OF BOOKS
 router.get('/bookshelf', booksController.getBookshelf);
 
-// API ROUTE - CALL FOR DATA FROM ENTITY API
-router.get('/entityapi', booksController.entityAPI);
+// TESTING API ROUTE - CALL FOR DATA FROM ENTITY API
+//router.get('/entityapi', booksController.entityAPI);
 
-// API ROUTE - CALL FOR DATA FROM SENTIMENT API
-router.get('/sentimentapi', booksController.sentimentAPI);
+// TESTING API ROUTE - CALL FOR DATA FROM SENTIMENT API
+//router.get('/sentimentapi', booksController.sentimentAPI);
 
 module.exports = router;
 
@@ -67,9 +67,6 @@ module.exports = router;
 ///////////////////
 
 // SHOW ROUTE
-
-// CREATE ROUTE - POST A NEW BOOK
-//router.post('/books', booksController.booksPost);
 
 // EDIT ROUTE
 
