@@ -11,8 +11,9 @@ const passport     	= require('passport');
 const morgan        = require('morgan');
 const cookieParser  = require('cookie-parser');
 const flash         = require('connect-flash');
+const session       = require('express-session');
 
-// SET UP STUFF
+// SET UP (STUFF?)
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan('dev')); 
 app.use(cookieParser());

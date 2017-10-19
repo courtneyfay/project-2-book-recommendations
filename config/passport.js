@@ -8,15 +8,17 @@ module.exports = function(passport) {
 		passwordField : 'password',
 		passReqToCallback : true
 	}, function(req, email, password, callback) {
+		
 		//Find a user with this email
 		User.findOne({'local.email' : email}, function(err,user) {
 			if (err) return callback(err);
-			//If there already IS a user with that email
+
+			// if there already IS a user with that email
 			if (user) {
 				return callback(null, false, req.flash('signupMessage', 'This email has already been signed up.'));
 			} else {
-				//there is NOT already a user with that email
-				//Create one
+				
+				// if there is NOT already a user with that email, create one
 				let newUser = new User();
 				newUser.local.email = email;
 				newUser.local.password = newUser.encrypt(password);

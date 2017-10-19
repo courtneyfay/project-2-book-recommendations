@@ -6,7 +6,7 @@ const Schema 				= mongoose.Schema;
 const bcrypt 				= require('bcrypt-nodejs');
 
 // defining UserSchema
-let UserSchema = mongoose.Schema({
+let User = mongoose.Schema({
 	local: {
 		email			: String,
 		password	: String,
@@ -14,14 +14,15 @@ let UserSchema = mongoose.Schema({
 		bookshelf : [ String ],
 		admin			: Boolean
 	}
-	
-	// TODO: other functions for passport from express-passport project
-	// User.methods.encrypt
-	// User.methods.validPassword
 });
 
-// activating User model
-let User = mongoose.model('User', UserSchema);
+// salts the password 20 times
+User.methods.encrypt = function(password) {
+	return bcrypt.hashSync(password, bcrypt.genSaltSync(20));
+};
 
-// exporting User to index
-module.exports = User;
+// checks to see if the password matches the salted one in the db
+
+
+// activating and exporting User to index
+module.exports = mongoose.model('User', User);
