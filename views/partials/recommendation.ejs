@@ -26,7 +26,8 @@
 
       <!-- BOOK OF ORIGIN -->
       <div class="col-md-2">
-        <img data-src="holder.js/100px280/thumb" alt="100%x280" style="height: 25vh; width: 100%; display: block;" src="https://images-na.ssl-images-amazon.com/images/I/41JKGW9P6AL._SX372_BO1,204,203,200_.jpg" data-holder-rendered="true">
+
+        <img alt="<%=book[0].title%>" class="origin-book-img" src="<%=book[0].coverUrl%>" data-holder-rendered="true">
         
         <!-- BOOK NLP DATA -->
         <div class="row">
@@ -35,10 +36,12 @@
           		<i class="fa fa-meh-o" aria-hidden="true"></i>
           	</div>
           	<div class="col-md-8">
-          		<ul class="origin-book-nlp-list">
-          			<li>village</li>
-          			<li>gentlemen</li>
-          		</ul>
+              <!-- SHOW THE TOP 5 ENTITIES FROM THE NLP API -->
+              <ul class="origin-book-nlp-list">
+                <% for(var i = 0; i < 5; i++) { %>
+                  <li class="left-align"> <%=book[0].entities[i]%> </li>
+                <% } %>
+              </ul>
           	</div>
           </p>
         </div>

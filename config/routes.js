@@ -9,6 +9,10 @@ const methodOverride 			= require('method-override');
 const passport 						= require('passport');
 const usersController 		= require('../controllers/usersController.js');
 
+//////////////////////////////////////////////////////////////////////
+// MIDDLEWARE //
+////////////////
+
 // CHECKS USER AUTHENTICATION
 function authenticatedUser(req, res, next) {
 	//if the user is authenticated, then we continue the execution
@@ -55,9 +59,9 @@ router.route('/logout')
 router.get('/', booksController.booksGet);
 
 // TESTING RECOMMENDATION ROUTE - DISPLAY RECOMMENDATION PAGE
-router.get('/recommendation', booksController.booksRecommendation);
+router.post('/recommendation', booksController.booksRecommendation);
 
-// TESTING BOOKSHELF ROUTE - USER CAN SEE THEIR BOOKSHELF OF BOOKS
+// BOOKSHELF ROUTE - USER CAN SEE THEIR OWN BOOKSHELF OF BOOKS
 router.route('/bookshelf')
   .get(authenticatedUser, booksController.getBookshelf);
 
@@ -71,11 +75,5 @@ router.route('/edit')
 
 router.route('/delete')
   .get(administratorUser, booksController.removeNewBook);
-
-// TESTING API ROUTE - CALL FOR DATA FROM ENTITY API
-//router.get('/entityapi', booksController.entityAPI);
-
-// TESTING API ROUTE - CALL FOR DATA FROM SENTIMENT API
-//router.get('/sentimentapi', booksController.sentimentAPI);
 
 module.exports = router;

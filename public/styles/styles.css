@@ -1,6 +1,22 @@
+/* ALL THE STYLES */
+
 * {
 	text-align: center;
 }
+
+/* HOME PAGE STYLES */
+
+.book-img {
+	display: block;
+	height: 50vh;
+	width: 100%;
+}
+
+.invisible {
+  visibility: hidden;
+}
+
+/* RECOMMENDATION STYLES */
 
 .recommended-book-nlp {
 	font-size: 30px;
@@ -15,6 +31,14 @@
 	text-align: left;
 	padding-left: 0;
 }
+
+.origin-book-img {
+	display: block;
+	height: 25vh;
+	width: 100%;
+}
+
+ /*BOOKSHELF STYLES */
 
 .carousel-item {
 	background-image: url('../wireframes/shelf.jpg');

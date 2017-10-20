@@ -14,7 +14,15 @@ let booksGet = function(req, res) {
 };
 
 let booksRecommendation = function(req, res) {
-	res.render('recommendation.ejs');
+	let originBook = req.body.bookId;
+
+	//find the book based on the ID
+	db.Book.find({_id: originBook}, function(err, book) {
+		if (err) console.log(err);
+		
+		// once the user bookshelf is full of details, serve up the bookshelf page
+		res.render('recommendation.ejs', {book: book});
+	});	
 };
 
 let getNewBookForm = function(req, res) {
