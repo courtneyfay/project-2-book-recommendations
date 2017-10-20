@@ -18,7 +18,7 @@ let booksRecommendation = function(req, res) {
 };
 
 let getNewBookForm = function(req, res) {
-	res.render('addBookAdmin.ejs');
+	res.render('addBookAdmin.ejs', req.user);
 };
 
 let postNewBook = function(req, res) {
@@ -83,9 +83,19 @@ let postNewBook = function(req, res) {
 		});
 };
 
+let editNewBook = function(req, res) {
+	res.send('edit page', req.user);
+};
+
+let removeNewBook = function(req, res) {
+	res.send('delete page', req.user);
+};
+
 let getBookshelf = function(req, res) {
 	//TODO change user ID so that it's not hardcoded and so it's being passed in by current user or whatever
 	//maybe use req?
+	
+	console.log(req.user);
 	db.User.find({_id: "59e8c8afcbe139b11cb3f65a"}, function(err, user) {
 		if (err) return (err);
 		let bookshelfIds = user[0].bookshelf;
@@ -101,7 +111,7 @@ let getBookshelf = function(req, res) {
 		}
 
 		// once the user bookshelf is full of details, serve up the book details to the bookshelf partial
-		res.render('./partials/bookshelf.ejs', {bookshelf: bookshelf});
+		res.render('./partials/bookshelf.ejs', req.user);
 	});
 };
 
@@ -161,6 +171,8 @@ module.exports.booksRecommendation = booksRecommendation;
 module.exports.getNewBookForm = getNewBookForm;
 module.exports.postNewBook = postNewBook;
 module.exports.getBookshelf = getBookshelf;
+module.exports.editNewBook = editNewBook;
+module.exports.removeNewBook = removeNewBook;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 // FUTURE CONTROLLERS //

@@ -3,18 +3,76 @@
 <!-- TODO add back in bookshelf partial -->
 
 		<!-- this is where ONLY THE ADMIN will be able to edit and delete recently saved books -->
+		<h2><%= local.email %></h2>
+
 		<ul>
-			<li><%= newBook._id %></li>
-			<li><%= newBook.title %></li>
-			<li><%= newBook.author %></li>
-			<li><%= newBook.coverUrl %></li>
-			<li><%= newBook.sampleText %></li>
-			<li><%= newBook.entities %></li>
-			<li><%= newBook.sentimentMagnitude %></li>
-			<li><%= newBook.sentimentScore %></li>
 			<li><%= newBook.sentiment %></li>
-			<li><%= newBook.createdBy %></li>
 		</ul>
+
+	<!-- EDIT BOOK FORM -->
+	<div class="container-fluid new-book">
+		<div class="row">
+
+			<!-- EDIT BOOK IMAGE -->
+			<div class="col-md-3">
+				<img class="edit-book-img" style="height: 50vh; width: 100%; display: block;" alt="<%= newBook.title %>" src="<%= newBook.coverUrl %>"></img>	
+			</div>
+
+			<!-- EDIT BOOK DATA -->
+			<div class="col-md-9">
+				<div class="alert alert-success" role="alert">
+				  Your book has been added successfully!
+				</div>
+				<div class="row">
+					<p class="col-md-3 edit-book-title">Book title</p>
+					<p class="col-md-8 left-align"><%= newBook.title %></p>
+				</div>
+				<div class="row">
+					<p class="col-md-3 edit-book-title">Author</p>
+					<p class="col-md-8 left-align"><%= newBook.author %></p>
+				</div>
+				<div class="row">
+					<p class="col-md-3 edit-book-title">Sample text</p>
+					<p class="col-md-8 left-align"><%= newBook.sampleText %></p>
+				</div>
+
+				<!-- NLP DATA -->
+				<div class="row">
+					<div class="col-md-3">
+						<p class="edit-book-title">Book analysis</p>
+        	</div>
+        	<div class="col-md-2 left-align">
+        		<i class="fa fa-smile-o" aria-hidden="true"></i>
+        	</div>
+        
+        	<div class="col-md-2">
+	      		<ul class="origin-book-nlp-list">
+        			<% for(var i = 0; i < 5; i++) { %>
+	      				<li class="left-align"><%= newBook.entities[i] %></li>
+	      			<% } %>
+        		</ul>
+        	</div>
+        </div>
+				
+				<!-- EDIT AND SUBMIT BUTTONS -->
+				<div class="row">
+					<div class="col-md-6">
+						<a class="btn icon-btn btn-warning" href="/edit">
+							<span class="glyphicon btn-glyphicon glyphicon-edit img-circle text-warning"></span>
+							Edit
+						</a>
+					</div>
+					<div class="col-md-6">
+						<a class="btn icon-btn btn-danger" href="/delete">
+							<span class="glyphicon btn-glyphicon glyphicon-trash img-circle text-danger"></span>
+							Delete
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>	
+
 
 <!-- TODO add back in books partial -->
 

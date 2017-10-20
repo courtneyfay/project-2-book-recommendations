@@ -40,18 +40,25 @@ router.route('/logout')
 // BOOK ROUTES //
 /////////////////
 
-// INDEX ROUTE - DISPLAYS ALL BOOKS
+// INDEX ROUTE - USER CAN SEE ALL BOOKS
 router.get('/', booksController.booksGet);
 
-// TEST RECOMMENDATION ROUTE - DISPLAY RECOMMENDATION PAGE
+// TESTING RECOMMENDATION ROUTE - DISPLAY RECOMMENDATION PAGE
 router.get('/recommendation', booksController.booksRecommendation);
 
-// CREATE ROUTE - ADMIN CAN ADD NEW BOOKS WITH THE FORM
+// CREATE ROUTE FORM - ADMIN ONLY
 router.route('/new')
   .get(booksController.getNewBookForm)
   .post(booksController.postNewBook)
 
-// BOOKSHELF ROUTE - USER CAN SEE THEIR BOOKSHELF OF BOOKS
+// EDIT AND DELETE ROUTES - ADMIN ONLY
+router.route('/edit')
+  .get(booksController.editNewBook)
+  
+router.route('/delete')
+  .get(booksController.removeNewBook)
+
+// TESTING BOOKSHELF ROUTE - USER CAN SEE THEIR BOOKSHELF OF BOOKS
 router.get('/bookshelf', booksController.getBookshelf);
 
 // TESTING API ROUTE - CALL FOR DATA FROM ENTITY API
