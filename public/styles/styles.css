@@ -38,6 +38,12 @@
 	width: 100%;
 }
 
+.recommended-book-img {
+	display: block;
+	height: 60vh;
+	width: 100%;
+}
+
  /*BOOKSHELF STYLES */
 
 .carousel-item {

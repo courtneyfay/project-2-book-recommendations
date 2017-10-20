@@ -4,7 +4,7 @@
 
     	<!-- FIRST RECOMMENDED BOOK  -->
       <div class="col-md-5 vertical-center-row">
-        <img data-src="holder.js/100px280/thumb" alt="100%x280" style="height: 60vh; width: 100%; display: block;" src="https://images.gr-assets.com/books/1352082529l/37781.jpg" data-holder-rendered="true">
+        <img alt="<%=recommendedBooks[0].title%>" class="recommended-book-img" src="<%=recommendedBooks[0].coverUrl%>" data-holder-rendered="true">
         
 				<!-- BOOK NLP DATA -->
         <div class="row">
@@ -18,7 +18,12 @@
 							</button>
           	</div>
           	<div class="col-md-4 recommended-book-nlp">
-          		village
+          		<!-- SHOW THE TOP 5 ENTITIES FROM THE NLP API -->
+              <ul class="recommended-book-nlp">
+                <% for(let i = 0; i < 5; i++) { %>
+                  <li class="left-align"> <%=recommendedBooks[0].entities[i]%> </li>
+                <% } %>
+              </ul>
           	</div>
           </p>
         </div>
@@ -27,7 +32,7 @@
       <!-- BOOK OF ORIGIN -->
       <div class="col-md-2">
 
-        <img alt="<%=book[0].title%>" class="origin-book-img" src="<%=book[0].coverUrl%>" data-holder-rendered="true">
+        <img alt="<%=originBook[0].title%>" class="origin-book-img" src="<%=originBook[0].coverUrl%>" data-holder-rendered="true">
         
         <!-- BOOK NLP DATA -->
         <div class="row">
@@ -38,8 +43,8 @@
           	<div class="col-md-8">
               <!-- SHOW THE TOP 5 ENTITIES FROM THE NLP API -->
               <ul class="origin-book-nlp-list">
-                <% for(var i = 0; i < 5; i++) { %>
-                  <li class="left-align"> <%=book[0].entities[i]%> </li>
+                <% for(let i = 0; i < 5; i++) { %>
+                  <li class="left-align"> <%=originBook[0].entities[i]%> </li>
                 <% } %>
               </ul>
           	</div>
@@ -49,7 +54,7 @@
 
       <!-- SECOND RECOMMENDED BOOK -->
       <div class="col-md-5">
-        <img data-src="holder.js/100px280/thumb" alt="100%x280" style="height: 60vh; width: 100%; display: block;" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTU_9YYc9UmQTaqOH7dBoSDeC7xsLrSlFecMpOa74Ex-R-Rq2e3" data-holder-rendered="true">
+        <img alt="<%=recommendedBooks[1].title%>" class="recommended-book-img" src="<%=recommendedBooks[1].coverUrl%>" data-holder-rendered="true">
         
 				<!-- BOOK NLP DATA -->
         <div class="row">
@@ -63,7 +68,12 @@
 							</button>
           	</div>
           	<div class="col-md-4 recommended-book-nlp">
-          		gentlemen
+          		<!-- SHOW THE TOP 5 ENTITIES FROM THE NLP API -->
+              <ul class="recommended-book-nlp">
+                <% for(let i = 0; i < 5; i++) { %>
+                  <li class="left-align"> <%=recommendedBooks[1].entities[i]%> </li>
+                <% } %>
+              </ul>
           	</div>
           </p>
         </div>

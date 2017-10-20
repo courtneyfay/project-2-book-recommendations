@@ -17,11 +17,21 @@ let booksRecommendation = function(req, res) {
 	let originBook = req.body.bookId;
 
 	//find the book based on the ID
-	db.Book.find({_id: originBook}, function(err, book) {
+	db.Book.find({_id: originBook}, function(err, originBook) {
 		if (err) console.log(err);
 		
-		// once the user bookshelf is full of details, serve up the bookshelf page
-		res.render('recommendation.ejs', {book: book});
+		// algorithm for randomly finding 2 books from the db to serve up
+		// TODO make this algorithm match books based on NLP entity and sentiment data
+		//db.Book.findOneRandom(function(err, recommendedBook) {
+		db.Book.findRandom({}, {}, {limit: 2}, function(err, recommendedBooks) {
+			if(err) console.log(err);
+
+			// once the algorithm has grabbed the 2 recommended books, serve up the recommendation page
+			res.render('recommendation.ejs', {
+				originBook: originBook,
+				recommendedBooks: recommendedBooks
+			});
+		});
 	});	
 };
 
@@ -76,7 +86,6 @@ let postNewBook = function(req, res) {
 						entitiesArray.push(entities[i].name)
 					}
 
-					//console.log(entitiesArray);
 					newBook.entities = entitiesArray;
 
 					// 7. SAVE to entities array in db IN ORDER OF SALIENCE values
@@ -84,7 +93,6 @@ let postNewBook = function(req, res) {
 						if (err) return(err);
 
 						// 8. serve up saved book ejs
-						//res.json(newBook);
 						res.render('savedBookAdmin.ejs', {newBook: newBook});
 					});
 			});

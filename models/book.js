@@ -3,6 +3,8 @@ console.log("book.js, checking in!");
 // setting constants to use
 const mongoose 			= require('mongoose');
 const Schema 				= mongoose.Schema;
+const random 				= require('mongoose-simple-random');
+
 
 // defining BookSchema
 let BookSchema = new Schema({
@@ -16,6 +18,8 @@ let BookSchema = new Schema({
   sentiment: String,
   createdBy: String // userID? referenced data
 });
+BookSchema.plugin(random);
+// FURTHER READING: https://larry-price.com/blog/2014/09/15/fetching-random-mongoose-objects-the-simple-way/
 
 // activating Book model
 let Book = mongoose.model('Book', BookSchema);
