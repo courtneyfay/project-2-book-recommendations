@@ -22,7 +22,6 @@ let booksRecommendation = function(req, res) {
 		
 		// algorithm for randomly finding 2 books from the db to serve up
 		// TODO make this algorithm match books based on NLP entity and sentiment data
-		//db.Book.findOneRandom(function(err, recommendedBook) {
 		db.Book.findRandom({}, {}, {limit: 2}, function(err, recommendedBooks) {
 			if(err) console.log(err);
 
@@ -113,6 +112,8 @@ let getBookshelf = function(req, res) {
 
 	db.User.find({_id: userId}, function(err, user) {
 		if (err) return (err);
+
+		// if there's a new book in the req, push it into the user.bookshelf array and save!
 		
 		let bookshelfIds = user[0].bookshelf;
 		
@@ -126,6 +127,18 @@ let getBookshelf = function(req, res) {
 			});
 		});	
 	});
+};
+
+let addBookToBookshelf = function(req, res) {
+
+	// let userId = req.user._id;
+
+	// db.User.find({_id: userId}, function(err, user) {
+	// 	if (err) return (err);
+
+	// 	// if there's a new book in the req, push it into the user.bookshelf array and save!
+		
+	// 	let bookshelfIds = user[0].bookshelf;
 };		
 
 let entityAPI = function(text) {

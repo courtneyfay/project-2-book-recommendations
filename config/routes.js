@@ -63,17 +63,15 @@ router.post('/recommendation', booksController.booksRecommendation);
 
 // BOOKSHELF ROUTE - USER CAN SEE THEIR OWN BOOKSHELF OF BOOKS
 router.route('/bookshelf')
-  .get(authenticatedUser, booksController.getBookshelf);
+  .get(authenticatedUser, booksController.getBookshelf)
+  .post(authenticatedUser, booksController.addBookToBookshelf);
+  //.delete(authenticatedUser, booksController.removeBookFromBookshelf);
 
 // CREATE, EDIT, DELETE ROUTES - ADMIN ONLY
 router.route('/new')
   .get(administratorUser, booksController.getNewBookForm)
-  .post(administratorUser, booksController.postNewBook);
-
-router.route('/edit')
-  .get(administratorUser, booksController.editNewBook);
-
-router.route('/delete')
-  .get(administratorUser, booksController.removeNewBook);
+  .post(administratorUser, booksController.postNewBook)
+  .put(administratorUser, booksController.editNewBook)
+  .delete(administratorUser, booksController.removeNewBook);
 
 module.exports = router;
