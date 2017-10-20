@@ -18,7 +18,7 @@ let booksRecommendation = function(req, res) {
 };
 
 let getNewBookForm = function(req, res) {
-	res.render('addBookAdmin.ejs', req.user);
+	res.render('addBookAdmin.ejs');
 };
 
 let postNewBook = function(req, res) {
@@ -84,36 +84,33 @@ let postNewBook = function(req, res) {
 };
 
 let editNewBook = function(req, res) {
-	res.send('edit page', req.user);
+	res.send('edit page');
 };
 
 let removeNewBook = function(req, res) {
-	res.send('delete page', req.user);
+	res.send('delete page');
 };
 
 let getBookshelf = function(req, res) {
-	//TODO change user ID so that it's not hardcoded and so it's being passed in by current user or whatever
-	//maybe use req?
 	
-	console.log(req.user);
-	db.User.find({_id: "59e8c8afcbe139b11cb3f65a"}, function(err, user) {
+	let userId = req.user._id;
+
+	db.User.find({_id: userId}, function(err, user) {
 		if (err) return (err);
+		
 		let bookshelfIds = user[0].bookshelf;
-		let bookshelf = [];
-
-		// look up the book details based on the ID in the user's bookshelf
-		for (let i = 0; i < bookshelfIds.length; i++) {
-			db.Book.find({_id: bookshelfIds[i]}, function(err, book) {
-				if (book) {
-					bookshelf.push(book);
-				} 
+		
+		db.Book.find({_id: {$in: bookshelfIds}}, function(err, bookshelf) {
+			if (err) console.log(err);
+			
+			// once the user bookshelf is full of details, serve up the bookshelf page
+			res.render('./myBookshelf.ejs', {
+				bookshelf: bookshelf,
+				user: user
 			});
-		}
-
-		// once the user bookshelf is full of details, serve up the book details to the bookshelf partial
-		res.render('./partials/bookshelf.ejs', req.user);
+		});	
 	});
-};
+};		
 
 let entityAPI = function(text) {
 	
@@ -174,29 +171,80 @@ module.exports.getBookshelf = getBookshelf;
 module.exports.editNewBook = editNewBook;
 module.exports.removeNewBook = removeNewBook;
 
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////
-// FUTURE CONTROLLERS //
-////////////////////////
+// CODE GRAVEYARD //
+////////////////////
 
-// POST CONTROLLER MODEL
-/*let cargoPost = function(req, res) {
-	db.Cargo.create({description: req.body.description, title: req.body.title}, function(error, cargo){
-		res.render('cargoShow.ejs', {cargo: cargo});
-	});
-};*/
+/*if (books) {
 
-// NEW BOOK FORM GET ROUTE
-// NEW BOOK FORM POST ROUTE
+  		} 
+			}
+			books.forEach(function(bookshelfIds) {
+				if (books[i]._id === bookshelfIds) {
+					console.log('heyo!');
+				}
+			});*/
 /*
-//Cargo form
-app.get('/cargo/new', function(req, res) { //look at that controller
-	res.render('cargoNew'); 
-});
+var cursor = db.coll.find(),
+    i = 0;
 
-//Add new cargo
-app.post('/cargo', function(req, res) { //and look at that controller
-	Cargo.create({description: req.body.description, title: req.body.title}, function(error, cargo) {
-		res.render('cargoShow', {cargo: cargo});
-	});
+cursor.forEach(function(x){
+    db.coll.update({_id: x._id}, {$set:{new_field:i}})
+    $i++;
 });
 */
+			/*let myBooks = books.filter(function findBooksById(book, index, books) {
+				//return bookshelfIds.
+				return (book._id === bookshelfIds[0]);
+				//if bookid is the same as any of the 6 bookshelfids, then add the book and all of its data to the array and return it
+			}); 
+
+			console.log(myBooks);*/
+
+			/*
+			var sidekicks = [
+    { name: "Robin",     hero: "Batman"   },
+    { name: "Supergirl", hero: "Superman" },
+    { name: "Oracle",    hero: "Batman"   },
+    { name: "Krypto",    hero: "Superman" }
+];
+
+var batKicks = sidekicks.filter(function (el) {
+    return (el.hero === "Batman");
+});
+			*/
+
+			//res.json(filteredBooks);
+			
+			/*function findBooksById(book) {
+				filteredBooks = [];
+
+				let filteringBooks = function() {
+					for (let i = 0; i < bookshelfIds.length; i++) {
+						if (bookshelfIds[i] === book._id)  {
+							filteredBooks.push(book);
+						}
+					}	
+
+				return filteredBooks;
+				};
+			}*/
+
+			/*
+			var vowelFruits = fruits.filter(function vowelFruit(fruit) {
+			  return vowels.indexOf(fruit[0]) >= 0; // indexOf returns -1 if not found
+			});
+			*/
+			/*, function(err, bookshelf) {
+				if (err) console.log(err);
+				console.log(bookshelf);
+				res.send('looking for books in the console');
+				
+			});
+			/*
+			res.render('pages/index', {
+        drinks: drinks,
+        tagline: tagline
+    	});
+			*/

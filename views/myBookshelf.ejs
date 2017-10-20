@@ -1,11 +1,41 @@
+<!-- HTML HEADER -->
 <% include ./partials/header.ejs %>
 
-<% include ./partials/bookshelf.ejs %>
+	<!-- HEADER FOR BOOKSHELF PAGE -->
+		<header>
+			<div class="jumbotron jumbotron-fluid">
+		  	<div class="container">
+		  		<div class="row">
+		  			<div class="col-md-10 col-xs-6">
+		  				<h1 class="display-2"><%=user[0].local.email%>'s BookMe Bookshelf:</h1>
+		  			</div>
 
-<!-- Make sure each row displays different books -->
-<% include ./partials/books.ejs %>
-<% include ./partials/books.ejs %>
-<% include ./partials/books.ejs %>
-<% include ./partials/books.ejs %>
+		  			<!-- SIGNUP/LOGIN OR LOGOUT BUTTON -->
+		        <div class="col-md-2">
+	  				<% if (currentUser) { %>
+	  					<a href="/logout">
+	              <button class="btn btn-primary">
+	              	Logout
+              	</button>
+              </a>
+            <% } else { %>
+            	<a href="/signup">
+            		<button class="btn btn-primary">
+            			Sign Up
+            		</button>
+            	</a>
+          		<a href="/login">
+          			<button class="btn btn-primary">
+          				Login
+          			</button>
+          		</a>
+            <% } %>
+	  				</div>
+	  			</div>
+	  		</div>
+	  	</div>
+	  </header>
+
+<% include ./partials/bookshelf.ejs %>
 
 <% include ./partials/footer.ejs %>

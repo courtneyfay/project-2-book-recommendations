@@ -73,15 +73,32 @@ let booksList = [
 	}
 ];
 
+// RE-SEED THE DATABASE WITH BOOKS
+/*db.Book.remove({}, function(err, books){
+  if(err) {
+    console.log('Error occurred in remove', err);
+  } else {
+    console.log('removed all books');
+
+    // create new records based on the array books_list
+    db.Book.create(booksList, function(err, books){
+      if (err) { return console.log('err', err); }
+      console.log("created", books.length, "books");
+      process.exit();
+    });
+  }
+});*/
+
 // UPDATE USER TO INCLUDE BOOKSHELF ENTRIES FOR DB TESTING
+// TEST@TEST.TEST
 /*db.User.findById("59e8c8afcbe139b11cb3f65a", (err, user) => {
 	if (err) {
 		res.send(err);
 	}
 	if (user) {
 		//user.admin = true;
-		//user.bookshelf.push("59e8c94c307f16b1581e74df", "59e8c94c307f16b1581e74de", "59e8c94c307f16b1581e74e1");
-		//user.save();
+		user.bookshelf.push("59e974da98b4c7d224047e85", "59e974da98b4c7d224047e86", "59e974da98b4c7d224047e87");
+		user.save();
 		console.log(user);
 	} else {
 		console.log('else');

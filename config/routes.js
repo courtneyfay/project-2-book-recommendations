@@ -18,6 +18,17 @@ function authenticatedUser(req, res, next) {
 	res.redirect('/');
 };
 
+// CHECKS TO SEE IF USER IS AN ADMIN
+function administratorUser(req, res, next) {
+  //if the user is an admin, then we continue the execution
+  if (req.user.admin === true && req.isAuthenticated()) {
+    return next();
+  }
+
+  //otherwise the request is always redirected to the home page
+  res.redirect('/');
+};
+
 //////////////////////////////////////////////////////////////////////
 // PASSPORT ROUTES //
 /////////////////////
@@ -25,16 +36,16 @@ function authenticatedUser(req, res, next) {
 // PASSPORT ROUTES FOR SIGNUP
 router.route('/signup')
   .get(usersController.getSignup)
-  .post(usersController.postSignup)
+  .post(usersController.postSignup);
 
 // PASSPORT ROUTES FOR LOGIN
 router.route('/login')
   .get(usersController.getLogin)
-  .post(usersController.postLogin)
+  .post(usersController.postLogin);
 
 // PASSPORT ROUTE FOR LOGOUT
 router.route('/logout')
-  .get(usersController.getLogout)
+  .get(usersController.getLogout);
 
 //////////////////////////////////////////////////////////////////////
 // BOOK ROUTES //
@@ -46,20 +57,20 @@ router.get('/', booksController.booksGet);
 // TESTING RECOMMENDATION ROUTE - DISPLAY RECOMMENDATION PAGE
 router.get('/recommendation', booksController.booksRecommendation);
 
-// CREATE ROUTE FORM - ADMIN ONLY
-router.route('/new')
-  .get(booksController.getNewBookForm)
-  .post(booksController.postNewBook)
-
-// EDIT AND DELETE ROUTES - ADMIN ONLY
-router.route('/edit')
-  .get(booksController.editNewBook)
-  
-router.route('/delete')
-  .get(booksController.removeNewBook)
-
 // TESTING BOOKSHELF ROUTE - USER CAN SEE THEIR BOOKSHELF OF BOOKS
-router.get('/bookshelf', booksController.getBookshelf);
+router.route('/bookshelf')
+  .get(authenticatedUser, booksController.getBookshelf);
+
+// CREATE, EDIT, DELETE ROUTES - ADMIN ONLY
+router.route('/new')
+  .get(administratorUser, booksController.getNewBookForm)
+  .post(administratorUser, booksController.postNewBook);
+
+router.route('/edit')
+  .get(administratorUser, booksController.editNewBook);
+
+router.route('/delete')
+  .get(administratorUser, booksController.removeNewBook);
 
 // TESTING API ROUTE - CALL FOR DATA FROM ENTITY API
 //router.get('/entityapi', booksController.entityAPI);
@@ -68,13 +79,3 @@ router.get('/bookshelf', booksController.getBookshelf);
 //router.get('/sentimentapi', booksController.sentimentAPI);
 
 module.exports = router;
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-// FUTURE ROUTES //
-///////////////////
-
-// SHOW ROUTE
-
-// EDIT ROUTE
-
-// DELETE ROUTE

@@ -17,7 +17,7 @@
 }
 
 .carousel-item {
-	background-image: url('./shelf.jpg');
+	background-image: url('../wireframes/shelf.jpg');
 	background-size: cover;
 }
 
