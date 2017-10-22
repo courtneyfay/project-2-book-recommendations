@@ -4,10 +4,10 @@ console.log("routes.js, checking in!");
 const express 						= require('express');
 const router 							= express.Router();
 const booksController 		= require('../controllers/booksController.js');
+const usersController     = require('../controllers/usersController.js');
 const bodyParser 					= require('body-parser');
 const methodOverride 			= require('method-override');
 const passport 						= require('passport');
-const usersController 		= require('../controllers/usersController.js');
 
 //////////////////////////////////////////////////////////////////////
 // MIDDLEWARE //
@@ -61,11 +61,12 @@ router.get('/', booksController.booksGet);
 // TESTING RECOMMENDATION ROUTE - DISPLAY RECOMMENDATION PAGE
 router.post('/recommendation', booksController.booksRecommendation);
 
-// BOOKSHELF ROUTE - USER CAN SEE THEIR OWN BOOKSHELF OF BOOKS
+// BOOKSHELF ROUTE - USER CAN SEE THEIR OWN BOOKSHELF OF BOOKS AND ADD/DELETE BOOKS
 router.route('/bookshelf')
   .get(authenticatedUser, booksController.getBookshelf)
   .post(authenticatedUser, booksController.addBookToBookshelf);
-  //.delete(authenticatedUser, booksController.removeBookFromBookshelf);
+router.route('/bookshelf/:id')
+  .delete(authenticatedUser, booksController.removeBookFromBookshelf);
 
 // CREATE, EDIT, DELETE ROUTES - ADMIN ONLY
 router.route('/new')

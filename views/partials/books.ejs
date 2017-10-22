@@ -4,7 +4,7 @@
 	      <div class="row">
 
 					<% for(var i = 0; i < books.length; i++) { %>
-	      		<div class="card col-md-3 col-sm-6 col-xs-12" >
+	      		<div class="card col-md-3 col-sm-6 col-xs-12 book-on-home-page" >
 		      		<form method="post" action="/recommendation">
 		      			<button type="submit">
 				      		<img alt="<%= books[i].title %>" class="book-img" src="<%=books[i].coverUrl%>" data-holder-rendered="true">

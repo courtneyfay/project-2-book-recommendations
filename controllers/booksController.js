@@ -127,11 +127,16 @@ let getBookshelf = function(req, res) {
 
 let addBookToBookshelf = function(req, res) {
 
+	console.log('hitting the add to bookshelf function');
+
 	// Find the user's bookshelf
 	let userId = req.user._id;
 	db.User.find({_id: userId}, function(err, user) {
 		if (err) return (err);
 		
+		// TODO: first check to make sure it isn't already in the array
+		// TODO: don't add a new book if its value is null
+
 		// grab the new book ID from the form, and push it into the user's bookshelf array!
 		user[0].bookshelf.push(req.body.bookId);
 
@@ -154,6 +159,44 @@ let addBookToBookshelf = function(req, res) {
 		});	
 	});
 };		
+
+let removeBookFromBookshelf = function(req, res) {
+
+	//figure out where the data id is in the request
+	let removeBook = req.params.id;
+
+	// Find the user's bookshelf
+	let userId = req.user._id;
+	db.User.find({_id: userId}, function(err, user) {
+		if (err) return (err);
+
+		let bookshelfIds = user[0].bookshelf;
+
+		//find the book in the user's bookshelf array and remove it
+		console.log('book to remove:');
+		for (let i = 0; i < bookshelfIds.length; i++) {
+			if (bookshelfIds[i] === removeBook) {
+				bookshelfIds.splice(i, 1);
+			}
+		}
+
+		// save updated array to the db
+		user[0].save(function(err, newBookshelf) {
+			if (err) return (err);
+			
+			// look up all the books' info based on book id in the book collection
+			db.Book.find({_id: {$in: bookshelfIds}}, function(err, bookshelf) {
+			if (err) console.log(err);
+
+				// serve up the bookshelf page with the new array and the removed book missing
+				res.render('./myBookshelf.ejs', {
+					bookshelf: bookshelf,
+					user: user
+				});	
+			});
+		});
+	});
+};
 
 let entityAPI = function(text) {
 	
@@ -214,6 +257,7 @@ module.exports.getBookshelf = getBookshelf;
 module.exports.editNewBook = editNewBook;
 module.exports.removeNewBook = removeNewBook;
 module.exports.addBookToBookshelf = addBookToBookshelf;
+module.exports.removeBookFromBookshelf = removeBookFromBookshelf;
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
