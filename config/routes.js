@@ -18,8 +18,8 @@ function authenticatedUser(req, res, next) {
 	//if the user is authenticated, then we continue the execution
 	if (req.isAuthenticated()) return next();
 
-	//otherwise the request is always redirected to the home page
-	res.redirect('/');
+	//otherwise the request is always redirected to the login page
+	res.redirect('/login');
 };
 
 // CHECKS TO SEE IF USER IS AN ADMIN
@@ -70,7 +70,7 @@ router.route('/bookshelf')
 // CREATE, EDIT, DELETE ROUTES - ADMIN ONLY
 router.route('/new')
   .get(administratorUser, booksController.getNewBookForm)
-  .post(administratorUser, booksController.postNewBook)
+  .post(administratorUser, booksController.addNewBook)
   .put(administratorUser, booksController.editNewBook)
   .delete(administratorUser, booksController.removeNewBook);
 

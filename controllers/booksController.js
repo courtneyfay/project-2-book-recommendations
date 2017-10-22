@@ -38,9 +38,7 @@ let getNewBookForm = function(req, res) {
 	res.render('addBookAdmin.ejs');
 };
 
-let postNewBook = function(req, res) {
-
-	//TODO how to make it secret so that only admin can use this functionality? (express-passport project)
+let addNewBook = function(req, res) {
 
 	// 1. grab data from the form and APIs add it to the new Book object
 	let newBook = new Book();
@@ -108,19 +106,17 @@ let removeNewBook = function(req, res) {
 
 let getBookshelf = function(req, res) {
 	
+	// Find the user's bookshelf
 	let userId = req.user._id;
-
 	db.User.find({_id: userId}, function(err, user) {
 		if (err) return (err);
-
-		// if there's a new book in the req, push it into the user.bookshelf array and save!
-		
 		let bookshelfIds = user[0].bookshelf;
-		
+
+		// look up all the books' info based on book id in the book collection
 		db.Book.find({_id: {$in: bookshelfIds}}, function(err, bookshelf) {
 			if (err) console.log(err);
 			
-			// once the user bookshelf is full of details, serve up the bookshelf page
+			// once the user bookshelf is full of details like cover URL, serve up the bookshelf page
 			res.render('./myBookshelf.ejs', {
 				bookshelf: bookshelf,
 				user: user
@@ -131,14 +127,28 @@ let getBookshelf = function(req, res) {
 
 let addBookToBookshelf = function(req, res) {
 
-	// let userId = req.user._id;
+	// Find the user's bookshelf
+	let userId = req.user._id;
+	db.User.find({_id: userId}, function(err, user) {
+		if (err) return (err);
+		let bookshelfIds = user[0].bookshelf;
 
-	// db.User.find({_id: userId}, function(err, user) {
-	// 	if (err) return (err);
+		console.log(bookshelfIds);
 
-	// 	// if there's a new book in the req, push it into the user.bookshelf array and save!
-		
-	// 	let bookshelfIds = user[0].bookshelf;
+		// grab the new book ID from the form, and push it into the user.bookshelf array!
+		bookshelfIds.push(req.body.bookId);
+
+		// look up all the books' info based on book id in the book collection
+		db.Book.find({_id: {$in: bookshelfIds}}, function(err, bookshelf) {
+			if (err) console.log(err);
+
+			// once the user bookshelf is full of details like cover URL, serve up the bookshelf page
+			res.render('./myBookshelf.ejs', {
+				bookshelf: bookshelf,
+				user: user
+			});	
+		});
+	});
 };		
 
 let entityAPI = function(text) {
@@ -195,10 +205,11 @@ module.exports.entityAPI = entityAPI;
 module.exports.sentimentAPI = sentimentAPI;
 module.exports.booksRecommendation = booksRecommendation;
 module.exports.getNewBookForm = getNewBookForm;
-module.exports.postNewBook = postNewBook;
+module.exports.addNewBook = addNewBook;
 module.exports.getBookshelf = getBookshelf;
 module.exports.editNewBook = editNewBook;
 module.exports.removeNewBook = removeNewBook;
+module.exports.addBookToBookshelf = addBookToBookshelf;
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
