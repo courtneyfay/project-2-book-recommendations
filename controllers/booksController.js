@@ -131,23 +131,27 @@ let addBookToBookshelf = function(req, res) {
 	let userId = req.user._id;
 	db.User.find({_id: userId}, function(err, user) {
 		if (err) return (err);
+		
+		// grab the new book ID from the form, and push it into the user's bookshelf array!
+		user[0].bookshelf.push(req.body.bookId);
+
 		let bookshelfIds = user[0].bookshelf;
 
-		console.log(bookshelfIds);
-
-		// grab the new book ID from the form, and push it into the user.bookshelf array!
-		bookshelfIds.push(req.body.bookId);
-
-		// look up all the books' info based on book id in the book collection
-		db.Book.find({_id: {$in: bookshelfIds}}, function(err, bookshelf) {
+		// save updated array to the db
+		user[0].save(function(err, newBookshelf) {
+			if (err) return (err);
+			
+			// look up all the books' info based on book id in the book collection
+			db.Book.find({_id: {$in: bookshelfIds}}, function(err, bookshelf) {
 			if (err) console.log(err);
 
-			// once the user bookshelf is full of details like cover URL, serve up the bookshelf page
-			res.render('./myBookshelf.ejs', {
-				bookshelf: bookshelf,
-				user: user
-			});	
-		});
+				// once the user bookshelf is full of details like cover URL, serve up the bookshelf page
+				res.render('./myBookshelf.ejs', {
+					bookshelf: bookshelf,
+					user: user
+				});	
+			});
+		});	
 	});
 };		
 

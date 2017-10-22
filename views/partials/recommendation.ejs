@@ -16,10 +16,9 @@
             <!-- ADD BOOK TO BOOKSHELF BUTTON -->
           	<div class="col-md-4">
               <form method="post" action="/bookshelf">
+                <input type="text" class="invisible" name="bookId" value="<%=recommendedBooks[0]._id%>">
                 <button type="submit" class="btn icon-btn btn-success">
-                  <span class="glyphicon btn-glyphicon glyphicon-plus img-circle text-success">
-                    <input type="text" class="invisible" name="bookId" value="<%=recommendedBooks[0]._id%>">    
-                  </span>
+                  <span class="glyphicon btn-glyphicon glyphicon-plus img-circle text-success"></span>
   							</button>
               </form>
           	</div>
@@ -69,9 +68,12 @@
           		<i class="fa fa-meh-o" aria-hidden="true"></i>
           	</div>
           	<div class="col-md-4">
-          		<button type="button" class="btn icon-btn btn-success">
-								<span class="glyphicon btn-glyphicon glyphicon-plus img-circle text-success"></span>
-							</button>
+              <form method="post" action="/bookshelf">
+                <input type="text" class="invisible" name="bookId" value="<%=recommendedBooks[1]._id%>">
+                <button type="submit" class="btn icon-btn btn-success">
+                  <span class="glyphicon btn-glyphicon glyphicon-plus img-circle text-success"></span>
+                </button>
+              </form>
           	</div>
           	<div class="col-md-4 recommended-book-nlp">
           		<!-- SHOW THE TOP 5 ENTITIES FROM THE NLP API -->
