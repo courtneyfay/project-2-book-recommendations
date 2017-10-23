@@ -3,20 +3,17 @@
 <!-- TODO add back in bookshelf partial -->
 
 		<!-- this is where ONLY THE ADMIN will be able to edit and delete recently saved books -->
-		<ul>
-			<li><%= newBook.sentiment %></li>
-		</ul>
 
-	<!-- EDIT BOOK FORM -->
+	<!-- SAVED BOOK FORM -->
 	<div class="container-fluid new-book">
 		<div class="row">
 
-			<!-- EDIT BOOK IMAGE -->
+			<!-- SAVED BOOK IMAGE -->
 			<div class="col-md-3">
 				<img class="edit-book-img" style="height: 50vh; width: 100%; display: block;" alt="<%= newBook.title %>" src="<%= newBook.coverUrl %>"></img>	
 			</div>
 
-			<!-- EDIT BOOK DATA -->
+			<!-- SAVED BOOK DATA -->
 			<div class="col-md-9">
 				<div class="alert alert-success" role="alert">
 				  Your book has been added successfully!
@@ -53,18 +50,18 @@
         </div>
 				
 				<!-- EDIT AND SUBMIT BUTTONS -->
-				<div class="row">
+				<div class="row admin-buttons">
 					<div class="col-md-6">
-						<a class="btn icon-btn btn-warning" href="/edit">
+						<button type="submit" class="btn icon-btn btn-warning edit-btn" data-id="<%= newBook._id %>">
 							<span class="glyphicon btn-glyphicon glyphicon-edit img-circle text-warning"></span>
 							Edit
-						</a>
+						</button>
 					</div>
 					<div class="col-md-6">
-						<a class="btn icon-btn btn-danger" href="/delete">
+						<button type="submit" class="btn icon-btn btn-danger delete-btn" data-id="<%= newBook._id %>">
 							<span class="glyphicon btn-glyphicon glyphicon-trash img-circle text-danger"></span>
 							Delete
-						</a>
+						</button>
 					</div>
 				</div>
 			</div>

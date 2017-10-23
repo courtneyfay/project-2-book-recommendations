@@ -1,19 +1,63 @@
 console.log("app.js, checking in!");
-// const booksController     = require('../config/routes.js');
-let $bookshelfList;
-let allBookshelf = [];
 
 $(document).ready(function(){
 
-	$booksList = $('.books-in-bookshelf');
-  $deletedBook = $(this).attr('data-id');
+	let $bookshelfList = $('.books-in-bookshelf');
+  let $addBooksList = $('.books-to-add');
+  let $adminButtons = $('.admin-buttons');
+  let $editBooksList = $('.edit-a-book-button');
+
+  //listens for when the admin clicks to submit the edited book to the database;
+  $editBooksList.on('click', '.submit-edit-btn', function() {
+    $.ajax({
+      method: 'POST',
+      url: '/new/' + $(this).attr('data-id'), 
+      data: $('.edit-book-form').serialize(), 
+      success: function(data) {
+        console.log(data);
+        // $('html').html(data);
+      },
+      error: function(err) {
+        console.log(err);
+      }
+    });
+  });
+
+  //listens for when the admin clicks to edit a book in the database;
+  $adminButtons.on('click', '.edit-btn', function() {
+    $.ajax({
+      method: 'GET',
+      url: '/new/' + $(this).attr('data-id'), 
+      success: function(data) {
+        $('html').html(data);
+      },
+      error: function(err) {
+        console.log(err);
+      }
+    });
+  }); 
+
+  //listens for when the admin clicks to delete a book from the database;
+  $adminButtons.on('click', '.delete-btn', function() {
+    $.ajax({
+      method: 'DELETE',
+      url: '/new/' +$(this).attr('data-id'), 
+      success: function(data) {
+        console.log(data);
+        $('.new-book').html(data);
+      },
+      error: function(err) {
+        console.log(err);
+      }
+    });
+  });
 
   //listens for when a user clicks to remove a book from their bookshelf;
-  $booksList.on('click', '.delete-btn', function() {
+  $bookshelfList.on('click', '.remove-btn', function() {
     $.ajax({
       method: 'DELETE',
       url: '/bookshelf/' +$(this).attr('data-id'), 
-      success: function() {
+      success: function(data) {
         location.reload();
       },
       error: function(err) {
@@ -22,40 +66,23 @@ $(document).ready(function(){
     });
   });
 
-  /*$booksList.on('click', '.add-btn', function() {
-    console.log('clicked delete button to', '/bookshelf'+$(this).attr('data-id')); 
+  //listens for when a user clicks to add a book to their bookshelf;
+  $addBooksList.on('click', '.add-btn', function() {
+    let $addedBook = $(this).attr('data-id');
+
     $.ajax({
-      method: 'DELETE',
-      url: '/bookshelf/' +$(this).attr('data-id'), 
-      success: function(result) {
-        console.log('success!');
+      method: 'POST',
+      url: '/bookshelf',
+      data: $(this).attr('data-id'), 
+      success: function(html) {
+        console.log(html);
+        console.log($bookshelfList);
+        console.log($addedBook);
       },
       error: function(err) {
         console.log(err);
       }
     });
-  });*/
-
-  /*
-  	 $('#newBookForm').on('submit', function(e) {
-      e.preventDefault();
-      $.ajax({
-        method: 'POST',
-        url: '/api/books',
-        data: $(this).serialize(),
-        success: newVacationSuccess,
-        error: newVacationError
-      });
-    });
-  	*/
-
-    /*
-    $.ajax({
-      method: 'GET',
-      url: '/api/dream-vacations',
-      success: handleSuccess,
-      error: handleError
-    });
-    */
+  });
 });
 

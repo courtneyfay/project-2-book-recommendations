@@ -96,12 +96,107 @@ let addNewBook = function(req, res) {
 		});
 };
 
-let editNewBook = function(req, res) {
-	res.send('edit page');
+let getEditBookForm = function(req, res) {
+	console.log('hitting the EDIT FORM function!');
+	
+	//figure out where the book id is in the request
+	let bookId = req.params.id;
+
+	//remove the book from the books collection
+	db.Book.find({_id: bookId}, function(err, book) {
+		if (err) return(err);
+
+		//return administrator to the edit the book form
+		res.render('./editBookAdmin.ejs', {
+			book: book
+		});
+	});
 };
 
-let removeNewBook = function(req, res) {
-	res.send('delete page');
+let editNewBook = function(req, res) {
+	console.log('hitting the EDIT function!');
+	
+	//figure out where the book id is in the request
+	let bookId = req.params.id;
+
+	//look up the record to edit
+	db.Book.findOne({_id: bookId}, function(err, book) {
+		if (err) return(err);
+
+		let editBook = book;
+
+		//if the title is NOT the same, update it
+		console.log(book.title);
+		console.log(req.body.title);
+		if (book.title !== req.body.title) {
+			console.log('titles are NOT the same!');
+			editBook.title = req.body.title;
+		} else {
+			console.log('titles ARE the same!');
+		};
+
+		//if the author is NOT the same, update it
+		console.log(book.author);
+		console.log(req.body.author);
+		if (book.author !== req.body.author) {
+			console.log('authors are NOT the same!');
+			editBook.author = req.body.author;
+		} else {
+			console.log('authors ARE the same!');
+		};
+
+		//if the coverUrl is NOT the same, update it
+		console.log(book.coverUrl);
+		console.log(req.body.coverUrl);
+		if (book.coverUrl !== req.body.coverUrl) {
+			console.log('coverUrls are NOT the same!');
+			editBook.coverUrl = req.body.coverUrl;
+		} else {
+			console.log('coverUrls ARE the same!');
+		};
+		
+		//if the sampleText is NOT the same, update it
+		console.log(book.sampleText);
+		console.log(req.body.sampleText);
+		if (book.sampleText !== req.body.sampleText) {
+			console.log('sampleTexts are NOT the same!');
+			editBook.sampleText = req.body.sampleText;
+		} else {
+			console.log('sampleTexts ARE the same!');
+		};
+
+		//save the data
+		editBook.save(editBook, function(err, book) {
+			if (err) return(err);
+
+			//serve up the savedbook page
+			res.render('savedBookAdmin.ejs', {newBook: editBook});			
+		});
+		
+		/*
+		newBook.save(newBook, function(err, book) {
+			if (err) return(err);
+
+			// 8. serve up saved book ejs
+			res.render('savedBookAdmin.ejs', {newBook: newBook});
+		});
+		*/
+	});
+};
+
+let deleteNewBook = function(req, res) {
+
+	//figure out where the book id is in the request
+	let bookId = req.params.id;
+
+	//remove the book from the books collection
+	db.Book.remove({_id: bookId}, function(err, book) {
+		if (err) return(err);
+
+		//return administrator to the add a new book page
+		return res.redirect(303, '/new');
+	});
+
 };
 
 let getBookshelf = function(req, res) {
@@ -127,8 +222,6 @@ let getBookshelf = function(req, res) {
 
 let addBookToBookshelf = function(req, res) {
 
-	console.log('hitting the add book function');
-
 	// Find the user's bookshelf
 	let userId = req.user._id;
 
@@ -152,18 +245,18 @@ let addBookToBookshelf = function(req, res) {
 			if (err) console.log(err);
 
 				// once the user bookshelf is full of details like cover URL, serve up the bookshelf page
+				//res.redirect(303, '/bookshelf');
+				// once the user bookshelf is full of details like cover URL, serve up the bookshelf page
 				res.render('./myBookshelf.ejs', {
 					bookshelf: bookshelf,
 					user: user
-				});	
+				});
 			});
 		});	
 	});
 };		
 
 let removeBookFromBookshelf = function(req, res) {
-
-	console.log('hitting the remove book function');
 
 	//figure out where the data id is in the request
 	let removeBook = req.params.id;
@@ -187,18 +280,12 @@ let removeBookFromBookshelf = function(req, res) {
 			if (err) return(err);
 
 			let newBookShelfIds = user.bookshelf;
-			console.log(newBookShelfIds);
 
 			// look up all the books' info based on book id in the book collection
 			db.Book.find({_id: {$in: newBookShelfIds}}, function(err, bookshelf) {
 				if (err) console.log(err);
 
 				// once the user bookshelf is full of details like cover URL, serve up the bookshelf page
-				//res.json(bookshelf, user);
-				/*res.render('./myBookshelf.ejs', {
-					bookshelf: bookshelf,
-					user: user
-				});	*/
 				res.redirect(303, '/bookshelf');
 			});
 		});
@@ -261,8 +348,9 @@ module.exports.booksRecommendation = booksRecommendation;
 module.exports.getNewBookForm = getNewBookForm;
 module.exports.addNewBook = addNewBook;
 module.exports.getBookshelf = getBookshelf;
+module.exports.getEditBookForm = getEditBookForm;
 module.exports.editNewBook = editNewBook;
-module.exports.removeNewBook = removeNewBook;
+module.exports.deleteNewBook = deleteNewBook;
 module.exports.addBookToBookshelf = addBookToBookshelf;
 module.exports.removeBookFromBookshelf = removeBookFromBookshelf;
 

@@ -71,8 +71,10 @@ router.route('/bookshelf/:id')
 // CREATE, EDIT, DELETE ROUTES - ADMIN ONLY
 router.route('/new')
   .get(administratorUser, booksController.getNewBookForm)
-  .post(administratorUser, booksController.addNewBook)
-  .put(administratorUser, booksController.editNewBook)
-  .delete(administratorUser, booksController.removeNewBook);
-
+  .post(administratorUser, booksController.addNewBook);
+router.route('/new/:id')
+  .get(administratorUser, booksController.getEditBookForm)
+  .post(administratorUser, booksController.editNewBook)
+  .delete(administratorUser, booksController.deleteNewBook);  
+  
 module.exports = router;

@@ -1,0 +1,60 @@
+<% include ./partials/header.ejs %>
+
+<!-- TODO add back in bookshelf partial -->
+
+		<div class="container-fluid edit-book">
+			<div class="row">
+				
+				<!-- EDIT BOOK IMAGE -->
+				<div class="col-md-3">
+					<img class="edit-book-img" src="https://image.freepik.com/free-icon/edit-interface-symbol_318-61460.jpg" alt="Edit the book"></img>	
+				</div>
+
+				<!-- EDIT BOOK FORM (ONLY ADMIN CAN EDIT BOOKS) -->
+				<div class="col-md-9">
+					<div class="col-md-12">
+						<h4>Edit the Book:</h4>
+					</div>
+
+					<form class="form-horizontal edit-book-form" method="post" action="/new/" + <%- book[0]._id %>>
+					  <div class="form-group">
+				    	<label class="control-label col-sm-2" for="title">Book title</label>
+					    <div class="col-sm-10">
+					      <input type="text" class="form-control" name="title" id="title" placeholder="Book title" required value="<%= book[0].title %>">
+					    </div>
+				  	</div>
+
+					  <div class="form-group">
+					    <label class="control-label col-sm-2" for="author">Author</label>
+					    <div class="col-sm-10">
+					    	<input class="form-control" type="text" name="author" id="author" placeholder="Author" required value="<%= book[0].author %>">
+					  	</div>
+					  </div>
+
+					  <div class="form-group">
+					    <label class="control-label col-sm-2" for="cover-url">Book Cover Link</label>
+					    <div class="col-sm-10">
+					    	<input class="form-control" type="text" name="coverUrl" id="cover-url" placeholder="Book cover link" required value="<%= book[0].coverUrl %>">
+					    </div>
+					  </div>
+
+					  <div class="form-group">
+					    <label class="control-label col-sm-2" for="sample-text">Sample Text</label>
+					    <div class="col-sm-10">
+					    	<textarea class="form-control" rows="5" rows="5" name="sampleText" id="sample-text" placeholder="Sample Text" required><%= book[0].sampleText %></textarea>
+					    </div>
+					  </div>
+
+					  <div class="col-md-10">
+					  </div>
+					  <div class="col-md-2 edit-a-book-button">
+					  	<button class="btn btn-primary submit-edit-btn" type="submit" data-id="<%= book[0]._id %>">Re-submit</button>
+					  </div>
+					</form>
+				</div>
+			</div>
+		</div>
+
+<!-- TODO add back in books partial -->
+
+<% include ./partials/footer.ejs %>

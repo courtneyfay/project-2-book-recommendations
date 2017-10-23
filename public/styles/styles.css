@@ -45,7 +45,7 @@
 	width: 100%;
 }
 
- /*BOOKSHELF STYLES */
+ /* BOOKSHELF STYLES */
 
 .carousel-item {
 	background-image: url('../images/shelf.jpg');
@@ -62,6 +62,8 @@
   border-radius: 50px;
 }
 
+/* ADMIN STYLES */
+
 .new-book {
 	margin: 1% 0;
 }
@@ -74,8 +76,8 @@
 	text-align: left;
 }
 
-.partial-book-display {
-	background-color: grey;
+.edit-book {
+	margin: 1% 0;
 }
 
 .edit-book-img {
@@ -88,4 +90,8 @@
 
 .edit-book-title {
 	font-weight: bold;
+}
+
+.control-label {
+	font-size: 14px;
 }

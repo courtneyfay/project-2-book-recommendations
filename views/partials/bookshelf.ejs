@@ -8,7 +8,7 @@
 			      	<!-- BOOKS IN USER'S BOOKSHELF -->
 		      		<% for (let i = 0; i < bookshelf.length; i++) { %>
 	      				<div class="col-md-3 col-sm-6 col-xs-12 books-in-bookshelf">
-	                <button type="submit" class="btn icon-btn btn-warning delete-btn" data-id="<%= bookshelf[i]._id %>">
+	                <button type="submit" class="btn icon-btn btn-warning remove-btn" data-id="<%= bookshelf[i]._id %>">
 	                  <span class="glyphicon btn-glyphicon glyphicon-minus img-circle text-warning"></span>
 	  							</button>
 									<img alt="<%= bookshelf[i].title %>" style="height: 55vh; width: 100%; display: block;" src="<%= bookshelf[i].coverUrl %>" data-holder-rendered="true">
