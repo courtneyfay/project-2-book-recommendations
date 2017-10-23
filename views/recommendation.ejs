@@ -5,12 +5,21 @@
 			<div class="jumbotron jumbotron-fluid">
 		  	<div class="container">
 		  		<div class="row">
-		  			<div class="col-md-10 col-xs-6">
-		  				<h1 class="display-2">BookMe Recommends:</h1>
+
+						<!-- HOME PAGE BUTTON -->
+						<div class="col-md-2 col-xs-4">
+							<button class="btn btn-default home-page-btn">
+								<img alt="BookMe home page button" class="home-btn-img" src="https://d30y9cdsu7xlg0.cloudfront.net/png/3688-200.png">
+							</button>
+						</div>	
+						
+						<!-- RECOMMENDATION JUMBOTRON -->
+		  			<div class="col-md-8 col-xs-4">
+		  				<h1 class="">BookMe Recommends:</h1>
 		  			</div>
 	  			
 		  			<!-- SIGNUP/LOGIN OR LOGOUT BUTTON -->
-		  			<div class="col-md-2 col-xs-6">
+		  			<div class="col-md-2 col-xs-4">
 		  				<% if (currentUser) { %>
 		  					<a href="/logout">
 		              <button class="btn btn-primary">

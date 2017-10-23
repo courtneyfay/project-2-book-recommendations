@@ -35,6 +35,7 @@ let booksRecommendation = function(req, res) {
 };
 
 let getNewBookForm = function(req, res) {
+	console.log('hit the getNewBookForm!');
 	res.render('addBookAdmin.ejs');
 };
 

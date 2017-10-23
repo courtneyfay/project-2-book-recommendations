@@ -23,18 +23,9 @@
 
 /* RECOMMENDATION STYLES */
 
-.recommended-book-nlp {
-	font-size: 30px;
-}
-
-.origin-book-nlp {
-	font-size: 12px;
-}
-
-.origin-book-nlp-list {
-	list-style: none;
-	text-align: left;
-	padding-left: 0;
+.home-btn-img {
+	height: 50%;
+	width: 50%;
 }
 
 .origin-book-img {

@@ -1,89 +1,43 @@
 <!-- 2 RECOMMENDED BOOKS -->
 	<div class>
-    <div class="row">
+    <div class="row test">
 
     	<!-- FIRST RECOMMENDED BOOK  -->
-      <div class="col-md-5 vertical-center-row">
+      <div class="col-md-5 vertical-center-row recommended-books-test">
         <img alt="<%=recommendedBooks[0].title%>" class="recommended-book-img" src="<%=recommendedBooks[0].coverUrl%>" data-holder-rendered="true">
         
-				<!-- BOOK NLP DATA -->
+				<!-- ADD BOOK TO BOOKSHELF BUTTON -->
         <div class="row">
-        	<p>
-            <!-- SENTIMENT DATA -->
-          	<div class="col-md-4 recommended-book-nlp">
-          		<i class="fa fa-meh-o" aria-hidden="true"></i>
-          	</div>
-            <!-- ADD BOOK TO BOOKSHELF BUTTON -->
-            <div class="col-md-4">
-              <form method="post" action="/bookshelf">
-                <input type="text" class="invisible" name="bookId" value="<%=recommendedBooks[0]._id%>">
-                <button type="submit" class="btn icon-btn btn-success">
-                  <span class="glyphicon btn-glyphicon glyphicon-plus img-circle text-success"></span>
-                </button>
-              </form>
-            </div>
-            
-            <!-- SHOW THE TOP 5 ENTITIES FROM THE NLP API -->
-          	<div class="col-md-4 recommended-book-nlp">
-              <ul class="recommended-book-nlp">
-                <% for(let i = 0; i < 5; i++) { %>
-                  <li class="left-align"> <%=recommendedBooks[0].entities[i]%> </li>
-                <% } %>
-              </ul>
-          	</div>
-          </p>
+        	<div class="col-md-12">
+            <form method="post" action="/bookshelf" class="">
+              <input type="text" class="invisible" name="bookId" value="<%=recommendedBooks[0]._id%>">
+              <button type="submit" class="btn icon-btn btn-success">
+                <span class="glyphicon btn-glyphicon glyphicon-plus img-circle text-success"></span>
+              </button>
+            </form>
+          </div>
         </div>
       </div>
 
       <!-- BOOK OF ORIGIN -->
-      <div class="col-md-2">
+      <div class="col-md-2 origin-book-div">
         <img alt="<%=originBook[0].title%>" class="origin-book-img" src="<%=originBook[0].coverUrl%>" data-holder-rendered="true">
-        
-        <!-- BOOK NLP DATA -->
-        <div class="row">
-        	<p>
-          	<div class="col-md-4 origin-book-nlp">
-          		<i class="fa fa-meh-o" aria-hidden="true"></i>
-          	</div>
-          	<div class="col-md-8">
-              <!-- SHOW THE TOP 5 ENTITIES FROM THE NLP API -->
-              <ul class="origin-book-nlp-list">
-                <% for(let i = 0; i < 5; i++) { %>
-                  <li class="left-align"> <%=originBook[0].entities[i]%> </li>
-                <% } %>
-              </ul>
-          	</div>
-          </p>
-        </div>
       </div>
 
       <!-- SECOND RECOMMENDED BOOK -->
-      <div class="col-md-5">
+      <div class="col-md-5 recommended-books-test">
         <img alt="<%=recommendedBooks[1].title%>" class="recommended-book-img" src="<%=recommendedBooks[1].coverUrl%>" data-holder-rendered="true">
         
-				<!-- BOOK NLP DATA -->
+        <!-- ADD BOOK TO BOOKSHELF BUTTON -->
         <div class="row">
-        	<p>
-          	<div class="col-md-4 recommended-book-nlp">
-          		<i class="fa fa-meh-o" aria-hidden="true"></i>
-          	</div>
-          	<div class="col-md-4">
-              <form method="post" action="/bookshelf">
-                <input type="text" class="invisible" name="bookId" value="<%=recommendedBooks[1]._id%>">
-                <button type="submit" class="btn icon-btn btn-success">
-                  <span class="glyphicon btn-glyphicon glyphicon-plus img-circle text-success"></span>
-                </button>
-              </form>
-          	</div>
-          	<div class="col-md-4 recommended-book-nlp">
-          		<!-- SHOW THE TOP 5 ENTITIES FROM THE NLP API -->
-              <ul class="recommended-book-nlp">
-                <% for(let i = 0; i < 5; i++) { %>
-                  <li class="left-align"> <%=recommendedBooks[1].entities[i]%> </li>
-                <% } %>
-              </ul>
-          	</div>
-          </p>
+          <div class="col-md-12">
+            <form method="post" action="/bookshelf">
+              <input type="text" class="invisible" name="bookId" value="<%=recommendedBooks[1]._id%>">
+              <button type="submit" class="btn icon-btn btn-success">
+                <span class="glyphicon btn-glyphicon glyphicon-plus img-circle text-success"></span>
+              </button>
+            </form>
+          </div>
         </div>
       </div>
 

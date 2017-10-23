@@ -6,7 +6,16 @@
 			<div class="jumbotron jumbotron-fluid">
 		  	<div class="container">
 		  		<div class="row">
-		  			<div class="col-md-10 col-xs-6">
+
+		  			<!-- HOME PAGE BUTTON -->
+						<div class="col-md-2 col-xs-4">
+							<button class="btn btn-default home-page-btn">
+								<img alt="BookMe home page button" class="home-btn-img" src="https://d30y9cdsu7xlg0.cloudfront.net/png/3688-200.png">
+							</button>
+						</div>	
+
+						<!-- BOOKSHELF JUMBOTRON -->
+		  			<div class="col-md-8 col-xs-6">
 		  				<h1 class="display-2"><%=user[0].local.email%>'s BookMe Bookshelf:</h1>
 		  			</div>
 
@@ -18,6 +27,13 @@
 	              	Logout
               	</button>
               </a>
+              <% if (currentUser.admin === true) { %>
+              	<a href="/new">
+	              <button class="btn btn-default admin-btn">
+	              	Admin
+              	</button>
+              </a>
+              <% } %>
             <% } else { %>
             	<a href="/signup">
             		<button class="btn btn-primary">
