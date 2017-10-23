@@ -105,7 +105,7 @@ let removeNewBook = function(req, res) {
 };
 
 let getBookshelf = function(req, res) {
-	
+
 	// Find the user's bookshelf
 	let userId = req.user._id;
 	db.User.find({_id: userId}, function(err, user) {
@@ -115,7 +115,7 @@ let getBookshelf = function(req, res) {
 		// look up all the books' info based on book id in the book collection
 		db.Book.find({_id: {$in: bookshelfIds}}, function(err, bookshelf) {
 			if (err) console.log(err);
-			
+
 			// once the user bookshelf is full of details like cover URL, serve up the bookshelf page
 			res.render('./myBookshelf.ejs', {
 				bookshelf: bookshelf,
@@ -127,10 +127,11 @@ let getBookshelf = function(req, res) {
 
 let addBookToBookshelf = function(req, res) {
 
-	console.log('hitting the add to bookshelf function');
+	console.log('hitting the add book function');
 
 	// Find the user's bookshelf
 	let userId = req.user._id;
+
 	db.User.find({_id: userId}, function(err, user) {
 		if (err) return (err);
 		
@@ -162,18 +163,19 @@ let addBookToBookshelf = function(req, res) {
 
 let removeBookFromBookshelf = function(req, res) {
 
+	console.log('hitting the remove book function');
+
 	//figure out where the data id is in the request
 	let removeBook = req.params.id;
 
 	// Find the user's bookshelf
 	let userId = req.user._id;
 	db.User.find({_id: userId}, function(err, user) {
-		if (err) return (err);
+		if (err) return(err);
 
 		let bookshelfIds = user[0].bookshelf;
 
 		//find the book in the user's bookshelf array and remove it
-		console.log('book to remove:');
 		for (let i = 0; i < bookshelfIds.length; i++) {
 			if (bookshelfIds[i] === removeBook) {
 				bookshelfIds.splice(i, 1);
@@ -181,18 +183,23 @@ let removeBookFromBookshelf = function(req, res) {
 		}
 
 		// save updated array to the db
-		user[0].save(function(err, newBookshelf) {
-			if (err) return (err);
-			
-			// look up all the books' info based on book id in the book collection
-			db.Book.find({_id: {$in: bookshelfIds}}, function(err, bookshelf) {
-			if (err) console.log(err);
+		user[0].save(function(err, user) {
+			if (err) return(err);
 
-				// serve up the bookshelf page with the new array and the removed book missing
-				res.render('./myBookshelf.ejs', {
+			let newBookShelfIds = user.bookshelf;
+			console.log(newBookShelfIds);
+
+			// look up all the books' info based on book id in the book collection
+			db.Book.find({_id: {$in: newBookShelfIds}}, function(err, bookshelf) {
+				if (err) console.log(err);
+
+				// once the user bookshelf is full of details like cover URL, serve up the bookshelf page
+				//res.json(bookshelf, user);
+				/*res.render('./myBookshelf.ejs', {
 					bookshelf: bookshelf,
 					user: user
-				});	
+				});	*/
+				res.redirect(303, '/bookshelf');
 			});
 		});
 	});

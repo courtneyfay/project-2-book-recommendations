@@ -18,7 +18,7 @@ function authenticatedUser(req, res, next) {
 	//if the user is authenticated, then we continue the execution
 	if (req.isAuthenticated()) return next();
 
-	//otherwise the request is always redirected to the login page
+	//otherwise the request is always redirected back to the page it came from
 	res.redirect('/login');
 };
 
