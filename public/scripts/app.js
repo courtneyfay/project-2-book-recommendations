@@ -39,7 +39,7 @@ $(document).ready(function(){
   //listens for when the admin clicks to submit the edited book to the database
   $editBooksList.on('click', '.submit-edit-btn', function() {
     $.ajax({
-      method: 'POST',
+      method: 'PUT',
       url: '/new/' + $(this).attr('data-id'), 
       data: $('.edit-book-form').serialize(), 
       success: function(data) {

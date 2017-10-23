@@ -74,7 +74,7 @@ router.route('/new')
   .post(administratorUser, booksController.addNewBook);
 router.route('/new/:id')
   .get(administratorUser, booksController.getEditBookForm)
-  .post(administratorUser, booksController.editNewBook)
+  .put(administratorUser, booksController.editNewBook) //post
   .delete(administratorUser, booksController.deleteNewBook);  
   
 module.exports = router;

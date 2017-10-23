@@ -74,7 +74,7 @@ let booksList = [
 ];
 
 // RE-SEED THE DATABASE WITH BOOKS
-/*db.Book.remove({}, function(err, books){
+db.Book.remove({}, function(err, books){
   if(err) {
     console.log('Error occurred in remove', err);
   } else {
@@ -87,17 +87,17 @@ let booksList = [
       process.exit();
     });
   }
-});*/
+});
 
 // UPDATE USER TO INCLUDE BOOKSHELF ENTRIES FOR DB TESTING
 // TEST@TEST.TEST
-/*db.User.findById("59e8c8afcbe139b11cb3f65a", (err, user) => {
+/*db.User.findById("59e978d593f01c0012995469", (err, user) => {
 	if (err) {
 		res.send(err);
 	}
 	if (user) {
-		//user.admin = true;
-		user.bookshelf.push("59e974da98b4c7d224047e85", "59e974da98b4c7d224047e86", "59e974da98b4c7d224047e87");
+		user.admin = true;
+		//user.bookshelf.push("59e974da98b4c7d224047e85", "59e974da98b4c7d224047e86", "59e974da98b4c7d224047e87");
 		user.save();
 		console.log(user);
 	} else {

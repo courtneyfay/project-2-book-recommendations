@@ -35,7 +35,6 @@ let booksRecommendation = function(req, res) {
 };
 
 let getNewBookForm = function(req, res) {
-	console.log('hit the getNewBookForm!');
 	res.render('addBookAdmin.ejs');
 };
 
@@ -115,7 +114,7 @@ let getEditBookForm = function(req, res) {
 };
 
 let editNewBook = function(req, res) {
-	console.log('hitting the EDIT function!');
+	console.log('hitting the EDITNEWBOOK function!');
 	
 	//figure out where the book id is in the request
 	let bookId = req.params.id;
@@ -124,64 +123,37 @@ let editNewBook = function(req, res) {
 	db.Book.findOne({_id: bookId}, function(err, book) {
 		if (err) return(err);
 
-		let editBook = book;
-
 		//if the title is NOT the same, update it
-		console.log(book.title);
-		console.log(req.body.title);
 		if (book.title !== req.body.title) {
 			console.log('titles are NOT the same!');
-			editBook.title = req.body.title;
-		} else {
-			console.log('titles ARE the same!');
+			book.title = req.body.title;
 		};
 
 		//if the author is NOT the same, update it
-		console.log(book.author);
-		console.log(req.body.author);
 		if (book.author !== req.body.author) {
 			console.log('authors are NOT the same!');
-			editBook.author = req.body.author;
-		} else {
-			console.log('authors ARE the same!');
+			book.author = req.body.author;
 		};
 
 		//if the coverUrl is NOT the same, update it
-		console.log(book.coverUrl);
-		console.log(req.body.coverUrl);
 		if (book.coverUrl !== req.body.coverUrl) {
 			console.log('coverUrls are NOT the same!');
-			editBook.coverUrl = req.body.coverUrl;
-		} else {
-			console.log('coverUrls ARE the same!');
+			book.coverUrl = req.body.coverUrl;
 		};
 		
 		//if the sampleText is NOT the same, update it
-		console.log(book.sampleText);
-		console.log(req.body.sampleText);
 		if (book.sampleText !== req.body.sampleText) {
 			console.log('sampleTexts are NOT the same!');
-			editBook.sampleText = req.body.sampleText;
-		} else {
-			console.log('sampleTexts ARE the same!');
+			book.sampleText = req.body.sampleText;
 		};
 
 		//save the data
-		editBook.save(editBook, function(err, book) {
+		book.save(book, function(err) {
 			if (err) return(err);
 
 			//serve up the savedbook page
-			res.render('savedBookAdmin.ejs', {newBook: editBook});			
+			res.render('savedBookAdmin.ejs', {newBook: book});			
 		});
-		
-		/*
-		newBook.save(newBook, function(err, book) {
-			if (err) return(err);
-
-			// 8. serve up saved book ejs
-			res.render('savedBookAdmin.ejs', {newBook: newBook});
-		});
-		*/
 	});
 };
 
