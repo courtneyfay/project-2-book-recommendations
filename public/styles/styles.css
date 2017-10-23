@@ -6,6 +6,10 @@
 
 /* HOME PAGE STYLES */
 
+.book-btn {
+	border: none;
+}
+
 .book-img {
 	display: block;
 	height: 50vh;
