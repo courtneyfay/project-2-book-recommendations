@@ -43,8 +43,7 @@ $(document).ready(function(){
       url: '/new/' + $(this).attr('data-id'), 
       data: $('.edit-book-form').serialize(), 
       success: function(data) {
-        console.log(data);
-        // $('html').html(data);
+        $('html').html(data);
       },
       error: function(err) {
         console.log(err);

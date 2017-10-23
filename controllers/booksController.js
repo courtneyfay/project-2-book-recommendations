@@ -152,9 +152,13 @@ let editNewBook = function(req, res) {
 			if (err) return(err);
 
 			//serve up the savedbook page
-			res.render('savedBookAdmin.ejs', {newBook: book});			
+			return res.render('savedBookAdmin.ejs', {newBook: book});			
 		});
 	});
+};
+
+let getSavedBookForm = function(req, res) {
+	console.log('hitting the GET SAVEDBOOKFORM');
 };
 
 let deleteNewBook = function(req, res) {
@@ -323,84 +327,7 @@ module.exports.addNewBook = addNewBook;
 module.exports.getBookshelf = getBookshelf;
 module.exports.getEditBookForm = getEditBookForm;
 module.exports.editNewBook = editNewBook;
+module.exports.getSavedBookForm = getSavedBookForm;
 module.exports.deleteNewBook = deleteNewBook;
 module.exports.addBookToBookshelf = addBookToBookshelf;
 module.exports.removeBookFromBookshelf = removeBookFromBookshelf;
-
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-// CODE GRAVEYARD //
-////////////////////
-
-/*if (books) {
-
-  		} 
-			}
-			books.forEach(function(bookshelfIds) {
-				if (books[i]._id === bookshelfIds) {
-					console.log('heyo!');
-				}
-			});*/
-/*
-var cursor = db.coll.find(),
-    i = 0;
-
-cursor.forEach(function(x){
-    db.coll.update({_id: x._id}, {$set:{new_field:i}})
-    $i++;
-});
-*/
-			/*let myBooks = books.filter(function findBooksById(book, index, books) {
-				//return bookshelfIds.
-				return (book._id === bookshelfIds[0]);
-				//if bookid is the same as any of the 6 bookshelfids, then add the book and all of its data to the array and return it
-			}); 
-
-			console.log(myBooks);*/
-
-			/*
-			var sidekicks = [
-    { name: "Robin",     hero: "Batman"   },
-    { name: "Supergirl", hero: "Superman" },
-    { name: "Oracle",    hero: "Batman"   },
-    { name: "Krypto",    hero: "Superman" }
-];
-
-var batKicks = sidekicks.filter(function (el) {
-    return (el.hero === "Batman");
-});
-			*/
-
-			//res.json(filteredBooks);
-			
-			/*function findBooksById(book) {
-				filteredBooks = [];
-
-				let filteringBooks = function() {
-					for (let i = 0; i < bookshelfIds.length; i++) {
-						if (bookshelfIds[i] === book._id)  {
-							filteredBooks.push(book);
-						}
-					}	
-
-				return filteredBooks;
-				};
-			}*/
-
-			/*
-			var vowelFruits = fruits.filter(function vowelFruit(fruit) {
-			  return vowels.indexOf(fruit[0]) >= 0; // indexOf returns -1 if not found
-			});
-			*/
-			/*, function(err, bookshelf) {
-				if (err) console.log(err);
-				console.log(bookshelf);
-				res.send('looking for books in the console');
-				
-			});
-			/*
-			res.render('pages/index', {
-        drinks: drinks,
-        tagline: tagline
-    	});
-			*/
