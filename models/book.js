@@ -9,7 +9,7 @@ const random 				= require('mongoose-simple-random');
 // defining BookSchema
 let BookSchema = new Schema({
   title: String,
-  author: String,
+  authors: [ String ],
   coverUrl: String,
   sampleText: String,
   entities: [ String ],

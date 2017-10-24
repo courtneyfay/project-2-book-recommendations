@@ -1,11 +1,12 @@
 # BookMe
 
-## Technologies used:
-```
-
-```
-
 ## Approach taken:
+```
+BookMe 
+
+```
+
+## Technologies used:
 ```
 
 ```
@@ -23,9 +24,13 @@
 
 ## Other useful links:
 
-### Presentation slides: 
+### Presentation slides: https://docs.google.com/presentation/d/1kVXLjir_B7FiagPsxinnT09zjizUMjuNdK-iJtc6dDA/edit?usp=sharing
 
-### Trello board link: 
+### Trello board link: https://trello.com/b/jngSrLKW/project-2-book-me
+
+### Toggle link: https://www.toggl.com/app/timer
+
+### Google sheets time tracker: https://docs.google.com/spreadsheets/d/1-Qb4htVyT8RGr-NQ0YlZYGhOFQ7VaihiWZemR-N7r5E/edit?usp=sharing
 
 ### Pinterest link: https://www.pinterest.com/faycourtney/project-2-ideas/
 

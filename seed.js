@@ -1,8 +1,291 @@
 console.log('seed.js, checking in!');
 
-const db = require('./models');
+// SETTING UP REQUIREMENTS AND VARIABLES
+const db 									= require('./models');
+const Book 								= require('./models/book.js');
+const request 						= require('request');
+const apiKey 							= ( process.env.apiKey || require('./config/env.js') );
+let baseUrl 							= 'https://language.googleapis.com/v1beta2/documents:';	
+// const jsdom 							= require('jsdom');
+// const { JSDOM } 					= jsdom;
 
-let booksList = [
+// SEED THE DATABASE WITH 'REAL' DATA -- WOO!
+
+// Clear out what's already in the DB
+db.Book.remove({}, function(err, books){
+  if(err) {
+  	console.log(err);
+  } else {
+  	// GET request, feed in the parameters to the URL, refine the search string!!
+		request.get({
+			url: 'https://www.googleapis.com/books/v1/volumes',
+			qs: { 
+				q: 'novels subject: classic', //?q=flowers+inauthor:keyes 	//search term
+				langRestrict: 'EN', //&langRestrict=EN 			//only uses english language books
+				maxResults: 40, 	//&maxResults=40					//returns 40 results
+				printType: 'books', 	//&printType=books 		//only returns books, no magazines
+				filter: 'partial',	//&filter=partial 			//only returns books where at least part of the book is viewable online
+				// projection: 'lite', //&projection=lite 	//only returns a little of what you need, not everything
+				key: apiKey // &key={YOUR_API_KEY} 					//uses my APIKey to make the call
+			}, 
+			headers: {'content-type' : 'application/json'}	
+		}, function(err, response, body) {
+			if (err) console.log(err);
+
+			//array of all the books returned from Google Books API
+			let parsedGoogleBooksList = JSON.parse(body);
+
+			// save all 40 books to the database with a loop
+			for (let i = 0; i < parsedGoogleBooksList.items.length; i++) {
+
+				// define the Google book	
+				let googleBook = parsedGoogleBooksList.items[i];
+
+				// only use a book if it HAS a description and the description is AT LEAST 100 characters long
+				if (googleBook.volumeInfo.description && googleBook.volumeInfo.description.length) {
+					
+					// define a new book model 
+					let newBook = new Book();
+					
+					// define each of the book properties with info from the Google Books API 
+					//title
+					newBook.title = googleBook.volumeInfo.title;
+					//author array
+					newBook.authors = googleBook.volumeInfo.authors;
+					//coverUrl
+					newBook.coverUrl = googleBook.volumeInfo.imageLinks.smallThumbnail;
+					//sampleText
+					newBook.sampleText = googleBook.volumeInfo.description;
+
+					// 2. DEFINE url and data for API requests
+					let sentimentRequest = baseUrl + 'analyzeSentiment' + '?key=' + apiKey;
+					let entitiesRequest = baseUrl + 'analyzeEntities' + '?key=' + apiKey;
+
+					// 3. post SENTIMENT request to Google API 
+					request.post({
+							headers: {'content-type' : 'application/json'},
+							url: sentimentRequest, 
+							json: {"document":{"type": "PLAIN_TEXT","language":"EN","content": newBook.sampleText },"encodingType":"UTF8"}
+						}, function(err, response, body) {
+							if (err) console.log(err);
+							
+							// 4. declare SENTIMENT variables in newBook object
+							newBook.sentimentMagnitude = body.documentSentiment.magnitude;
+							newBook.sentimentScore = body.documentSentiment.score;
+							newBook.sentiment = 'not sure';
+
+							// 5. post ENTITY request to Google API 
+							request.post({
+									headers: {'content-type' : 'application/json'},
+									url: entitiesRequest, 
+									json: {"document":{"type": "PLAIN_TEXT","language":"EN","content": newBook.sampleText },"encodingType":"UTF8"}
+								}, function(err, response, body) {
+									if (err) console.log(err);
+									
+									// 6. declare ENTITY variable in newBook object, in order of SALIENCE values
+									let entities = body.entities;
+									let entitiesArray = [];
+
+									for (let i = 0; i < entities.length; i++) {
+										entitiesArray.push(entities[i].name);
+									}
+
+									newBook.entities = entitiesArray;
+
+									// 7. SAVE newBook to db
+									newBook.save(newBook, function(err, book) {
+										if (err) console.log(err);
+									});
+							});						
+	 				});
+				}
+			}
+		});
+  }
+});
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// WEB SCRAPING GRAVEYARD //
+////////////////////////////
+
+
+/*
+newBook.sampleText =
+//googleBook.accessInfo.webReaderLink;
+					//googleBook.volumeInfo.previewLink
+// TODO create a web scraper for Google Books preview page
+				request.get({ 
+					url: newBook.sampleText,
+					headers: {
+						"user-agent" : "Chrome/61.0.3163.100" //where did this come from? // 51.0.2704.103
+					}
+				}, function(err, response, body) {
+						if (!err) {
+							try {
+								const dom = new JSDOM(body);
+								console.log(newBook.sampleText);
+								// console.log(dom);
+								console.log(dom.window.document.querySelector('p').textContent);
+								console.log('  					'); 
+							}
+							catch(e) {
+								console.log('JSDOM error ' + newBook.sampleText);
+							}
+						}
+						
+						// save the new book with partial data
+						newBook.save(newBook, function(err, book) {
+							if (err) console.log(err);
+							// console.log(book);
+						});
+					});
+				};
+
+*/
+
+/*
+						if (!error) {
+							try {
+								const dom = new JSDOM(body);
+								var aTags = dom.window.document.getElementsByTagName("a");
+								for (let i = 0; i < aTags.length; i++) {
+									if (aTags[i].getAttribute("href") && aTags[i].getAttribute("href").indexOf("bandcamp") !== -1) {
+										getbandcampEmbed(bandId, aTags[i].getAttribute("href"), event);
+										return;
+									}
+									// else if (aTags[i].getAttribute("href") && aTags[i].getAttribute("href").indexOf("soundcloud") !== -1) {
+									// 	getsoundcloudEmbed(bandId, aTags[i].getAttribute("href"), event);
+									// 	return;
+									// }
+								}
+								//no links were found, search google!
+								//googleSearchBand(bandId, event, bandName);
+							}
+							catch (e) {
+								console.log("JSDOM error " + options.url);
+							}
+						}
+						*/ 
+
+				/*
+function websiteLinkSearch(bandId, url, event, bandName) {
+	var options = {
+		url: url,
+		headers: {
+			"user-agent": "Chrome/51.0.2704.103"
+		}
+	};
+	//consider sending another request by finding a link on the page related to music
+	request(options, function (error, response, body) {
+		if (!error) {
+			try {
+				const dom = new JSDOM(body);
+				var aTags = dom.window.document.getElementsByTagName("a");
+				for (let i = 0; i < aTags.length; i++) {
+					if (aTags[i].getAttribute("href") && aTags[i].getAttribute("href").indexOf("bandcamp") !== -1) {
+						getbandcampEmbed(bandId, aTags[i].getAttribute("href"), event);
+						return;
+					}
+					// else if (aTags[i].getAttribute("href") && aTags[i].getAttribute("href").indexOf("soundcloud") !== -1) {
+					// 	getsoundcloudEmbed(bandId, aTags[i].getAttribute("href"), event);
+					// 	return;
+					// }
+				}
+				//no links were found, search google!
+				//googleSearchBand(bandId, event, bandName);
+			}
+			catch (e) {
+				console.log("JSDOM error " + options.url);
+			}
+		}
+	});
+}
+
+				*/
+				//request.get({
+					//url: newBook.sampleText,
+					/*qs: { 
+						q: 'novels subject: classic', //?q=flowers+inauthor:keyes 	//search term
+						langRestrict: 'EN', //&langRestrict=EN 			//only uses english language books
+						maxResults: 40, 	//&maxResults=40					//returns 40 results
+						printType: 'books', 	//&printType=books 		//only returns books, no magazines
+						filter: 'partial',	//&filter=partial 			//only returns books where at least part of the book is viewable online
+						// projection: 'lite', //&projection=lite 	//only returns a little of what you need, not everything
+						key: apiKey // &key={YOUR_API_KEY} 					//uses my APIKey to make the call
+					}*/
+					//headers: {'content-type' : 'application/json'}	
+					//}, function(err, response, body) {
+						//if (err) console.log(err);
+						//console.log(body);
+						//console.log('       ');
+
+						
+					//});
+
+			// TODO call the NLP APIs to get the rest of the data
+			// TODO calculate the sentiment	
+	
+/*
+// 1. grab data from the form and APIs add it to the new Book object
+	let newBook = new Book();
+	newBook.title = req.body.title;
+	newBook.author = req.body.author;
+	newBook.coverUrl = req.body.coverUrl;
+	newBook.sampleText = req.body.sampleText;
+
+	// 2. DEFINE url and data for API requests
+	let sampleText = req.body.sampleText;
+	// let sentimentError, sentimentResponse, sentimentBody;
+	let sentimentRequest = baseUrl + 'analyzeSentiment' + '?key=' + apiKey;
+	// let entityError, entityResponse, entityBody;
+	let entitiesRequest = baseUrl + 'analyzeEntities' + '?key=' + apiKey;
+
+	// 3. post SENTIMENT request to Google API 
+	request.post({
+			headers: {'content-type' : 'application/json'},
+			url: sentimentRequest, 
+			json: {"document":{"type": "PLAIN_TEXT","language":"EN","content": sampleText },"encodingType":"UTF8"}
+		}, function(err, response, body) {
+			if (err) console.log(err);
+			
+			// 4. declare SENTIMENT variables in newBook object
+			newBook.sentimentMagnitude = body.documentSentiment.magnitude;
+			newBook.sentimentScore = body.documentSentiment.score;
+			newBook.sentiment = 'not sure';
+
+			// 5. post ENTITY request to Google API 
+			request.post({
+					headers: {'content-type' : 'application/json'},
+					url: entitiesRequest, 
+					json: {"document":{"type": "PLAIN_TEXT","language":"EN","content": sampleText },"encodingType":"UTF8"}
+				}, function(err, response, body) {
+					if (err) console.log(err);
+					
+					// 6. declare ENTITY variable in newBook object
+					let entities = body.entities;
+					let entitiesArray = [];
+
+					for (let i = 0; i < entities.length; i++) {
+						entitiesArray.push(entities[i].name)
+					}
+
+					newBook.entities = entitiesArray;
+
+					// 7. SAVE to entities array in db IN ORDER OF SALIENCE values
+					newBook.save(function(err, book) {
+						if (err) return(err);
+						console.log(book);
+					});
+			});
+*/
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// ORIGINAL SEED DATA //
+////////////////////////	
+
+/*let booksList = [
 	{
 		title: "The Scarlet Letter",
 	  author: "Nathaniel Hawthorne",
@@ -71,10 +354,10 @@ let booksList = [
 	  sentiment: "mixed",
 	  createdBy: "seed.js"
 	}
-];
+];*/
 
 // RE-SEED THE DATABASE WITH BOOKS
-db.Book.remove({}, function(err, books){
+/*db.Book.remove({}, function(err, books){
   if(err) {
     console.log('Error occurred in remove', err);
   } else {
@@ -87,7 +370,7 @@ db.Book.remove({}, function(err, books){
       process.exit();
     });
   }
-});
+});*/
 
 // UPDATE USER TO INCLUDE BOOKSHELF ENTRIES FOR DB TESTING
 // TEST@TEST.TEST
