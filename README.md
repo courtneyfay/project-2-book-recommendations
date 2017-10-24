@@ -2,23 +2,45 @@
 
 ## Approach taken:
 ```
-BookMe 
+BookMe helps readers find better book recommendations using textual analysis and natural language processing. Readers can add recommended books to their bookshelves, and administrators can add, edit and delete books from the site's book library. This is my first full stack app!
 
 ```
 
 ## Technologies used:
 ```
+* APIs:
+	* Google Books
+	* Google Natural Language Processing (Entity Analysis and Sentiment Analysis)
+* Node.js
+* Express
+* Bootstrap
+* MongoDB
+* Mongoose
+* Javascript
+* JQuery
+* AJAX
+* EJS
+* Mocha 
+* Passport
+* Heroku
 
+(thanks to Jeff for the starter list!)
 ```
 
 ## Installation instructions:
 ```
+Heroku link: https://mighty-springs-60426.herokuapp.com/
+
+* node seed.js to get started with some books
+* Once you have a user, go into heroku database to make them an admin if you want to CRUD data (add admin property and set to true for that user) 
 
 ```
 
 ## Unsolved problems:
 ```
-
+* How to get sample text for the books I'm pulling in from Google Books API -- this was WAY harder than I anticipated!
+* I'd like to actually use the entity and sentiment analysis to recommend books. Right now it's randomly pulling 2 items from the database, which is not ideal.
+* Some of the styling is not up to par. In particular, the login/signup pages and the home page are UGLY.
 ```
 ------------------------------------------------------------------------
 
