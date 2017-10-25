@@ -7,6 +7,7 @@ $(document).ready(function(){
   let $adminButtons = $('.admin-buttons');
   let $editBooksList = $('.edit-a-book-button');
   let $headerList = $('.jumbotron-fluid');
+  let $signupForm = $('.signup-form');
 
   //listens for when an admin clicks on the admin button
   $headerList.on('click', '.admin-btn', function() {
@@ -112,5 +113,17 @@ $(document).ready(function(){
       }
     });
   });
+
+  /*//listens for when a user clicks on the signup button
+  $signupForm.on('click', '.submit-btn', function() {
+    $.ajax({
+      method: 'POST',
+      url: '/signup', 
+      error: function(err) {
+        console.log(err);
+      }
+    });
+  });*/
+
 });
 

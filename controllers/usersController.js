@@ -4,14 +4,14 @@ const passport = require("passport");
 
 // GET /signup
 function getSignup(request, response, next) {
-	response.render('signup.ejs', {message : request.flash('signupMessage')});
+	response.render('signup', {message : request.flash('signupMessage')});
 }
 
 // POST /signup
 function postSignup(request, response, next) {
-	let signupStrategy = passport.authenticate('local-signup', {
-		successRedirect: '/bookshelf',
-		failureRedirect: '/signup.ejs',
+	var signupStrategy = passport.authenticate('local-signup', {
+		successRedirect: '/',
+		failureRedirect: '/signup',
 		failureFlash: true
 	});
 	
@@ -25,9 +25,9 @@ function getLogin(request, response, next) {
 
 // POST /login 
 function postLogin(request, response, next) {
-	let loginStrategy = passport.authenticate('local-login', {
-		successRedirect: '/bookshelf',
-		failureRedirect: '/login.ejs',
+	var loginStrategy = passport.authenticate('local-login', {
+		successRedirect: '/',
+		failureRedirect: '/login',
 		failureFlash: true
 	});
 

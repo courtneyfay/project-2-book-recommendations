@@ -1,6 +1,9 @@
 <!-- show the alert if there is one -->
 <!-- then show the login form -->
 
+<!-- HTML HEADER -->
+<% include ./partials/header.ejs %>
+
 <% if (message.length > 0) { %>
 	<div class="alert alert-danger"><%= message %></div>
 <% } %>
@@ -20,3 +23,5 @@
 
   <input class="btn btn-default" type="submit">
 </form>
+
+<% include ./partials/footer.ejs %>

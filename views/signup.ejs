@@ -1,5 +1,9 @@
 <!-- show the alert if the signup failed -->
 <!-- then show the signup form -->
+
+<!-- HTML HEADER -->
+<% include ./partials/header.ejs %>
+
 <% if (message.length > 0) { %>
 	<div class="alert alert-danger"><%= message %></div>
 <% } %>
@@ -19,3 +23,5 @@
 
   <input class="btn btn-default" type="submit">
 </form>
+
+<% include ./partials/footer.ejs %>

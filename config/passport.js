@@ -12,7 +12,7 @@ module.exports = function(passport) {
 	passport.deserializeUser(function(id, callback) {
 		User.findById(id, function(err, user) {
 			callback(err, user);
-		})
+		});
 	});
 
 	passport.use('local-signup', new LocalStrategy({
@@ -33,7 +33,6 @@ module.exports = function(passport) {
 				// if there is NOT already a user with that email, create one
 				let newUser = new User();
 				newUser.local.email = email;
-				console.log(email);
 				newUser.local.password = newUser.encrypt(password);
 				newUser.save(function(err) {
 					if (err) throw err;
@@ -49,7 +48,9 @@ module.exports = function(passport) {
 		passReqToCallback : true
 	}, function(req, email, password, callback) {
 		User.findOne({'local.email': email}, function(err, user) {
-			if (err) return callback(err);
+			if (err) {
+				return callback(err);
+			}
 			//no user found
 			if (!user) {
 				return callback(null, false, req.flash('loginMessage', 'No user found.'));

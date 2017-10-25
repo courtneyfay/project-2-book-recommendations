@@ -5,6 +5,7 @@ const express 						= require('express');
 const router 							= express.Router();
 const booksController 		= require('../controllers/booksController.js');
 const usersController     = require('../controllers/usersController.js');
+const staticsController   = require('../controllers/statics.js');
 const bodyParser 					= require('body-parser');
 const methodOverride 			= require('method-override');
 const passport 						= require('passport');
@@ -19,7 +20,7 @@ function authenticatedUser(req, res, next) {
 	if (req.isAuthenticated()) return next();
 
 	//otherwise the request is always redirected back to the page it came from
-	res.redirect('/login');
+	res.redirect('/');
 };
 
 // CHECKS TO SEE IF USER IS AN ADMIN
@@ -36,6 +37,10 @@ function administratorUser(req, res, next) {
 //////////////////////////////////////////////////////////////////////
 // PASSPORT ROUTES //
 /////////////////////
+
+// PASSPORT ROUTE FOR HOME PAGE
+router.route('/')
+  .get(staticsController.home);
 
 // PASSPORT ROUTES FOR SIGNUP
 router.route('/signup')
