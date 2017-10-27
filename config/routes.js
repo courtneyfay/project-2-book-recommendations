@@ -40,7 +40,7 @@ function administratorUser(req, res, next) {
 
 // PASSPORT ROUTE FOR HOME PAGE
 router.route('/')
-  .get(staticsController.home);
+  .get(booksController.booksGet);
 
 // PASSPORT ROUTES FOR SIGNUP
 router.route('/signup')
