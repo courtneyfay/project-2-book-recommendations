@@ -3,30 +3,30 @@
 
 		<!-- HEADER FOR HOMEPAGE -->
 		<header>
-			<div class="jumbotron jumbotron-fluid">
+			<div class="jumbotron jumbotron-fluid book-header">
 		  	<div class="container">
 		  		<div class="row">
 		  			<div class="col-md-10 col-xs-6 book-me-title">
 		  				<h1 class="display-1">BOOKME</h1>
-			    		<p class="lead">Funky fresh bizzles, fo shizzle</p>
+			    		<p class="lead">A novel way to find new books</p>
 		  			</div>
 
 		  			<!-- SIGNUP/LOGIN OR LOGOUT BUTTON -->
-		  			<div class="col-md-2 col-xs-6">
+		  			<div class="col-md-2 col-xs-6 btn-group-vertical">
 		  				<% if (currentUser) { %>
 		  					<a href="/logout">
-		              <button class="btn btn-primary">
+		              <button class="btn btn-default">
 		              	Logout
 	              	</button>
 	              </a>
 	            <% } else { %>
 	            	<a href="/signup">
-	            		<button class="btn btn-primary">
+	            		<button class="btn btn-default">
 	            			Sign Up
 	            		</button>
 	            	</a>
             		<a href="/login">
-            			<button class="btn btn-primary">
+            			<button class="btn btn-default">
             				Login
             			</button>
             		</a>

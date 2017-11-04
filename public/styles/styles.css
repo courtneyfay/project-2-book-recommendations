@@ -2,33 +2,36 @@
 
 * {
 	/*text-align: center;*/
-	
 }
 
 @font-face {
-	font-family: 'DaDa Antiquerist';
-	src: url('fonts/DaDa Antiquerist.ttf') format('ttf');
+	font-family: 'Powell Antique';
+	src: url('fonts/PowellAntique.ttf') format('ttf');
 }
-
-/*
-* {
-	color: white;
-	font-family: 'Psuedo Saudi', 'Roboto', sans-serif;
-	letter-spacing: 8px;
-	text-align: center;
-}
-
-@font-face {
-	font-family: 'Psuedo Saudi';
-	src: url('fonts/PSAUDI5.TTF') format('ttf');
-}
-*/
 
 /* HOME PAGE STYLES */
 
 .book-me-title {
-	font-family: 'DaDa Antiquerist', sans-serif;
+	font-family: 'Powell Antique', serif;
+	color: #EDE3B9;
 }
+
+.book-header {
+	background-color: #241415;
+}
+
+/* SIGNUP AND LOGIN STYLES */
+.signup-form, .login-form {
+	color: #EDE3B9;
+	background-color: #241415;
+	padding: 10%;
+}
+
+.signup-title, .login-title {
+	font-family: 'Powell Antique', serif;
+}
+
+/* RECOMMENDATION STYLES */
 
 .book-btn {
 	border: none;
@@ -44,8 +47,6 @@
   visibility: hidden;
   font-size: 3px;
 }
-
-/* RECOMMENDATION STYLES */
 
 .home-btn-img {
 	height: 50%;
@@ -64,11 +65,33 @@
 	width: 100%;
 }
 
+.recommendation-title {
+	font-family: 'Powell Antique', serif;
+	color: #EDE3B9;
+	font-size: 300px;
+	text-align: center;
+}
+
+.center {
+	text-align: center;
+}
+
  /* BOOKSHELF STYLES */
 
-.carousel-item {
+.bookshelf-title {
+	font-family: 'Powell Antique', serif;
+	color: #EDE3B9;
+	/*font-size: 300px;*/
+	text-align: center;
+}
+
+.bookshelf-background {
 	background-image: url('../images/shelf.jpg');
-	background-size: cover;
+	/*background-size: cover;*/
+}
+
+.books-in-bookshelf {
+	text-align: center;
 }
 
 .btn-glyphicon {
@@ -83,12 +106,32 @@
 
 /* ADMIN STYLES */
 
-.new-book {
+.new-book-title {
+	background-color: #241415;
+	color: #EDE3B9;
+	font-family: 'Powell Antique', serif;
 	margin: 1% 0;
+	padding: 1%;
+	text-align: center;
+	/*font-size: 24px;*/
+}
+
+.new-book {
+	color: #241415;
 }
 
 .add-book-img {
-	height: 40vh;
+	height: 80vh;
+}
+
+.add-book-form {
+	color: #EDE3B9;
+	background-color: #241415;
+	padding: 5%;
+}
+
+.add-book-title {
+	font-family: 'Powell Antique', serif;
 }
 
 .form-control {
@@ -100,17 +143,35 @@
 }
 
 .edit-book-img {
-	height: 40vh;
+	height: 30vh;
+	/*style="height: 50vh; width: 100%; display: block;" */
+}
+
+.edit-book-form {
+	color: #EDE3B9;
+	background-color: #241415;
+	padding: 5%;
+}
+
+.edit-book-title {
+	font-family: 'Powell Antique', serif;
 }
 
 .left-align {
 	text-align: left;
 }
 
-.edit-book-title {
+.saved-book-title {
 	font-weight: bold;
+	font-family: 'Powell Antique', serif;
+	font-size: 24px;
 }
 
 .control-label {
 	font-size: 14px;
+}
+
+.admin-buttons {
+	padding: 2%;
+	text-align: center;
 }

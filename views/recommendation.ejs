@@ -2,7 +2,7 @@
 
 		<!-- HEADER FOR BOOK RECOMMENDATION PAGE -->
 		<header>
-			<div class="jumbotron jumbotron-fluid">
+			<div class="jumbotron jumbotron-fluid book-header">
 		  	<div class="container">
 		  		<div class="row">
 
@@ -14,26 +14,26 @@
 						</div>	
 						
 						<!-- RECOMMENDATION JUMBOTRON -->
-		  			<div class="col-md-8 col-xs-4">
-		  				<h1 class="">BookMe Recommends:</h1>
+		  			<div class="col-md-8 col-xs-4 recommendation-title">
+		  				<h2 class="">BookMe Recommends:</h2>
 		  			</div>
 	  			
 		  			<!-- SIGNUP/LOGIN OR LOGOUT BUTTON -->
 		  			<div class="col-md-2 col-xs-4">
 		  				<% if (currentUser) { %>
 		  					<a href="/logout">
-		              <button class="btn btn-primary">
+		              <button class="btn btn-default">
 		              	Logout
 	              	</button>
 	              </a>
 	            <% } else { %>
 	            	<a href="/signup">
-	            		<button class="btn btn-primary">
+	            		<button class="btn btn-default">
 	            			Sign Up
 	            		</button>
 	            	</a>
             		<a href="/login">
-            			<button class="btn btn-primary">
+            			<button class="btn btn-default">
             				Login
             			</button>
             		</a>

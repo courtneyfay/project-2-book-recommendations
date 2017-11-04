@@ -7,7 +7,7 @@
         <img alt="<%=recommendedBooks[0].title%>" class="recommended-book-img" src="<%=recommendedBooks[0].coverUrl%>" data-holder-rendered="true">
         
 				<!-- ADD BOOK TO BOOKSHELF BUTTON -->
-        <div class="row">
+        <div class="row center">
         	<div class="col-md-12">
             <form method="post" action="/bookshelf" class="">
               <input type="text" class="invisible" name="bookId" value="<%=recommendedBooks[0]._id%>">
@@ -29,7 +29,7 @@
         <img alt="<%=recommendedBooks[1].title%>" class="recommended-book-img" src="<%=recommendedBooks[1].coverUrl%>" data-holder-rendered="true">
         
         <!-- ADD BOOK TO BOOKSHELF BUTTON -->
-        <div class="row">
+        <div class="row center">
           <div class="col-md-12">
             <form method="post" action="/bookshelf">
               <input type="text" class="invisible" name="bookId" value="<%=recommendedBooks[1]._id%>">

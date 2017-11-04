@@ -5,36 +5,41 @@
 		<!-- this is where ONLY THE ADMIN will be able to edit and delete recently saved books -->
 
 	<!-- SAVED BOOK FORM -->
-	<div class="container-fluid new-book">
+	<div class="container-fluid">
 		<div class="row">
-
-			<!-- SAVED BOOK IMAGE -->
-			<div class="col-md-3">
-				<img class="edit-book-img" style="height: 50vh; width: 100%; display: block;" alt="<%= newBook.title %>" src="<%= newBook.coverUrl %>"></img>	
+			
+			<!-- ACROSS THE TOP -->
+			<div class="alert alert-success" role="alert">
+				Your book has been added successfully!
 			</div>
+			<h1 class="new-book-title">New Book:</h1>
 
+			<!-- LEFT COLUMN -->
+				<div class="col-md-2">
+					<!-- SAVED BOOK IMAGE -->
+					<img class="edit-book-img" alt="<%= newBook.title %>" src="<%= newBook.coverUrl %>"></img>
+				</div>
+
+			<!-- RIGHT COLUMN -->
 			<!-- SAVED BOOK DATA -->
-			<div class="col-md-9">
-				<div class="alert alert-success" role="alert">
-				  Your book has been added successfully!
+			<div class="col-md-10 new-book">
+				<div class="row">
+					<p class="col-md-2 saved-book-title">Book title</p>
+					<p class="col-md-10 left-align"><%= newBook.title %></p>
 				</div>
 				<div class="row">
-					<p class="col-md-3 edit-book-title">Book title</p>
-					<p class="col-md-8 left-align"><%= newBook.title %></p>
+					<p class="col-md-2 saved-book-title">Authors</p>
+					<p class="col-md-10 left-align"><%= newBook.authors %></p>
 				</div>
 				<div class="row">
-					<p class="col-md-3 edit-book-title">Author</p>
-					<p class="col-md-8 left-align"><%= newBook.author %></p>
-				</div>
-				<div class="row">
-					<p class="col-md-3 edit-book-title">Sample text</p>
-					<p class="col-md-8 left-align"><%= newBook.sampleText %></p>
+					<p class="col-md-2 saved-book-title">Sample text</p>
+					<p class="col-md-10 left-align"><%= newBook.sampleText %></p>
 				</div>
 
 				<!-- NLP DATA -->
 				<div class="row">
 					<div class="col-md-3">
-						<p class="edit-book-title">Book analysis</p>
+						<p class="saved-book-title">Book analysis</p>
         	</div>
         	<div class="col-md-2 left-align">
         		<i class="fa fa-smile-o" aria-hidden="true"></i>
@@ -64,6 +69,7 @@
 						</button>
 					</div>
 				</div>
+
 			</div>
 		</div>
 	</div>	

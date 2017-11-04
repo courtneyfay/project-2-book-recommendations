@@ -32,7 +32,8 @@ BookMe helps readers find better book recommendations using textual analysis and
 Heroku link: https://mighty-springs-60426.herokuapp.com/
 
 * node seed.js to get started with some books
-* Once you have a user, go into heroku database to make them an admin if you want to CRUD data (add admin property and set to true for that user) 
+* you can sign up any sample user to play with bookshelf functionality
+* use test@test.test/test to play with admin functionality (or once you have your own user setup, go into heroku database to make them an admin if you want to CRUD data (add admin property and set to true for that user))
 
 ```
 

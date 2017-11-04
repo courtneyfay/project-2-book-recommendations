@@ -43,7 +43,7 @@ let addNewBook = function(req, res) {
 	// 1. grab data from the form and APIs add it to the new Book object
 	let newBook = new Book();
 	newBook.title = req.body.title;
-	newBook.author = req.body.author;
+	newBook.authors = req.body.authors;
 	newBook.coverUrl = req.body.coverUrl;
 	newBook.sampleText = req.body.sampleText;
 
@@ -80,7 +80,7 @@ let addNewBook = function(req, res) {
 					let entitiesArray = [];
 
 					for (let i = 0; i < entities.length; i++) {
-						entitiesArray.push(entities[i].name)
+						entitiesArray.push(entities[i].name);
 					}
 
 					newBook.entities = entitiesArray;
@@ -127,25 +127,25 @@ let editNewBook = function(req, res) {
 		if (book.title !== req.body.title) {
 			console.log('titles are NOT the same!');
 			book.title = req.body.title;
-		};
+		}
 
-		//if the author is NOT the same, update it
-		if (book.author !== req.body.author) {
+		//if the authors are NOT the same, update it
+		if (book.authors !== req.body.authors) {
 			console.log('authors are NOT the same!');
-			book.author = req.body.author;
-		};
+			book.authors = req.body.authors;
+		}
 
 		//if the coverUrl is NOT the same, update it
 		if (book.coverUrl !== req.body.coverUrl) {
 			console.log('coverUrls are NOT the same!');
 			book.coverUrl = req.body.coverUrl;
-		};
+		}
 		
 		//if the sampleText is NOT the same, update it
 		if (book.sampleText !== req.body.sampleText) {
 			console.log('sampleTexts are NOT the same!');
 			book.sampleText = req.body.sampleText;
-		};
+		}
 
 		//save the data
 		book.save(book, function(err) {

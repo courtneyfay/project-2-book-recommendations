@@ -41,6 +41,8 @@ db.Book.remove({}, function(err, books){
 				// define the Google book	
 				let googleBook = parsedGoogleBooksList.items[i];
 
+				console.log(googleBook);
+
 				// only use a book if it HAS a description and the description is AT LEAST 100 characters long
 				if (googleBook.volumeInfo.description && googleBook.volumeInfo.description.length) {
 					
@@ -53,7 +55,7 @@ db.Book.remove({}, function(err, books){
 					//author array
 					newBook.authors = googleBook.volumeInfo.authors;
 					//coverUrl
-					newBook.coverUrl = googleBook.volumeInfo.imageLinks.smallThumbnail;
+					newBook.coverUrl = googleBook.volumeInfo.imageLinks.thumbnail; //smallThumbnail;
 					//sampleText
 					newBook.sampleText = googleBook.volumeInfo.description;
 

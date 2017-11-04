@@ -3,7 +3,7 @@
 
 	<!-- HEADER FOR BOOKSHELF PAGE -->
 		<header>
-			<div class="jumbotron jumbotron-fluid">
+			<div class="jumbotron jumbotron-fluid book-header">
 		  	<div class="container">
 		  		<div class="row">
 
@@ -15,33 +15,33 @@
 						</div>	
 
 						<!-- BOOKSHELF JUMBOTRON -->
-		  			<div class="col-md-8 col-xs-6">
-		  				<h1 class="display-2"><%=user[0].local.email%>'s BookMe Bookshelf:</h1>
+		  			<div class="col-md-8 col-xs-6 bookshelf-title">
+		  				<h2><%=user[0].local.email%>'s BOOKME bookshelf:</h2>
 		  			</div>
 
 		  			<!-- SIGNUP/LOGIN OR LOGOUT BUTTON -->
 		        <div class="col-md-2">
 	  				<% if (currentUser) { %>
 	  					<a href="/logout">
-	              <button class="btn btn-primary">
+	              <button class="btn btn-default">
 	              	Logout
               	</button>
               </a>
               <% if (currentUser.admin === true) { %>
               	<a href="/new">
-	              <button class="btn btn-default admin-btn">
+	              <button class="btn btn-info admin-btn">
 	              	Admin
               	</button>
               </a>
               <% } %>
             <% } else { %>
             	<a href="/signup">
-            		<button class="btn btn-primary">
+            		<button class="btn btn-default">
             			Sign Up
             		</button>
             	</a>
           		<a href="/login">
-          			<button class="btn btn-primary">
+          			<button class="btn btn-default">
           				Login
           			</button>
           		</a>
