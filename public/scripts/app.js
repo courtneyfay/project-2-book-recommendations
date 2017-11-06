@@ -9,6 +9,37 @@ $(document).ready(function(){
   let $headerList = $('.jumbotron-fluid');
   let $signupForm = $('.signup-form');
 
+  //listens for when a user clicks on the "find books text" button
+  $headerList.on('click', '.get-book-text-btn', function() {
+    $.ajax({
+      method: 'GET',
+      url: '/text',  
+      success: function(data) {
+        console.log(data);
+        // $('html').html(data);
+        // location.reload();
+      },
+      error: function(err) {
+        console.log(err);
+      }
+    });
+  });
+
+  //listens for when a user clicks on the "get more books" button
+  $headerList.on('click', '.get-more-books-btn', function() {
+    $.ajax({
+      method: 'GET',
+      url: '/books',  
+      success: function(data) {
+        // $('html').html(data);
+        location.reload();
+      },
+      error: function(err) {
+        console.log(err);
+      }
+    });
+  });
+
   //listens for when an admin clicks on the admin button
   $headerList.on('click', '.admin-btn', function() {
     $.ajax({

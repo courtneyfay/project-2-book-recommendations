@@ -9,102 +9,128 @@ let baseUrl 							= 'https://language.googleapis.com/v1beta2/documents:';
 // const jsdom 							= require('jsdom');
 // const { JSDOM } 					= jsdom;
 
-// SEED THE DATABASE WITH 'REAL' DATA -- WOO!
+//Clear out what's already in the DB
+db.Book.remove({}, function(err, books){
+  if(err) console.log(err);
+});
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+// SEED THE DATABASE WITH 'REAL' DATA -- WOO! ///////
+/////////////////////////////////////////////////////
+
 
 // Clear out what's already in the DB
-db.Book.remove({}, function(err, books){
-  if(err) {
-  	console.log(err);
-  } else {
-  	// GET request, feed in the parameters to the URL, refine the search string!!
-		request.get({
-			url: 'https://www.googleapis.com/books/v1/volumes',
-			qs: { 
-				q: 'novels subject: classic', //?q=flowers+inauthor:keyes 	//search term
-				langRestrict: 'EN', //&langRestrict=EN 			//only uses english language books
-				maxResults: 40, 	//&maxResults=40					//returns 40 results
-				printType: 'books', 	//&printType=books 		//only returns books, no magazines
-				filter: 'partial',	//&filter=partial 			//only returns books where at least part of the book is viewable online
-				// projection: 'lite', //&projection=lite 	//only returns a little of what you need, not everything
-				key: apiKey // &key={YOUR_API_KEY} 					//uses my APIKey to make the call
-			}, 
-			headers: {'content-type' : 'application/json'}	
-		}, function(err, response, body) {
-			if (err) console.log(err);
+// db.Book.remove({}, function(err, books){
+//   if(err) {
+//   	console.log(err);
+//   } else {
+//   	// GET request, feed in the parameters to the URL, refine the search string!!
+// 		request.get({
+// 			url: 'https://www.googleapis.com/books/v1/volumes',
+// 			qs: { 
+// 				q: 'novels subject: classic', //?q=flowers+inauthor:keyes 	//search term
+// 				langRestrict: 'EN', //&langRestrict=EN 			//only uses english language books
+// 				maxResults: 40, 	//&maxResults=40					//returns 40 results
+// 				printType: 'books', 	//&printType=books 		//only returns books, no magazines
+// 				filter: 'partial',	//&filter=partial 			//only returns books where at least part of the book is viewable online
+// 				// projection: 'lite', //&projection=lite 	//only returns a little of what you need, not everything
+// 				key: apiKey // &key={YOUR_API_KEY} 					//uses my APIKey to make the call
+// 			}, 
+// 			headers: {'content-type' : 'application/json'}	
+// 		}, function(err, response, body) {
+// 			if (err) console.log(err);
 
-			//array of all the books returned from Google Books API
-			let parsedGoogleBooksList = JSON.parse(body);
+// 			//array of all the books returned from Google Books API
+// 			let parsedGoogleBooksList = JSON.parse(body);
 
-			// save all 40 books to the database with a loop
-			for (let i = 0; i < parsedGoogleBooksList.items.length; i++) {
+// 			// save all 40 books to the database with a loop
+// 			for (let i = 0; i < parsedGoogleBooksList.items.length; i++) {
 
-				// define the Google book	
-				let googleBook = parsedGoogleBooksList.items[i];
+// 				// define the Google book	
+// 				let googleBook = parsedGoogleBooksList.items[i];
 
-				console.log(googleBook);
-
-				// only use a book if it HAS a description and the description is AT LEAST 100 characters long
-				if (googleBook.volumeInfo.description && googleBook.volumeInfo.description.length) {
+// 				// only use a book if it HAS a description and the description is AT LEAST 100 characters long
+// 				//if (googleBook.volumeInfo.description && googleBook.volumeInfo.description.length) {
 					
-					// define a new book model 
-					let newBook = new Book();
+// 				if (googleBook.accessInfo.publicDomain === true) {
+// 					console.log('NEW BOOK!');
+// 					console.log('title: ' + googleBook.volumeInfo.title);
+// 					console.log('authors: ' + googleBook.volumeInfo.authors);
+// 					console.log('viewability: ' + googleBook.accessInfo.viewability);
+// 					console.log('public domain: ' + googleBook.accessInfo.publicDomain);
+// 					console.log('web reader link: ' + googleBook.accessInfo.webReaderLink);
+// 					console.log('access view status: ' + googleBook.accessInfo.accessViewStatus);
+// 					console.log('quote sharing allowed: ' + googleBook.accessInfo.quoteSharingAllowed);
+// 					console.log('					');
+
 					
-					// define each of the book properties with info from the Google Books API 
-					//title
-					newBook.title = googleBook.volumeInfo.title;
-					//author array
-					newBook.authors = googleBook.volumeInfo.authors;
-					//coverUrl
-					newBook.coverUrl = googleBook.volumeInfo.imageLinks.thumbnail; //smallThumbnail;
-					//sampleText
-					newBook.sampleText = googleBook.volumeInfo.description;
+// 						// play around with these IF statements to filter incoming books!
+// 						// !PARTIAL 		accessInfo.viewability: 'PARTIAL',
+// 	  			// 	TRUE 				accessInfo.publicDomain: false,
+// 	  			// 							accessInfo.webReaderLink: 'http://play.google.com/books/reader?id=Hv3QAQAAQBAJ&hl=&as_brr=3&as_pt=BOOKS&printsec=frontcover&source=gbs_api',
+// 	  			// 	!SAMPLE 		accessInfo.accessViewStatus: 'SAMPLE',
+// 	  			// 	TRUE 				accessInfo.quoteSharingAllowed: false
+					
 
-					// 2. DEFINE url and data for API requests
-					let sentimentRequest = baseUrl + 'analyzeSentiment' + '?key=' + apiKey;
-					let entitiesRequest = baseUrl + 'analyzeEntities' + '?key=' + apiKey;
+// 					// define a new book model 
+// 					let newBook = new Book();
+					
+// 					// define each of the book properties with info from the Google Books API 
+// 					//title
+// 					newBook.title = googleBook.volumeInfo.title;
+// 					//author array
+// 					newBook.authors = googleBook.volumeInfo.authors;
+// 					//coverUrl
+// 					newBook.coverUrl = googleBook.volumeInfo.imageLinks.thumbnail; //smallThumbnail;
+// 					//sampleText
+// 					newBook.sampleText = googleBook.volumeInfo.description;
 
-					// 3. post SENTIMENT request to Google API 
-					request.post({
-							headers: {'content-type' : 'application/json'},
-							url: sentimentRequest, 
-							json: {"document":{"type": "PLAIN_TEXT","language":"EN","content": newBook.sampleText },"encodingType":"UTF8"}
-						}, function(err, response, body) {
-							if (err) console.log(err);
+// 					// 2. DEFINE url and data for API requests
+// 					let sentimentRequest = baseUrl + 'analyzeSentiment' + '?key=' + apiKey;
+// 					let entitiesRequest = baseUrl + 'analyzeEntities' + '?key=' + apiKey;
+
+// 					// 3. post SENTIMENT request to Google API 
+// 					request.post({
+// 							headers: {'content-type' : 'application/json'},
+// 							url: sentimentRequest, 
+// 							json: {"document":{"type": "PLAIN_TEXT","language":"EN","content": newBook.sampleText },"encodingType":"UTF8"}
+// 						}, function(err, response, body) {
+// 							if (err) console.log(err);
 							
-							// 4. declare SENTIMENT variables in newBook object
-							newBook.sentimentMagnitude = body.documentSentiment.magnitude;
-							newBook.sentimentScore = body.documentSentiment.score;
-							newBook.sentiment = 'not sure';
+// 							// 4. declare SENTIMENT variables in newBook object
+// 							newBook.sentimentMagnitude = body.documentSentiment.magnitude;
+// 							newBook.sentimentScore = body.documentSentiment.score;
+// 							newBook.sentiment = 'not sure';
 
-							// 5. post ENTITY request to Google API 
-							request.post({
-									headers: {'content-type' : 'application/json'},
-									url: entitiesRequest, 
-									json: {"document":{"type": "PLAIN_TEXT","language":"EN","content": newBook.sampleText },"encodingType":"UTF8"}
-								}, function(err, response, body) {
-									if (err) console.log(err);
+// 							// 5. post ENTITY request to Google API 
+// 							request.post({
+// 									headers: {'content-type' : 'application/json'},
+// 									url: entitiesRequest, 
+// 									json: {"document":{"type": "PLAIN_TEXT","language":"EN","content": newBook.sampleText },"encodingType":"UTF8"}
+// 								}, function(err, response, body) {
+// 									if (err) console.log(err);
 									
-									// 6. declare ENTITY variable in newBook object, in order of SALIENCE values
-									let entities = body.entities;
-									let entitiesArray = [];
+// 									// 6. declare ENTITY variable in newBook object, in order of SALIENCE values
+// 									let entities = body.entities;
+// 									let entitiesArray = [];
 
-									for (let i = 0; i < entities.length; i++) {
-										entitiesArray.push(entities[i].name);
-									}
+// 									for (let i = 0; i < entities.length; i++) {
+// 										entitiesArray.push(entities[i].name);
+// 									}
 
-									newBook.entities = entitiesArray;
+// 									newBook.entities = entitiesArray;
 
-									// 7. SAVE newBook to db
-									newBook.save(newBook, function(err, book) {
-										if (err) console.log(err);
-									});
-							});						
-	 				});
-				}
-			}
-		});
-  }
-});
+// 									// 7. SAVE newBook to db
+// 									newBook.save(newBook, function(err, book) {
+// 										if (err) console.log(err);
+// 									});
+// 							});						
+// 	 				});
+// 				}
+// 			}
+// 		});
+//   }
+// });
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // WEB SCRAPING GRAVEYARD //
@@ -143,7 +169,7 @@ newBook.sampleText =
 					});
 				};
 
-*/
+
 
 /*
 						if (!error) {

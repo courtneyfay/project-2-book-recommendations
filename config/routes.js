@@ -40,7 +40,7 @@ function administratorUser(req, res, next) {
 
 // PASSPORT ROUTE FOR HOME PAGE
 router.route('/')
-  .get(booksController.booksGet);
+  .get(booksController.booksGet); 
 
 // PASSPORT ROUTES FOR SIGNUP
 router.route('/signup')
@@ -62,6 +62,12 @@ router.route('/logout')
 
 // INDEX ROUTE - USER CAN SEE ALL BOOKS
 router.get('/', booksController.booksGet);
+
+// API ROUTE TO GRAB MORE BOOKS FOR THE HOME PAGE
+router.get('/books', booksController.callBooksAPI);
+
+// API ROUTE TO FIND BOOK TEXT FOR NATURAL LANGUAGE PROCESSING
+router.get('/text', booksController.parseBookText);
 
 // TESTING RECOMMENDATION ROUTE - DISPLAY RECOMMENDATION PAGE
 router.post('/recommendation', booksController.booksRecommendation);

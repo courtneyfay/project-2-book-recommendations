@@ -6,11 +6,373 @@ const Book 								= require('../models/book.js');
 const request 						= require('request');
 const apiKey 							= ( process.env.apiKey || require('../config/env.js') );
 let baseUrl 							= 'https://language.googleapis.com/v1beta2/documents:';	
+const jsdom 							= require('jsdom');
+const { JSDOM } 					= jsdom;
+let PNG 									= require('node-png').PNG;
+let fs 										= require('fs');
+let path 									= require('path');
+let mkdirp 								= require('mkdirp');
+
+let callBooksAPI = function (req, res) {
+	
+	// GET request, feed in the parameters to the URL, refine the search string!!
+	request.get({
+		url: 'https://www.googleapis.com/books/v1/volumes',
+		qs: { 
+			q: 'novels subject: ship', //?q=flowers+inauthor:keyes 	//search term
+			langRestrict: 'EN', //&langRestrict=EN 			//only uses english language books
+			maxResults: 40, 	//&maxResults=40					//returns 40 results
+			printType: 'books', 	//&printType=books 		//only returns books, no magazines
+			//filter: 'full',	//&filter=partial 				//only returns books where at least part of the book is viewable online
+			// projection: 'lite', //&projection=lite 	//only returns a little of what you need, not everything
+			key: apiKey // &key={YOUR_API_KEY} 					//uses my APIKey to make the call
+		}, 
+		headers: {'content-type' : 'application/json'}	
+	}, function(err, response, body) {
+		if (err) console.log(err);
+
+		//array of all the books returned from Google Books API
+		let parsedGoogleBooksList = JSON.parse(body);
+
+		// save all 40 books to the database with a loop
+		for (let i = 0; i < parsedGoogleBooksList.items.length; i++) {
+
+			// define the Google book	
+			let googleBook = parsedGoogleBooksList.items[i];
+
+			// only save a book if it HAS a description 
+			if (googleBook.volumeInfo.description && googleBook.volumeInfo.description.length) {
+			// !== undefined 
+			
+				/*
+					play around with these IF statements to filter incoming books!
+  										accessInfo.webReaderLink: 'http://play.google.com/books/reader?id=Hv3QAQAAQBAJ&hl=&as_brr=3&as_pt=BOOKS&printsec=frontcover&source=gbs_api',
+  				!SAMPLE 		accessInfo.accessViewStatus: 'SAMPLE',
+  				TRUE 				accessInfo.quoteSharingAllowed: false
+
+  				TESTED
+  				!PARTIAL 		accessInfo.viewability: 'PARTIAL',
+  				TRUE 				accessInfo.publicDomain: false //not enough books are coming back and also it's not necessary
+				*/
+
+				// console.log('NEW BOOK!');
+				// console.log('authors: ' + googleBook.volumeInfo.authors);
+				// console.log('thumbnails: ' + googleBook.volumeInfo.imageLinks.smallThumbnail);
+				// console.log('thumbnails: ' + typeof(googleBook.volumeInfo.imageLinks.smallThumbnail));
+				// console.log('					');
+				console.log('NEW BOOK!');
+				console.log(googleBook);
+				// console.log('title: ' + googleBook.volumeInfo.title);
+				// console.log('authors: ' + googleBook.volumeInfo.authors);
+				// console.log('viewability: ' + googleBook.accessInfo.viewability);
+				// console.log('public domain: ' + googleBook.accessInfo.publicDomain);
+				// console.log('web reader link: ' + googleBook.accessInfo.webReaderLink);
+				// console.log('access view status: ' + googleBook.accessInfo.accessViewStatus);
+				// console.log('quote sharing allowed: ' + googleBook.accessInfo.quoteSharingAllowed);
+				console.log('					');
+
+				// define a new book model 
+				let newBook = new Book();
+				
+				// define each of the book properties with info from the Google Books API 
+				//title
+				newBook.title = googleBook.volumeInfo.title;
+				//author array
+				newBook.authors = googleBook.volumeInfo.authors;
+				//coverUrl
+				newBook.coverUrl = googleBook.volumeInfo.imageLinks.smallThumbnail;
+				//sampleText
+				newBook.sampleText = googleBook.volumeInfo.description;
+
+				// 2. DEFINE url and data for API requests
+				let sentimentRequest = baseUrl + 'analyzeSentiment' + '?key=' + apiKey;
+				let entitiesRequest = baseUrl + 'analyzeEntities' + '?key=' + apiKey;
+
+				// 3. post SENTIMENT request to Google API 
+				request.post({
+						headers: {'content-type' : 'application/json'},
+						url: sentimentRequest, 
+						json: {"document":{"type": "PLAIN_TEXT","language":"EN","content": newBook.sampleText },"encodingType":"UTF8"}
+					}, function(err, response, body) {
+						if (err) console.log(err);
+						
+						// 4. declare SENTIMENT variables in newBook object
+						newBook.sentimentMagnitude = body.documentSentiment.magnitude;
+						newBook.sentimentScore = body.documentSentiment.score;
+						newBook.sentiment = 'not sure';
+
+						// 5. post ENTITY request to Google API 
+						request.post({
+								headers: {'content-type' : 'application/json'},
+								url: entitiesRequest, 
+								json: {"document":{"type": "PLAIN_TEXT","language":"EN","content": newBook.sampleText },"encodingType":"UTF8"}
+							}, function(err, response, body) {
+								if (err) console.log(err);
+								
+								// 6. declare ENTITY variable in newBook object, in order of SALIENCE values
+								let entities = body.entities;
+								let entitiesArray = [];
+
+								for (let i = 0; i < entities.length; i++) {
+									entitiesArray.push(entities[i].name);
+								}
+
+								newBook.entities = entitiesArray;
+
+								// 7. SAVE newBook to db
+								newBook.save(newBook, function(err, book) {
+									if (err) console.log(err);
+								});
+						});						
+ 				});
+			}
+		}
+		res.sendStatus(200);
+	});
+};
+
+let parseBookText = function(req, res) {
+	console.log('hit parseBookText function!');
+
+	let viewer;
+	let $ = function (x) { return [].slice.call(document.querySelectorAll(x)); };
+	
+	let makeImgDataGetter = function (canvas) {
+	  return function (img) {
+	    canvas.setAttribute('width', img.width);
+	    canvas.setAttribute('height', img.height);
+	    let context = canvas.getContext("2d");
+	    context.drawImage(img, 0, 0);
+	    return context.getImageData(0, 0, img.width, img.height);
+	  };
+	};
+	let canvas = document.createElement("canvas");
+	let getImageData = makeImgDataGetter(canvas);
+
+
+	function getPageImage() {
+	  let id = viewer.getPageId();
+	  let num = viewer.getPageNumber();
+	  let img = $('#viewerCanvas img').filter(function (el) {
+	    return (new RegExp(id)).test(el.src);
+	  })[0];
+	  if (!img) return null;
+	  let res = getImageData(img);
+	  res.id = id;
+	  res.num = num;
+	  return res;
+	}
+
+	let prevId;
+	function nextPage() {
+	  let img = getPageImage();
+	  if (img) {
+	    let png = new PNG({ width: img.width, height: img.height});
+	    let file = path.join(outdir, img.num+'-'+img.id+'.png');
+	    png.data = img.data;
+	    png.pack().pipe(fs.createWriteStream(file));
+	  }
+	  prevId = viewer.getPageId();
+	  viewer.nextPage();
+	  if (viewer.getPageId() === prevId)
+	    alert('Done');
+	  else
+	    window.setTimeout(nextPage, 1000);
+	    // window.setTimeout(nextPage, 700 + Math.floor(Math.random()*1000))
+	}
+
+
+	let args = require('nw.gui').App.argv;
+	let bookid = args[0];
+	if (!bookid) {
+	  process.stderr.write('\nMissing <book-id> argument:\n');
+	  process.stderr.write('Usage:\n\tnw . <book-id>\n# See Supported Identifiers at https://developers.google.com/books/docs/viewer/developers_guide\n');
+	  process.exit(1);
+	}
+
+	let outdir = path.resolve(args[1] || '.');
+	mkdirp.sync(outdir);
+
+	google.load("books", "0");
+	google.setOnLoadCallback(function initialize() {
+	  viewer = new google.books.DefaultViewer(document.getElementById('viewerCanvas'));
+	  viewer.load(bookid);
+	  setTimeout(nextPage, 3000);
+	});
+
+	//SO THE AJAX DOESN'T GET ANGRY
+	// res.sendStatus(200);
+
+	/////////////////////////////shit i've tried////////////////////////////////////////
+	//sampleUrl = 'https://books.google.com/books?id=yWiMCwAAQBAJ&printsec=frontcover&dq=novels+subject:+ship&hl=&as_pt=BOOKS&cd=35&source=gbs_api#v=onepage&q&f=false';
+	//'http://play.google.com/books/reader?id=lSMGAAAAQAAJ&hl=&as_brr=1&as_pt=BOOKS&printsec=frontcover&source=gbs_api';
+	//WORKS!! 'http://xroads.virginia.edu/~hyper/poe/cask.html';
+	//'https://play.google.com/books/reader?id=-4WVDgAAQBAJ&hl=&as_pt=BOOKS&printsec=frontcover&source=gbs_api&pg=GBS.PA3';
+	//'https://play.google.com/books/reader?id=kJeBjVJDsIgC&hl=&as_pt=BOOKS&printsec=frontcover&source=gbs_api&pg=GBS.PA2';
+	// actual webreaderlink: 'http://play.google.com/books/reader?id=kJeBjVJDsIgC&hl=&as_pt=BOOKS&printsec=frontcover&source=gbs_api'; 
+	// NOW IT'S: googleBook.volumeInfo.previewLink; NOT ANYMORE googleBook.accessInfo.webReaderLink;
+	// TODO create a web scraper for Google Books preview page
+	/*request.get({ 
+			url: sampleUrl,
+			headers: {
+				"user-agent" : "Chrome/61.0.3163.100" //where did this come from? // 51.0.2704.103
+			}
+		}, function(err, response, body) {
+				if (err) console.log(err);
+				else {
+					try {
+
+						//define DOM variables to manipulate
+						// const dom = new JSDOM(body);
+
+						// var window = dom.parentWindow;
+
+						// jsdom.jQueryify(window, "jquery-1.10.2.js", function (window, $) {
+						//     try {
+						//         $(window).scroll(function(){
+						//             console.log("Scroll Happened.");
+						//         });
+						//         console.log("Triggering Scroll event...");  // 1
+						//         $(window).trigger('scroll');
+						//         console.log("Scroll event triggered.");     // 2
+						//     }
+						//     catch (ex) {
+						//         console.log(ex);
+						//     }
+						// });
+
+						//sets the page to be downloaded to page 10
+						//let x = ["PA10"];	
+
+						//sets the first page to start at to page 0
+						//let i = 0;
+
+						//scrolls down the page at a rate of 1000 milliseconds
+				    //$('#viewport div:first-child').animate({scrollTop: i}, 1000);
+
+				    //adds 2000 as the distance that the page scrolls down with each scroll
+				    //i+=2000;
+
+						/*for (let i = 0; i < bodyDOM.length; i++) {
+							console.log(i);
+							console.log(bodyDOM[i].textContent);
+							console.log('												');
+						}*/
+
+						//appends a new link at the end of the body with an id of ‘xyzzy’
+						//$("body").append($("<a id='xyz'/>"));
+						////////ILLEGAL WITH JSDOM /////////////
+						// let newLink = dom.window.document.createElement('a');
+						//bodyDOM.append(newLink); 
+						// console.log(bodyDOM.textContent);
+
+				    //sets up a for loop where the index is less than the number of divs that are previewable so it won’t go over
+				    //for (index = 0; index < $('div.pageImageDisplay img').length; ++index) {
+
+				    //sets the page array?
+				    //let page = /&pg=([A-Z]{2,3}\d+)&/.exec($('div.pageImageDisplay img')[index].src); 
+
+				    //checks to see if the element in page is equal to page 10
+					  //if it IS a match, then it returns -1 and runs all the code inside the IF statement which downloads the page
+		    //     if ($.inArray(page[1], x) != -1) {
+		    //         //console.log(x);
+		    //         x.splice(x.indexOf(page[1]), 1);
+		    //         var embiggen = $('div.pageImageDisplay img')[index].src.replace(/&w=\d+$/, "&w=1200");
+		    //         $('#xyz').attr("download", page[1] + ".png");
+		    //         $('#xyz').attr("href", embiggen);
+		    //         $('#xyz')[0].click();
+		    //     }
+		    // }
+		    // if (i < 30000) { setTimeout(nextPage, 1500, i); }
+
+						
+
+						//so the AJAX call doesn't get angry at you
+						/*						
+					}
+					catch(e) {
+						console.log('JSDOM error: ' + sampleUrl);
+						res.sendStatus(e);
+					}
+				}
+		});*/
+};
+
+
+/* GOOGLE BOOKS WEB SCRAPING
+//initializes jquery
+javascript:if(!window.jQuery||confirm('Overwrite\x20current\x20version?\x20v'+jQuery.fn.jquery))(function(d,s){s=d.createElement('script');s.src='https://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.js';(d.head||d.documentElement).appendChild(s)})(document);
+
+//appends a new link at the end of the body with an id of ‘xyzzy’
+$("body").append($("<a id='xyz'/>"));
+
+//sets the page to be downloaded to page 10
+var x = ["PA10"];
+
+
+function nextPage(i) {
+    //scrolls down the page at a rate of 200 milliseconds
+
+    $('#viewport div:first-child').animate({scrollTop: i}, 1000);
+
+    //adds 1020 as the distance that the page scrolls down with each scroll
+    i+=2000;
+
+    //sets up a for loop where the index is less than the number of divs that are previewable so it won’t go over
+    for (index = 0; index < $('div.pageImageDisplay img').length; ++index) {
+
+        //sets the page array?
+        var page = /&pg=([A-Z]{2,3}\d+)&/.exec($('div.pageImageDisplay img')[index].src); 
+	//console.log(page);
+
+	//console.log(index);
+
+        //checks to see if the element in page is equal to page 10
+	 //if it IS a match, then it returns -1 and runs all the code inside the IF statement which downloads the page
+        if ($.inArray(page[1], x) != -1) {
+            //console.log(x);
+            x.splice(x.indexOf(page[1]), 1);
+            var embiggen = $('div.pageImageDisplay img')[index].src.replace(/&w=\d+$/, "&w=1200");
+            $('#xyz').attr("download", page[1] + ".png");
+            $('#xyz').attr("href", embiggen);
+            $('#xyz')[0].click();
+        }
+    }
+    if (i < 30000) { setTimeout(nextPage, 1500, i); }
+}
+
+*/
+
+/* BAND CAMP WEB SCRAPING
+						if (!error) {
+							try {
+								const dom = new JSDOM(body);
+								var aTags = dom.window.document.getElementsByTagName("a");
+								for (let i = 0; i < aTags.length; i++) {
+									if (aTags[i].getAttribute("href") && aTags[i].getAttribute("href").indexOf("bandcamp") !== -1) {
+										getbandcampEmbed(bandId, aTags[i].getAttribute("href"), event);
+										return;
+									}
+									// else if (aTags[i].getAttribute("href") && aTags[i].getAttribute("href").indexOf("soundcloud") !== -1) {
+									// 	getsoundcloudEmbed(bandId, aTags[i].getAttribute("href"), event);
+									// 	return;
+									// }
+								}
+								//no links were found, search google!
+								//googleSearchBand(bandId, event, bandName);
+							}
+							catch (e) {
+								console.log("JSDOM error " + options.url);
+							}
+						}
+						*/ 
+
 
 let booksGet = function(req, res) {
-	db.Book.find({}, function(err, books) {
-		res.render('index.ejs', {books: books});
-	});
+	  db.Book.find({}, function(err, books) {
+			// callBooksAPI();
+			res.render('index.ejs', {books: books});
+		});
 };
 
 let booksRecommendation = function(req, res) {
@@ -318,6 +680,8 @@ let sentimentAPI = function(req, res) {
 	});
 };
 
+module.exports.callBooksAPI = callBooksAPI;
+module.exports.parseBookText = parseBookText;
 module.exports.booksGet = booksGet;
 module.exports.entityAPI = entityAPI;
 module.exports.sentimentAPI = sentimentAPI;
