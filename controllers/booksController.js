@@ -9,12 +9,206 @@ let baseUrl 							= 'https://language.googleapis.com/v1beta2/documents:';
 const jsdom 							= require('jsdom');
 const { JSDOM } 					= jsdom;
 let PNG 									= require('node-png').PNG;
+// FOR BASE64 IMAGE ENCODING FOR GOOGLE OCR
 let fs 										= require('fs');
 let path 									= require('path');
 let mkdirp 								= require('mkdirp');
+var webdriver 						= require('selenium-webdriver');
+
+
+let parseBookText = (reqMaster, resMaster) => {
+
+	// GET request, feed in the parameters to the URL, refine the search string!!
+	request.get({
+		url: 'https://www.googleapis.com/books/v1/volumes',
+		qs: { 
+			q: 'novels subject: cloud', //?q=flowers+inauthor:keyes 	//search term
+			langRestrict: 'EN', //&langRestrict=EN 			//only uses english language books
+			maxResults: 1, 	//&maxResults=40					//returns 40 results
+			printType: 'books', 	//&printType=books 		//only returns books, no magazines
+			//filter: 'full',	//&filter=partial 				//only returns books where at least part of the book is viewable online
+			// projection: 'lite', //&projection=lite 	//only returns a little of what you need, not everything
+			key: apiKey // &key={YOUR_API_KEY} 					//uses my APIKey to make the call
+		}, 
+		headers: {'content-type' : 'application/json'}	
+	}, function(err, response, body) {
+		if (err) console.log(err);
+
+		//array of all the books returned from Google Books API
+		let googleBook = JSON.parse(body);
+		let bookUrl = googleBook.items[0].volumeInfo.previewLink;
+
+		let driver = new webdriver.Builder()
+											.forBrowser('chrome')
+   										.build();
+
+    driver.get(bookUrl);
+    driver.getTitle().then(function(title) {
+    	resMaster.send('page title is: ' + title);
+    });
+
+    driver.quit();
+
+  //   driver.wait(until.titleIs('Google'), 5000);
+  // var selectLinkOpeninNewTab = Keys.chord(Keys.CONTROL,"t");  
+  // driver.findElement(By.css("body")).sendKeys(selectLinkOpeninNewTab);
+  // driver.quit();
+
+    //driver.findElement(By.cssSelector("body")).sendKeys(Keys.CONTROL +"t");
+
+    // ArrayList<String> tabs = new ArrayList<String> (driver.getWindowHandles());
+    //driver.switchTo().window(tabs.get(1)); //switches to new tab
+    //driver.get("https://www.facebook.com");
+
+    //driver.switchTo().window(tabs.get(0)); // switch back to main screen        
+    // driver.get("https://www.news.google.com");
+
+
+
+	});
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////// WEB SCRAPING IDEAS ///////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	// jsdom.jQueryify(window, "jquery-1.10.2.js", function (window, $) {
+						//     try {
+						//         $(window).scroll(function(){
+						//             console.log("Scroll Happened.");
+						//         });
+						//         console.log("Triggering Scroll event...");  // 1
+						//         $(window).trigger('scroll');
+						//         console.log("Scroll event triggered.");     // 2
+						//     }
+						//     catch (ex) {
+						//         console.log(ex);
+						//     }
+						// });
+
+						//sets the page to be downloaded to page 10
+						//let x = ["PA10"];	
+
+						//sets the first page to start at to page 0
+						//let i = 0;
+
+						//scrolls down the page at a rate of 1000 milliseconds
+				    //$('#viewport div:first-child').animate({scrollTop: i}, 1000);
+
+				    //adds 2000 as the distance that the page scrolls down with each scroll
+				    //i+=2000;
+
+						/*for (let i = 0; i < bodyDOM.length; i++) {
+							console.log(i);
+							console.log(bodyDOM[i].textContent);
+							console.log('												');
+						}*/
+
+						//appends a new link at the end of the body with an id of ‘xyzzy’
+						//$("body").append($("<a id='xyz'/>"));
+						////////ILLEGAL WITH JSDOM /////////////
+						// let newLink = dom.window.document.createElement('a');
+						//bodyDOM.append(newLink); 
+						// console.log(bodyDOM.textContent);
+
+				    //sets up a for loop where the index is less than the number of divs that are previewable so it won’t go over
+				    //for (index = 0; index < $('div.pageImageDisplay img').length; ++index) {
+
+				    //sets the page array?
+				    //let page = /&pg=([A-Z]{2,3}\d+)&/.exec($('div.pageImageDisplay img')[index].src); 
+
+				    //checks to see if the element in page is equal to page 10
+					  //if it IS a match, then it returns -1 and runs all the code inside the IF statement which downloads the page
+		    //     if ($.inArray(page[1], x) != -1) {
+		    //         //console.log(x);
+		    //         x.splice(x.indexOf(page[1]), 1);
+		    //         var embiggen = $('div.pageImageDisplay img')[index].src.replace(/&w=\d+$/, "&w=1200");
+		    //         $('#xyz').attr("download", page[1] + ".png");
+		    //         $('#xyz').attr("href", embiggen);
+		    //         $('#xyz')[0].click();
+		    //     }
+		    // }
+		    // if (i < 30000) { setTimeout(nextPage, 1500, i); }
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////// ALL THIS TOTALLY WORKS! //////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	// Grab the file from the project
+	// TODO: change this to a variable that can pick the file that was just created by the screenscraper
+	/*let filePath = path.join(__dirname, '../public/images/DraculaDark.png');
+	
+	let imageFile = fs.readFileSync(filePath);
+
+	// Covert the image data to a Buffer and base64 encode it.
+	let encoded = new Buffer(imageFile).toString('base64');
+
+	///////////////////////////////////////////////////////////////
+	// Parse the book text from an image using Google Vision OCR //
+	///////////////////////////////////////////////////////////////
+	let options = { 
+		method: 'POST',
+	  url: 'https://vision.googleapis.com/v1/images:annotate',
+	  qs: { 
+	  	key: apiKey 
+	  },
+	  body: { 
+	  	requests: [{ 
+      	image: { 
+      		content: encoded
+      	},
+          features: [{ 
+          	type: 'DOCUMENT_TEXT_DETECTION' 
+          }] 
+       }] 
+    },
+	  json: true 
+	};
+
+	request(options, function (error, response, body) {
+	  if (error) throw new Error(error);
+
+	  let bookText = body.responses[0].fullTextAnnotation.text;
+	  let bookTextNoLineBreaks = bookText.replace(/\n/g, ' ');
+
+	  resMaster.send(bookTextNoLineBreaks);
+	}); */
+};
+
+	  ///////////////////////////////////////////////////////////////////////
+	  // Once it has the text from Google Vision OCR, 										 //
+		// passes it in to perform the Natural Language Processing analysis  //
+		///////////////////////////////////////////////////////////////////////
+
+		/*
+		// 2. DEFINE url and data for API requests
+		let sentimentRequest = baseUrl + 'analyzeSentiment' + '?key=' + apiKey;
+		let entitiesRequest = baseUrl + 'analyzeEntities' + '?key=' + apiKey;
+
+		//3. post SENTIMENT request to Google API 
+		request.post({
+				headers: {'content-type' : 'application/json'},
+				url: sentimentRequest, 
+				json: {"document":{"type": "PLAIN_TEXT","language":"EN","content": bookTextNoLineBreaks },"encodingType":"UTF8"}
+			}, function(err1, response1, body1) {
+				if (err1) console.log(err1);
+
+				console.log(body1);
+
+				// 5. post ENTITY request to Google API 
+				request.post({
+						headers: {'content-type' : 'application/json'},
+						url: entitiesRequest, 
+						json: {"document":{"type": "PLAIN_TEXT","language":"EN","content": bookTextNoLineBreaks },"encodingType":"UTF8"}
+					}, function(err2, response2, body2) {
+						if (err2) console.log(err2);
+						
+						console.log(body2);
+						resMaster.send(body2);
+				});						
+			});
+			*/
 
 let callBooksAPI = function (req, res) {
-	
 	// GET request, feed in the parameters to the URL, refine the search string!!
 	request.get({
 		url: 'https://www.googleapis.com/books/v1/volumes',
@@ -131,8 +325,8 @@ let callBooksAPI = function (req, res) {
 	});
 };
 
-let parseBookText = function(req, res) {
-	console.log('hit parseBookText function!');
+let screenshotBookText = function(req, res) {
+	console.log('hit screenshotBookText function!');
 
 	let viewer;
 	let $ = function (x) { return [].slice.call(document.querySelectorAll(x)); };
@@ -199,6 +393,10 @@ let parseBookText = function(req, res) {
 	  viewer.load(bookid);
 	  setTimeout(nextPage, 3000);
 	});
+};
+
+
+
 
 	//SO THE AJAX DOESN'T GET ANGRY
 	// res.sendStatus(200);
@@ -296,7 +494,6 @@ let parseBookText = function(req, res) {
 					}
 				}
 		});*/
-};
 
 
 /* GOOGLE BOOKS WEB SCRAPING

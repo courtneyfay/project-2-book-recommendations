@@ -21,7 +21,7 @@ function authenticatedUser(req, res, next) {
 
 	//otherwise the request is always redirected back to the page it came from
 	res.redirect('/');
-};
+}
 
 // CHECKS TO SEE IF USER IS AN ADMIN
 function administratorUser(req, res, next) {
@@ -32,7 +32,7 @@ function administratorUser(req, res, next) {
 
   //otherwise the request is always redirected to the home page
   res.redirect('/');
-};
+}
 
 //////////////////////////////////////////////////////////////////////
 // PASSPORT ROUTES //
@@ -67,7 +67,10 @@ router.get('/', booksController.booksGet);
 router.get('/books', booksController.callBooksAPI);
 
 // API ROUTE TO FIND BOOK TEXT FOR NATURAL LANGUAGE PROCESSING
-router.get('/text', booksController.parseBookText);
+// router.get('/text', booksController.screenshotBookText);
+
+// API ROUTE TO PARSE IMAGE BACK INTO TEXT
+router.get('/text/parse', booksController.parseBookText);
 
 // TESTING RECOMMENDATION ROUTE - DISPLAY RECOMMENDATION PAGE
 router.post('/recommendation', booksController.booksRecommendation);

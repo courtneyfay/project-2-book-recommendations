@@ -9,6 +9,20 @@ $(document).ready(function(){
   let $headerList = $('.jumbotron-fluid');
   let $signupForm = $('.signup-form');
 
+  //listens for when a user clicks on the "parse book text" button
+  $headerList.on('click', '.upload-book-text-btn', function() {
+    $.ajax({
+      method: 'GET',
+      url: '/text/parse',  
+      success: function(data) {
+        console.log(data);
+      },
+      error: function(err) {
+        console.log(err);
+      }
+    });
+  });
+
   //listens for when a user clicks on the "find books text" button
   $headerList.on('click', '.get-book-text-btn', function() {
     $.ajax({
