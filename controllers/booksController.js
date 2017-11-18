@@ -14,6 +14,7 @@ let fs 										= require('fs');
 let path 									= require('path');
 let mkdirp 								= require('mkdirp');
 var webdriver 						= require('selenium-webdriver');
+var promise 						  = require('selenium-webdriver').promise;
 
 
 let parseBookText = (reqMaster, resMaster) => {
@@ -38,33 +39,95 @@ let parseBookText = (reqMaster, resMaster) => {
 		let googleBook = JSON.parse(body);
 		let bookUrl = googleBook.items[0].volumeInfo.previewLink;
 
+		//////////////////////////////////////////
+    // 1. Navigate to the Google Books page //
+    //////////////////////////////////////////
+
 		let driver = new webdriver.Builder()
 											.forBrowser('chrome')
    										.build();
 
     driver.get(bookUrl);
-    driver.getTitle().then(function(title) {
-    	resMaster.send('page title is: ' + title);
-    });
 
-    driver.quit();
+    ///////////////////////////////////////////////
+    // 2. Find the right DOM element on the page //
+    ///////////////////////////////////////////////
 
-  //   driver.wait(until.titleIs('Google'), 5000);
-  // var selectLinkOpeninNewTab = Keys.chord(Keys.CONTROL,"t");  
-  // driver.findElement(By.css("body")).sendKeys(selectLinkOpeninNewTab);
-  // driver.quit();
+    // https://stackoverflow.com/questions/35098156/get-an-array-of-elements-from-findelementby-classname
+    /*driver.findElement(webdriver.By.className("viewport"))
+    	.then(function(elements) {
 
-    //driver.findElement(By.cssSelector("body")).sendKeys(Keys.CONTROL +"t");
+    		console.log(elements);
+    		// let pendingHtml = elements.map(function (elem) {
+		    // 	return elem.getInnerHtml();
+		    // });
 
-    // ArrayList<String> tabs = new ArrayList<String> (driver.getWindowHandles());
-    //driver.switchTo().window(tabs.get(1)); //switches to new tab
-    //driver.get("https://www.facebook.com");
+    		// promise.all(pendingHtml).then(function (allHtml) { // `allHtml` will be an `Array` of strings 
+    		// });
+    	});*/
+    
+    //////////////////////////////////////////
+    // 3. Scroll down and take a screenshot //
+    //////////////////////////////////////////
 
-    //driver.switchTo().window(tabs.get(0)); // switch back to main screen        
-    // driver.get("https://www.news.google.com");
+    driver.takeScreenshot()
+    .then(function(image, err) {
+	    fs.writeFile('./book-images/out.png', image, 'base64', function(err) {
+	      console.log(err);
+	    });
+	  });
 
+	  driver.quit();
 
+    // this.takeScreenshot();
+    // https://seleniumhq.github.io/selenium/docs/api/javascript/module/selenium-webdriver/lib/webdriver_exports_WebElement.html
 
+    /*
+		/**
+   * Takes a screenshot of the current page. The driver makes a best effort to
+   * return a screenshot of the following, in order of preference:
+   *
+   * 1. Entire page
+   * 2. Current window
+   * 3. Visible portion of the current frame
+   * 4. The entire display containing the browser
+   *
+   * @return {!Promise<string>} A promise that will be resolved to the
+   *     screenshot as a base-64 encoded PNG.
+   */
+  // takeScreenshot() {}
+
+  /**
+   * @return {!Options} The options interface for this instance.
+   */
+  // manage() {}
+
+  /**
+   * @return {!Navigation} The navigation interface for this instance.
+   */
+  // navigate() {}
+
+  /**
+   * @return {!TargetLocator} The target locator interface for this
+   *     instance.
+   */
+  // switchTo() {}
+// }
+
+    // not working!
+    /*driver.findElement(webdriver.By.id("viewport"))
+    // String  datentime = driver.findElement(By.className("date-header")).getText();
+    	.then(function(element){
+    		console.log(element);
+	    	resMaster.sendStatus(200);
+	    	//driver.quit();
+		});*/
+
+    // WORKS!!
+    // driver.getTitle().then(function(title) {
+    // 	resMaster.send('page title is: ' + title);
+    // });
+   
 	});
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
