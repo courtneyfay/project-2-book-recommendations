@@ -25,7 +25,7 @@ let parseBookText = (reqMaster, resMaster) => {
 		qs: { 
 			q: 'novels subject: cloud', //?q=flowers+inauthor:keyes 	//search term
 			langRestrict: 'EN', //&langRestrict=EN 			//only uses english language books
-			maxResults: 1, 	//&maxResults=40					//returns 40 results
+			maxResults: 1, 	//&maxResults=40					//returns 1 result
 			printType: 'books', 	//&printType=books 		//only returns books, no magazines
 			//filter: 'full',	//&filter=partial 				//only returns books where at least part of the book is viewable online
 			// projection: 'lite', //&projection=lite 	//only returns a little of what you need, not everything
@@ -45,89 +45,54 @@ let parseBookText = (reqMaster, resMaster) => {
 
 		let driver = new webdriver.Builder()
 											.forBrowser('chrome')
+											.withCapabilities(webdriver.Capabilities.chrome())
    										.build();
 
     driver.get(bookUrl);
 
-    ///////////////////////////////////////////////
-    // 2. Find the right DOM element on the page //
-    ///////////////////////////////////////////////
-
-    // https://stackoverflow.com/questions/35098156/get-an-array-of-elements-from-findelementby-classname
-    /*driver.findElement(webdriver.By.className("viewport"))
-    	.then(function(elements) {
-
-    		console.log(elements);
-    		// let pendingHtml = elements.map(function (elem) {
-		    // 	return elem.getInnerHtml();
-		    // });
-
-    		// promise.all(pendingHtml).then(function (allHtml) { // `allHtml` will be an `Array` of strings 
-    		// });
-    	});*/
-    
     //////////////////////////////////////////
-    // 3. Scroll down and take a screenshot //
-    //////////////////////////////////////////
+    // 2. Scroll down and take a screenshot //
+    ////////////////////////////////////////// 
 
-    driver.takeScreenshot()
-    .then(function(image, err) {
-	    fs.writeFile('./book-images/out.png', image, 'base64', function(err) {
-	      console.log(err);
-	    });
-	  });
+    // get title of file
+    driver.findElements(webdriver.By.className("gb-volume-title"))
+	    .then(function(elements) {
+	    	elements.forEach(function (element) {
+	        element.getText().then(function(text){
 
-	  driver.quit();
+	          let bookTitle = text;
 
-    // this.takeScreenshot();
-    // https://seleniumhq.github.io/selenium/docs/api/javascript/module/selenium-webdriver/lib/webdriver_exports_WebElement.html
+	          resMaster.send('page title is: ' + bookTitle);
 
-    /*
-		/**
-   * Takes a screenshot of the current page. The driver makes a best effort to
-   * return a screenshot of the following, in order of preference:
-   *
-   * 1. Entire page
-   * 2. Current window
-   * 3. Visible portion of the current frame
-   * 4. The entire display containing the browser
-   *
-   * @return {!Promise<string>} A promise that will be resolved to the
-   *     screenshot as a base-64 encoded PNG.
-   */
-  // takeScreenshot() {}
+	          // grab the book div 	
+	          driver.findElement(webdriver.By.className("overflow-scrolling")) 
+				    	.then(function(element) {
+				    		
+				    		// scroll down the div for 5000
+				        driver.executeScript("arguments[0].scroll(0, 5000);", element)
+				        	.then(function(element2) {
 
-  /**
-   * @return {!Options} The options interface for this instance.
-   */
-  // manage() {}
+				        		/*
+										wait for page to appear!
+										driver.wait(function () {
+										  return driver.isElementPresent(webdriver.By.name("username"));
+										}, timeout);
+				        		*/
 
-  /**
-   * @return {!Navigation} The navigation interface for this instance.
-   */
-  // navigate() {}
+				        		//take a screenshot of that page and save to file
+					        	driver.takeScreenshot()
+									    .then(function(image, err) {
+										    fs.writeFile(`./book-images/${bookTitle}.png`, image, 'base64', function(err) {
+										      if (err) console.log(err);
+										      //driver.quit();
+										  });
+				        });
+							});
+					});
+	      });
+    	});
+  	});  
 
-  /**
-   * @return {!TargetLocator} The target locator interface for this
-   *     instance.
-   */
-  // switchTo() {}
-// }
-
-    // not working!
-    /*driver.findElement(webdriver.By.id("viewport"))
-    // String  datentime = driver.findElement(By.className("date-header")).getText();
-    	.then(function(element){
-    		console.log(element);
-	    	resMaster.sendStatus(200);
-	    	//driver.quit();
-		});*/
-
-    // WORKS!!
-    // driver.getTitle().then(function(title) {
-    // 	resMaster.send('page title is: ' + title);
-    // });
-   
 	});
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
